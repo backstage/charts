@@ -1,0 +1,33 @@
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    app.kubernetes.io/component: backstage
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: backstage
+  template:
+    metadata:
+      labels: {{- include "common.labels.standard" . | nindent 8 }}
+        app.kubernetes.io/component: backstage
+    spec:
+      containers:
+        - name: backstage-backend
+          # image: 951643378818.dkr.ecr.eu-west-2.amazonaws.com/backstage-sample-app:latest
+          image: {{ include "backstage.image" . }}
+          imagePullPolicy: {{ .Values.backstage.image.pullPolicy | quote }}
+          ports:
+            - name: backend
+              containerPort: {{ .Values.backstage.containerPorts.backend }}
+              # containerPort: 7007
+              protocol: TCP
