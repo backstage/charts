@@ -8,9 +8,10 @@ metadata:
     {{- if .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
     {{- end }}
-  {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
-  {{- end }}
+  annotations:
+    {{- if .Values.commonAnnotations }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+    {{- end }}
 spec:
   replicas: 1
   selector:
@@ -21,13 +22,62 @@ spec:
       labels: {{- include "common.labels.standard" . | nindent 8 }}
         app.kubernetes.io/component: backstage
     spec:
+      volumes:
+        {{- if .Values.backstage.extraAppConfig }}
+        {{- range .Values.backstage.extraAppConfig }}
+        - name: {{ .configMapRef }}
+          configMap:
+            name: {{ .configMapRef }}
+        {{- end }}            
+        {{- end }}
       containers:
         - name: backstage-backend
-          # image: 951643378818.dkr.ecr.eu-west-2.amazonaws.com/backstage-sample-app:latest
           image: {{ include "backstage.image" . }}
           imagePullPolicy: {{ .Values.backstage.image.pullPolicy | quote }}
+
+          {{- if .Values.diagnosticMode.enabled }}
+          command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
+          {{- else if .Values.backstage.command }}
+          command: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.command "context" $) | nindent 12 }}
+          {{- else }}
+          command: ["node", "packages/backend"]
+          {{- end }}
+
+          {{- if .Values.diagnosticMode.enabled }}
+          args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 12 }}
+          {{- else }}
+          args:
+          {{- range .Values.backstage.args }}
+            - {{ . | quote }}
+          {{- end }}
+          {{- if .Values.backstage.extraAppConfig }}
+          {{- range .Values.backstage.extraAppConfig }}
+            - "--config"
+            - {{ .filename | quote }}
+          {{- end }}
+          {{- end }}
+          {{- end }}
+
+          {{- if .Values.backstage.extraEnvVarsSecrets }}
+          envFrom:
+            - secretRef:
+              name: {{ include "common.tplvalues.render" (dict "value" .Values.backstage.extraEnvVarsSecret "context" $) }}
+          {{- end }}
+          env:
+            - name: APP_CONFIG_backend_listen_port
+              value: {{ .Values.backstage.containerPorts.backend | quote }}
+            {{- if .Values.backstage.extraEnvVars }}
+            {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           ports:
             - name: backend
               containerPort: {{ .Values.backstage.containerPorts.backend }}
-              # containerPort: 7007
               protocol: TCP
+          {{- if .Values.backstage.extraAppConfig }}
+          volumeMounts:
+            {{- range .Values.backstage.extraAppConfig }}
+            - name: {{ .configMapRef }}
+              mountPath: "/app/{{ .filename }}"
+              subPath: {{ .filename }} 
+            {{- end }}
+          {{- end }}

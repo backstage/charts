@@ -9,7 +9,6 @@
 
 ## @param global.imageRegistry Global Docker image registry
 ## @param global.imagePullSecrets Global Docker registry secret names as an array
-## @param global.storageClass Global StorageClass for Persistent Volume(s)
 ##
 global:
   imageRegistry: ""
@@ -18,7 +17,6 @@ global:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: ""
 
 ## @section Common parameters
 
@@ -72,7 +70,7 @@ diagnosticMode:
 backstage:
   image:
     registry: ""
-    repository: "backstage-sample-app"
+    repository: ""
     tag: "latest"
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -92,6 +90,11 @@ backstage:
     debug: false
   containerPorts:
     backend: 7007
+  command: []
+  args: []
+  extraAppConfig: []
+  extraEnvVars: []
+  extraEnvVarsSecrets:
 
 ## @section Traffic Exposure parameters
 
@@ -100,7 +103,7 @@ backstage:
 service:
   ## @param service.type Kubernetes Service type
   ##
-  type: LoadBalancer
+  type: ClusterIP
   ## @param service.ports.backend Backstage svc port for client connections
   ##
   ports:
@@ -149,10 +152,7 @@ networkPolicy:
   ## @param networkPolicy.enabled Specifies whether a NetworkPolicy should be created
   ##
   enabled: false
-  ## @param networkPolicy.allowExternal Don't require client label for connections
-  ## When set to false, only pods with the correct client label will have network access to the port Kafka is
-  ## listening on. When true, zookeeper accept connections from any source (with the correct destination port).
-  ##
+
   externalAccess:
     from: []
   ## @param networkPolicy.egressRules.customRules [object] Custom network policy rule
