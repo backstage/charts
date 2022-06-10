@@ -1,12 +1,10 @@
-<!--- app-name: Backstage -->
-
 # Backstage
 
 [Backstage](https://backstage.io) is an open platform for building developer portals. Powered by a centralized software catalog, Backstage restores order to your microservices and infrastructure and enables your product teams to ship high-quality code quickly — without compromising autonomy.
 
 Backstage unifies all your infrastructure tooling, services, and documentation to create a streamlined development environment from end to end.
 
-## TL;DR
+## TL;DR
 
 ```console
 helm repo add backstage https://backstage.github.io/charts
@@ -25,21 +23,21 @@ This chart bootstraps a [Backstage](https://backstage.io/docs/deployment/docker)
 
 ## Installing the Chart
 
-To install the chart with the release name `my-release`:
+To install the chart with the release name `my-backstage-release`:
 
 ```console
 helm repo add backstage https://charts.backstage.io
-helm install my-release backstage
+helm install my-backstage-release backstage
 ```
 
 > **Tip**: List all releases using `helm list`
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `my-release` deployment:
+To uninstall/delete the `my-backstage-release` deployment:
 
 ```console
-helm delete my-release
+helm delete my-backstage-release
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -71,18 +69,18 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Backstage parameters
 
-| Name                         | Description                                          | Value                          |
-| ---------------------------- | ---------------------------------------------------- | ------------------------------ |
-| `backstage.image.registry`   | Backstage image registry                             | `""`                           |
-| `backstage.image.repository` | Backstage image repository                           | `""`                           |
-| `backstage.image.tag`        | Backstage image tag (immutable tags are recommended) | `""`                           |
-| `image.pullPolicy`           | Backstage image pull policy                          | `IfNotPresent`                 |
-| `image.pullSecrets`          | Specify docker-registry secret names as an array     | `[]`                           |
-| `command`                    | Override Backstage container command                 | `[]` |
-| `args`                       | Override Backstage container arguments               | `[]`                           |
-| `extraEnvVars`               | Extra environment variables to add to Backstage pods | `[]`                           |
-| `extraEnvVarsCM`             | ConfigMap with extra environment variables           | `""`                           |
-| `extraEnvVarsSecrets`         | Secret with extra environment variables              | `""`                           |
+| Name                            | Description                                                          | Value                                                                       |
+| ------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `backstage.image.registry`      | Backstage image registry                                             | `""`                                                                        |
+| `backstage.image.repository`    | Backstage image repository                                           | `""`                                                                        |
+| `backstage.image.tag`           | Backstage image tag (immutable tags are recommended)                 | `""`                                                                        |
+| `backstage.image.pullPolicy`    | Backstage image pull policy                                          | `IfNotPresent`                                                              |
+| `backstage.image.pullSecrets`   | Specify docker-registry secret names as an array                     | `[]`                                                                        |
+| `backstage.command`             | Override Backstage container command                                 | `["node", "packages/backend"]`                                              |
+| `backstage.args`                | Override Backstage container arguments                               | `["--config", "app-config.yaml", "--config", "app-config.production.yaml"]` |
+| `backstage.extraEnvVars`        | Extra environment variables to add to Backstage pods                 | `[]`                                                                        |
+| `backstage.extraAppConfig`      | ConfigMap with extra environment variables                           | `[]`                                                                        |
+| `backstage.extraEnvVarsSecrets` | Array of existing secrets containing sensitive environment variables | `[]`                                                                        |
 
 ### Traffic Exposure parameters
 
@@ -98,3 +96,88 @@ The command removes all the Kubernetes components associated with the chart and 
 | `service.externalTrafficPolicy`    | Backstage service external traffic policy                        | `Cluster`   |
 | `service.annotations`              | Additional custom annotations for Backstage service              | `{}`        |
 | `service.extraPorts`               | Extra ports to expose in Backstage                               | `[]`        |
+
+## Configure your Backstage instance
+
+The Backstage Chart makes it possible to configure your backstage instance by passing extra environment variables or static configuration files, without rebuilding the docker image.
+
+### Environment variables
+
+Use `backstage.extraEnvVars` to pass extra environment variables. **This is used for environment variables containing non sensitive information:**
+
+```diff
+  backstage:
++   extraEnvVars:
++     - name: MY_PLUGIN_HOST
++       value: http://my-plugin-host
+```
+
+It is possible to override values defined in your `app-config.yaml` by appending the `APP_CONFIG` prefix to each environment variable, as described in the [official documentation](https://backstage.io/docs/conf/#supplying-configuration).
+For example, to override the `backend.cache.store` property defined in your `app-config.yaml`, do:
+
+```diff
+  backstage:
+    extraEnvVars:
++     - name: APP_CONFIG_backend_cache_store
++       value: memory
+```
+
+### Sensitive environment variables
+
+In case your environment variables contain sensitive information, such as `BACKEND_SECRET` or `POSTGRES_PASSWORD` it is recommended store them in a [Kubernetes Secret](https://kubernetes.io/docs/concepts/configuration/secret/).
+
+Create a new file named `my-backstage-secrets.yaml` containing the secrets you want to store:
+
+```yaml
+# my-backstage-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-backstage-secrets
+type: Opaque
+data:
+  BACKEND_SECRET: YmFja3N0YWdl
+  POSTGRES_PASSWORD: aHVudGVyMg==
+```
+
+Make sure to customize the name of the secret by changing `metadata.name` properly.
+
+Now create the new secret in your Kubernetes cluster by running the following command:
+
+```bash
+$ kubectl apply -f my-backstage-secrets.yaml`
+```
+
+Once the secret has been created, pass the secret's reference to your backstage instance by adding the following lines to your `values.yaml`:
+
+```diff
+  backstage:
++   extraEnvVarsSecrets:
++     - my-backstage-secrets
+```
+
+The chart will make sure to pass the secrets to your Backstage instance.
+
+### Pass extra configuration files
+
+A generated Backstage docker image contains some static configuration files, such as `app-config.yaml` and `app-config.production.yaml`.
+It is possible to pass extra configuration files by defining them as [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/), without rebuilding the Docker image.
+
+To do so, run:
+
+```bash
+$ kubectl create configmap my-app-config --from-file=app-config.extra.yaml=./local/path/to/your/app-config.extra.yaml`
+```
+
+This command parses your local `app-config.extra.yaml` and creates a new ConfigMap called `my-app-config` which internally contains a file called `app-config.extra.yaml` with the content of the parsed file.
+
+Now that the ConfigMap has been created on your Kubernetes cluster, you can reference the ConfigMap:
+
+```diff
+  backstage:
++   extraAppConfig:
++     - filename: app-config.extra.yaml
++       configMapRef: my-app-config
+```
+
+The chart will mount the content of the ConfigMap as a new `app-config.extra.yaml` file and automatically pass the extra configuration to your instance.
