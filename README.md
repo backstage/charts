@@ -26,7 +26,7 @@ This chart bootstraps a [Backstage](https://backstage.io/docs/deployment/docker)
 To install the chart with the release name `my-backstage-release`:
 
 ```console
-helm repo add backstage https://charts.backstage.io
+helm repo add backstage https://vinzscam.github.io/backstage-chart
 helm install my-backstage-release backstage
 ```
 
