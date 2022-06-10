@@ -67,7 +67,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `diagnosticMode.command` | Command to override all containers in the statefulset                                   | `["sleep"]`     |
 | `diagnosticMode.args`    | Args to override all containers in the statefulset                                      | `["infinity"]`  |
 
-### Backstage parameters
+### Backstage parameters
 
 | Name                            | Description                                                          | Value                                                                       |
 | ------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------- |
