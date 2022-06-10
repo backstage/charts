@@ -7,7 +7,7 @@ Backstage unifies all your infrastructure tooling, services, and documentation t
 ## TL;DR
 
 ```console
-helm repo add backstage https://backstage.github.io/charts
+helm repo add backstage https://vinzscam.github.io/backstage-chart
 helm install my-release backstage
 ```
 
