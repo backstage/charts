@@ -90,7 +90,7 @@ backstage:
     debug: false
   containerPorts:
     backend: 7007
-  command: []
+  command: ["node", "packages/backend"]
   args: []
   extraAppConfig: []
   extraEnvVars: []

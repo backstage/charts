@@ -39,8 +39,6 @@ spec:
           command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
           {{- else if .Values.backstage.command }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.command "context" $) | nindent 12 }}
-          {{- else }}
-          command: ["node", "packages/backend"]
           {{- end }}
 
           {{- if .Values.diagnosticMode.enabled }}
@@ -60,8 +58,10 @@ spec:
 
           {{- if .Values.backstage.extraEnvVarsSecrets }}
           envFrom:
+            {{- range .Values.backstage.extraEnvVarsSecrets }}
             - secretRef:
-              name: {{ include "common.tplvalues.render" (dict "value" .Values.backstage.extraEnvVarsSecret "context" $) }}
+                name: {{ . }}
+            {{- end }}
           {{- end }}
           env:
             - name: APP_CONFIG_backend_listen_port
