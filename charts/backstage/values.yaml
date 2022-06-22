@@ -56,6 +56,23 @@ diagnosticMode:
   args:
     - infinity
 
+## @section Ingress parameters
+ingress:
+  ## @param ingress.enabled Enable the creation of the ingress resource
+  enabled: false
+
+  ## @param ingress.className Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx)
+  className: ""
+
+  ## @param ingress.annotations Additional annotations for the Ingress resource
+  annotations: '{
+    "nginx.ingress.kubernetes.io/rewrite-target": "/",
+    "nginx.ingress.kubernetes.io/ssl-redirect": "false"
+  }'
+
+  ## @param host Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io)
+  host: ""
+
 ## @section Backstage parameters
 
 ## Backstage image version
