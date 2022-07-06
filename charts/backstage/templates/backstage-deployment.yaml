@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "common.names.fullname" . }}
   namespace: {{ .Release.Namespace | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
+  labels: {{ include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: backstage
     {{- if .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
@@ -30,11 +30,16 @@ spec:
             name: {{ .configMapRef }}
         {{- end }}            
         {{- end }}
+      {{- if .Values.backstage.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.backstage.image.pullSecrets }}
+          - name: {{ . }}
+      {{- end }}
+      {{- end }}
       containers:
         - name: backstage-backend
           image: {{ include "backstage.image" . }}
-          imagePullPolicy: {{ .Values.backstage.image.pullPolicy | quote }}
-
+          imagePullPolicy: {{ .Values.backstage.image.pullPolicy | quote -}}
           {{- if .Values.diagnosticMode.enabled }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
           {{- else if .Values.backstage.command }}
@@ -55,7 +60,6 @@ spec:
           {{- end }}
           {{- end }}
           {{- end }}
-
           {{- if .Values.backstage.extraEnvVarsSecrets }}
           envFrom:
             {{- range .Values.backstage.extraEnvVarsSecrets }}
@@ -66,6 +70,19 @@ spec:
           env:
             - name: APP_CONFIG_backend_listen_port
               value: {{ .Values.backstage.containerPorts.backend | quote }}
+            {{- if .Values.postgresql.enabled }}
+            - name: POSTGRES_HOST
+              value: {{ include "backstage.postgresql.host" . }}
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER     
+              value: {{ .Values.postgresql.auth.username }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "backstage.postgresql.databaseSecretName" . }}
+                  key: {{ include "backstage.postgresql.databaseSecretKey" . }}
+            {{- end }}
             {{- if .Values.backstage.extraEnvVars }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}

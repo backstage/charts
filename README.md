@@ -185,3 +185,31 @@ Now that the ConfigMap has been created on your Kubernetes cluster, you can refe
 ```
 
 The chart will mount the content of the ConfigMap as a new `app-config.extra.yaml` file and automatically pass the extra configuration to your instance.
+
+### Configuring Chart PostgreSQL
+
+With the Backstage Helm Chart, it offers - as a subchart - a Bitnami PostgreSQL database. This can be enabled by switching `postgresql.enabled` to true (it is `false` by default). If switched on, the Helm Chart, on deployment, will automatically deploy a PostgreSQL instance and configure it with the credentials you specify. There are multiple ways of doing this that will be detailed below.
+
+#### Automatic Database Credential Creation
+
+This is the easiest of the configuration options. Here, the credentials for both the Admin and Database users will be automatically generated and put into a Kubernetes secret. This will then be automatically used by Backstage. In order to use this method, ensure the following:
+
+- Keep `postgresql.auth.existingSecret` & `postgresql.auth.password` empty.
+
+#### Specifying Password for PostgreSQL to Use
+
+Here, you can specify the password that you want PostgreSQL to use for its Database User (The user that Backstage will use to connect to the database). In order to use this method, ensure the following:
+
+- Keep `postgresql.auth.existingSecret` empty.
+- Set `postgresql.auth.password` to your desired User password value.
+
+> **_NOTE:_** Be careful that you provide this value securely.
+
+#### Specifying Existing Secret for PostgreSQL to Use
+
+Here, you can specify an existing Kubernetes secret that you have created which contains the Password that you want PostgreSQL to use. The secret must be in the same namespace as where you are deploying the Helm Chart. In order to use this method, ensure the following:
+
+- Create the Kubernetes secret with the Password inside.
+- Set `postgresql.auth.existingSecret` to the name of the Secret
+- PostgreSQL by default will look for the relevant Password keys that are set by default here `postgresql.auth.secretKeys`. So make sure that the Keys in the Secret match the default `secretKeys` values. More information [here](https://artifacthub.io/packages/helm/bitnami/postgresql)
+- For example, if you want PostgreSQL to use an existing Secret called `my-user-secret` that has the User password that you want to use inside it: make sure that you create a Key inside that secret called `user-password` (this key can be found here `postgresql.auth.secretKeys.userPasswordKey`). i.e. `user-password=Password123`.
