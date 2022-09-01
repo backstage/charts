@@ -1,3 +1,6 @@
+{{- $imageRepository := .Values.backstage.image.repository | required "The repository name of the image is required (e.g. my-backstage:tag | docker.io/my-backstage:tag) !" -}}
+{{- $imageTag := .Values.backstage.image.tag | required "The image tag is required (e.g my-backstage:tag | docker.io/my-backstage:tag) !" -}}
+---
 apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:

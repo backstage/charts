@@ -20,6 +20,7 @@ This chart bootstraps a [Backstage](https://backstage.io/docs/deployment/docker)
 - Kubernetes 1.19+
 - Helm 3.2.0+
 - PV provisioner support in the underlying infrastructure
+- [Backstage container image](https://backstage.io/docs/deployment/docker)
 
 ## Installing the Chart
 
@@ -70,10 +71,10 @@ The command removes all the Kubernetes components associated with the chart and 
 ### Backstage parameters
 
 | Name                            | Description                                                          | Value                                                                       |
-| ------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| ------------------------------- |----------------------------------------------------------------------| --------------------------------------------------------------------------- |
 | `backstage.image.registry`      | Backstage image registry                                             | `""`                                                                        |
-| `backstage.image.repository`    | Backstage image repository                                           | `""`                                                                        |
-| `backstage.image.tag`           | Backstage image tag (immutable tags are recommended)                 | `""`                                                                        |
+| `backstage.image.repository`    | Backstage image repository (required)                                | `""`                                                                        |
+| `backstage.image.tag`           | Backstage image tag (required immutable tags are recommended)        | `""`                                                                        |
 | `backstage.image.pullPolicy`    | Backstage image pull policy                                          | `IfNotPresent`                                                              |
 | `backstage.image.pullSecrets`   | Specify docker-registry secret names as an array                     | `[]`                                                                        |
 | `backstage.command`             | Override Backstage container command                                 | `["node", "packages/backend"]`                                              |
