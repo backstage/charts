@@ -1,4 +1,4 @@
-# Backstage
+# Backstage Helm Chart
 
 [Backstage](https://backstage.io) is an open platform for building developer portals. Powered by a centralized software catalog, Backstage restores order to your microservices and infrastructure and enables your product teams to ship high-quality code quickly — without compromising autonomy.
 
@@ -28,7 +28,7 @@ To install the chart with the release name `my-backstage-release`:
 
 ```console
 helm repo add backstage https://vinzscam.github.io/backstage-chart
-helm install my-backstage-release backstage
+helm install my-backstage-release backstage/backstage
 ```
 
 > **Tip**: List all releases using `helm list`
@@ -71,7 +71,7 @@ The command removes all the Kubernetes components associated with the chart and 
 ### Backstage parameters
 
 | Name                            | Description                                                          | Value                                                                       |
-| ------------------------------- |----------------------------------------------------------------------| --------------------------------------------------------------------------- |
+| ------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `backstage.image.registry`      | Backstage image registry                                             | `""`                                                                        |
 | `backstage.image.repository`    | Backstage image repository (required)                                | `""`                                                                        |
 | `backstage.image.tag`           | Backstage image tag (required immutable tags are recommended)        | `""`                                                                        |
@@ -85,22 +85,22 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Traffic Exposure parameters
 
-| Name                               | Description                                                      | Value       |
-|------------------------------------|------------------------------------------------------------------|-------------|
-| `ingress.enabled`                  | Enable ingress                                                   | `false`     |
-| `ingress.className`                | Name of the IngressClass cluster resource (e.g nginx)            | `""`        |
-| `ingress.annotations`              | Additional annotations for the Ingress resource                  | `{}`        |
+| Name                               | Description                                                       | Value       |
+| ---------------------------------- | ----------------------------------------------------------------- | ----------- |
+| `ingress.enabled`                  | Enable ingress                                                    | `false`     |
+| `ingress.className`                | Name of the IngressClass cluster resource (e.g nginx)             | `""`        |
+| `ingress.annotations`              | Additional annotations for the Ingress resource                   | `{}`        |
 | `ingress.host`                     | Hostname of the backstage application (e.g backstage.<IP>.nip.io) | `""`        |
-| `service.type`                     | Kubernetes Service type                                          | `ClusterIP` |
-| `service.ports.backend`            | Port for client connections                                      | `7007`      |
-| `service.nodePorts.backend`        | Node port for client connections                                 | `""`        |
-| `service.sessionAffinity`          | Control where client requests go, to the same pod or round-robin | `None`      |
-| `service.clusterIP`                | Backstage service Cluster IP                                     | `""`        |
-| `service.loadBalancerIP`           | Backstage service Load Balancer IP                               | `""`        |
-| `service.loadBalancerSourceRanges` | Backstage service Load Balancer sources                          | `[]`        |
-| `service.externalTrafficPolicy`    | Backstage service external traffic policy                        | `Cluster`   |
-| `service.annotations`              | Additional custom annotations for Backstage service              | `{}`        |
-| `service.extraPorts`               | Extra ports to expose in Backstage                               | `[]`        |
+| `service.type`                     | Kubernetes Service type                                           | `ClusterIP` |
+| `service.ports.backend`            | Port for client connections                                       | `7007`      |
+| `service.nodePorts.backend`        | Node port for client connections                                  | `""`        |
+| `service.sessionAffinity`          | Control where client requests go, to the same pod or round-robin  | `None`      |
+| `service.clusterIP`                | Backstage service Cluster IP                                      | `""`        |
+| `service.loadBalancerIP`           | Backstage service Load Balancer IP                                | `""`        |
+| `service.loadBalancerSourceRanges` | Backstage service Load Balancer sources                           | `[]`        |
+| `service.externalTrafficPolicy`    | Backstage service external traffic policy                         | `Cluster`   |
+| `service.annotations`              | Additional custom annotations for Backstage service               | `{}`        |
+| `service.extraPorts`               | Extra ports to expose in Backstage                                | `[]`        |
 
 ## Configure your Backstage instance
 
