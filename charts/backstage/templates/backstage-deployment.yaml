@@ -26,12 +26,15 @@ spec:
         app.kubernetes.io/component: backstage
     spec:
       volumes:
-        {{- if .Values.backstage.extraAppConfig }}
+        {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
         {{- range .Values.backstage.extraAppConfig }}
         - name: {{ .configMapRef }}
           configMap:
             name: {{ .configMapRef }}
         {{- end }}            
+        {{- if .Values.backstage.extraVolumes }}
+          {{- toYaml .Values.backstage.extraVolumes | nindent 8 }}
+        {{- end }}
         {{- end }}
       {{- if .Values.backstage.image.pullSecrets }}
       imagePullSecrets:
@@ -93,11 +96,14 @@ spec:
             - name: backend
               containerPort: {{ .Values.backstage.containerPorts.backend }}
               protocol: TCP
-          {{- if .Values.backstage.extraAppConfig }}
+          {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
           volumeMounts:
             {{- range .Values.backstage.extraAppConfig }}
             - name: {{ .configMapRef }}
               mountPath: "/app/{{ .filename }}"
               subPath: {{ .filename }} 
+            {{- end }}
+            {{- if .Values.backstage.extraVolumeMounts }}
+              {{- toYaml .Values.backstage.extraVolumeMounts | nindent 12 }}
             {{- end }}
           {{- end }}

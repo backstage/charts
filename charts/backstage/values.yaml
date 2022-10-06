@@ -112,6 +112,8 @@ backstage:
   extraAppConfig: []
   extraEnvVars: []
   extraEnvVarsSecrets:
+  extraVolumeMounts: []
+  extraVolumes: []
 
 ## @section Traffic Exposure parameters
 
