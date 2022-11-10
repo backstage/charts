@@ -219,3 +219,22 @@ postgresql:
   
   # -- PostgreSQL architecture (`standalone` or `replication`)
   architecture: standalone
+
+# -- Service Account Configuration
+serviceAccount:
+
+  # -- Enable the creation of a ServiceAccount for Backstage pods
+  create: false
+
+  # -- Name of the created ServiceAccount
+  # If not set and `serviceAccount.create` is true, a name is generated
+  name: ""
+
+  # -- Additional custom labels to the service ServiceAccount.
+  labels: {}
+
+  # -- Additional custom annotations for the ServiceAccount.
+  annotations: {}
+
+  # -- Auto-mount the service account token in the pod
+  automountServiceAccountToken: true
