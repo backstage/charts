@@ -7,7 +7,7 @@ Backstage unifies all your infrastructure tooling, services, and documentation t
 ## TL;DR
 
 ```console
-helm repo add backstage https://vinzscam.github.io/backstage-chart
+helm repo add backstage https://backstage.github.io/charts
 helm install my-release backstage
 ```
 
@@ -27,7 +27,7 @@ This chart bootstraps a [Backstage](https://backstage.io/docs/deployment/docker)
 To install the chart with the release name `my-backstage-release`:
 
 ```console
-helm repo add backstage https://vinzscam.github.io/backstage-chart
+helm repo add backstage https://backstage.github.io/charts
 helm install my-backstage-release backstage/backstage
 ```
 
