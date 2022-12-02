@@ -42,7 +42,7 @@ spec:
       {{- if .Values.backstage.image.pullSecrets }}
       imagePullSecrets:
       {{- range .Values.backstage.image.pullSecrets }}
-          - name: {{ . }}
+        - name: {{ . }}
       {{- end }}
       {{- end }}
       containers:
