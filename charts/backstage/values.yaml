@@ -216,7 +216,7 @@ postgresql:
 
       # -- The key in which Postgres will look for, for the replication password, in the existing Secret
       replicationPasswordKey: replication-password
-  
+
   # -- PostgreSQL architecture (`standalone` or `replication`)
   architecture: standalone
 
