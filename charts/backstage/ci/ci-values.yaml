@@ -1,5 +1,0 @@
-backstage:
-  image:
-    registry: ghcr.io
-    repository: janus-idp/redhat-backstage-build
-    tag: latest
