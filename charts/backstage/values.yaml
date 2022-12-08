@@ -73,6 +73,15 @@ ingress:
   ## @param host Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io)
   host: ""
 
+  ## @section Ingress TLS parameters
+  tls:
+
+    ## @param ingress.tls.enabled Enable TLS configuration for the host defined at `ingress.host` parameter
+    enabled: false
+
+    ## @param ingress.tls.secretName The name to which the TLS Secret will be called
+    secretName: ""
+
 ## @section Backstage parameters
 
 ## Backstage image version

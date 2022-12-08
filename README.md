@@ -91,6 +91,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | `ingress.className`                | Name of the IngressClass cluster resource (e.g nginx)             | `""`        |
 | `ingress.annotations`              | Additional annotations for the Ingress resource                   | `{}`        |
 | `ingress.host`                     | Hostname of the backstage application (e.g backstage.<IP>.nip.io) | `""`        |
+| `ingress.tls.enabled`              | Enable TLS configuration for the host defined at `ingress.host`   | `false`     |
+| `ingress.tls.secretName`           | The name to which the TLS Secret will be called                   | `""`        |
 | `service.type`                     | Kubernetes Service type                                           | `ClusterIP` |
 | `service.ports.backend`            | Port for client connections                                       | `7007`      |
 | `service.nodePorts.backend`        | Node port for client connections                                  | `""`        |
