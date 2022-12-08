@@ -49,7 +49,7 @@ jobs:
       - name: Publish and Sign OCI Charts
         run: |
           for chart in `find .cr-release-packages -name '*.tgz' -print`; do
-            helm push ${chart} oci://ghcr.io/${GITHUB_REPOSITORY} | tee helm-push-output.log
+            helm push ${chart} oci://ghcr.io/${GITHUB_REPOSITORY} |& tee helm-push-output.log
             file_name=${chart##*/}
             chart_name=${file_name%-*}
             digest=$(awk -F "[, ]+" '/Digest/{print $NF}' < helm-push-output.log)
