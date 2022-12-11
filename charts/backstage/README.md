@@ -85,6 +85,7 @@ The command removes all the Kubernetes components associated with the chart and 
 
 | Key | Description | Type | Default |
 |-----|-------------|------|---------|
+| backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | string | `nil` |
 | backstage.args |  | list | `[]` |
 | backstage.command[0] |  | string | `"node"` |
 | backstage.command[1] |  | string | `"packages/backend"` |

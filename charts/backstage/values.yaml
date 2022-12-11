@@ -143,6 +143,16 @@ backstage:
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   containerSecurityContext: {}
 
+  # Allows to define the appConfig as a multiline string that generates a ConfigMap
+  # automatically, not requiring to have it pre provisioned as with the extraAppConfig key.
+  # DO NOT USE if you need to put sensitive data in the appConfig.
+  # E.g:
+  # appConfig: |
+  #   app:
+  #     baseUrl: https://somedomain.tld
+  # -- Generates ConfigMap and configures it in the Backstage pods
+  appConfig: null
+
 ## @section Traffic Exposure parameters
 
 ## Service parameters

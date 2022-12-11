@@ -1,0 +1,8 @@
+{{- if .Values.backstage.appConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-app-config
+data:
+  app-config.yaml: {{ toYaml .Values.backstage.appConfig | indent 2 }}
+{{- end }}

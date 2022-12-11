@@ -43,6 +43,11 @@ spec:
           {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumes "context" $ ) | nindent 8 }}
         {{- end }}
         {{- end }}
+        {{- if .Values.backstage.appConfig }}
+        - name: backstage-app-config
+          configMap:
+            name: backstage-app-config
+        {{- end }}
       {{- if .Values.backstage.image.pullSecrets }}
       imagePullSecrets:
       {{- range .Values.backstage.image.pullSecrets }}
@@ -83,6 +88,10 @@ spec:
             - {{ .filename | quote }}
           {{- end }}
           {{- end }}
+          {{- if .Values.backstage.appConfig }}
+            - "--config"
+            - "app-config-from-configmap.yaml"
+          {{- end }}
           {{- end }}
           {{- if .Values.backstage.extraEnvVarsSecrets }}
           envFrom:
@@ -114,12 +123,17 @@ spec:
             - name: backend
               containerPort: {{ .Values.backstage.containerPorts.backend }}
               protocol: TCP
-          {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
+          {{- if (or .Values.backstage.extraAppConfig .Values.backstage.appConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
           volumeMounts:
             {{- range .Values.backstage.extraAppConfig }}
             - name: {{ .configMapRef }}
               mountPath: "/app/{{ .filename }}"
               subPath: {{ .filename }}
+            {{- end }}
+            {{- if .Values.backstage.appConfig }}
+            - name: backstage-app-config
+              mountPath: /app/app-config-from-configmap.yaml
+              subPath: app-config.yaml
             {{- end }}
             {{- if .Values.backstage.extraVolumeMounts }}
               {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumeMounts "context" $ ) | nindent 12 }}
