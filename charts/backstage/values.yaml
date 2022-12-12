@@ -127,7 +127,7 @@ backstage:
   ## @param resources.requests.memory The requested memory for the backstage containers
   ## @param resources.requests.cpu The requested cpu for the backstage containers
   ##
-  #resources:
+  # resources:
   #  limits:
   #    memory: 1Gi
   #    cpu: 1000m
