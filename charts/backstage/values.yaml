@@ -120,6 +120,20 @@ backstage:
   extraEnvVarsSecrets:
   extraVolumeMounts: []
   extraVolumes: []
+  ## backstage resource requests and limits
+  ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  ## @param resources.limits.memory The resources limits for the backstage containers memory
+  ## @param resources.limits.cpu The resources limits for the backstage containers cpu
+  ## @param resources.requests.memory The requested memory for the backstage containers
+  ## @param resources.requests.cpu The requested cpu for the backstage containers
+  ##
+  #resources:
+  #  limits:
+  #    memory: 1Gi
+  #    cpu: 1000m
+  #  requests:
+  #    memory: 250Mi
+  #    cpu: 100m
 
 ## @section Traffic Exposure parameters
 
