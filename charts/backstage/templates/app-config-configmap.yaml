@@ -4,5 +4,6 @@ kind: ConfigMap
 metadata:
   name: backstage-app-config
 data:
-  app-config.yaml: {{ toYaml .Values.backstage.appConfig | indent 2 }}
+  app-config.yaml: |
+    {{- toYaml .Values.backstage.appConfig | nindent 4 }}
 {{- end }}

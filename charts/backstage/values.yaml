@@ -147,11 +147,11 @@ backstage:
   # automatically, not requiring to have it pre provisioned as with the extraAppConfig key.
   # DO NOT USE if you need to put sensitive data in the appConfig.
   # E.g:
-  # appConfig: |
+  # appConfig:
   #   app:
   #     baseUrl: https://somedomain.tld
   # -- Generates ConfigMap and configures it in the Backstage pods
-  appConfig: null
+  appConfig: {}
 
 ## @section Traffic Exposure parameters
 
