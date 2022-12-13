@@ -1,0 +1,7 @@
+{{ define "chart.valuesTable" }}
+| Key | Description | Type | Default |
+|-----|-------------|------|---------|
+{{- range .Values }}
+| {{ .Key }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} |
+{{- end }}
+{{ end }}
