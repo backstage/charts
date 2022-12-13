@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.6.3](https://img.shields.io/badge/Version-0.6.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -100,6 +100,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | backstage.image.registry |  | string | `"ghcr.io"` |
 | backstage.image.repository |  | string | `"backstage/backstage"` |
 | backstage.image.tag |  | string | `"latest"` |
+| backstage.resources |  | object | `{}` |
 | clusterDomain |  | string | `"cluster.local"` |
 | commonAnnotations |  | object | `{}` |
 | commonLabels |  | object | `{}` |
