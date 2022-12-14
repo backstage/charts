@@ -102,7 +102,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | backstage.image.repository |  | string | `"backstage/backstage"` |
 | backstage.image.tag |  | string | `"latest"` |
 | backstage.podSecurityContext |  | object | `{}` |
-| backstage.resources |  | object | `{}` |
+| backstage.resources | resource requests/limits ref: https://kubernetes.io/docs/user-guide/compute-resources/ # E.g. # resources: #   limits: #     memory: 1Gi #     cpu: 1000m #   requests: #     memory: 250Mi #     cpu: 100m | object | `{}` |
 | clusterDomain |  | string | `"cluster.local"` |
 | commonAnnotations |  | object | `{}` |
 | commonLabels |  | object | `{}` |
