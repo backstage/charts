@@ -85,7 +85,7 @@ The command removes all the Kubernetes components associated with the chart and 
 
 | Key | Description | Type | Default |
 |-----|-------------|------|---------|
-| backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | string | `nil` |
+| backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
 | backstage.args |  | list | `[]` |
 | backstage.command[0] |  | string | `"node"` |
 | backstage.command[1] |  | string | `"packages/backend"` |
@@ -239,6 +239,19 @@ Now that the ConfigMap has been created on your Kubernetes cluster, you can refe
 ```
 
 The chart will mount the content of the ConfigMap as a new `app-config.extra.yaml` file and automatically pass the extra configuration to your instance.
+
+### Pass configuration to be stored in a ConfigMap
+
+Instead of following the previus step (`Pass extra configuration files`), you can get the Config Map automatically deployed with this Helm Chart by defining the key `appConfig`:
+
+```diff
+  backstage:
++   appConfig:
++     app:
++       baseUrl: https://somedomain.tld
+```
+
+The chart will mount the content of the ConfigMap as a new `app-config-from-configmap.yaml` file and automatically pass the extra configuration to your instance.
 
 ### Configuring Chart PostgreSQL
 
