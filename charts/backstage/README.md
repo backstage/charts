@@ -89,6 +89,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | backstage.command[0] |  | string | `"node"` |
 | backstage.command[1] |  | string | `"packages/backend"` |
 | backstage.containerPorts.backend |  | int | `7007` |
+| backstage.containerSecurityContext |  | object | `{}` |
 | backstage.extraAppConfig |  | list | `[]` |
 | backstage.extraEnvVars |  | list | `[]` |
 | backstage.extraEnvVarsSecrets |  | string | `nil` |
@@ -101,6 +102,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | backstage.image.repository |  | string | `"backstage/backstage"` |
 | backstage.image.tag |  | string | `"latest"` |
 | backstage.resources |  | object | `{}` |
+| backstage.podSecurityContext |  | object | `{}` |
 | clusterDomain |  | string | `"cluster.local"` |
 | commonAnnotations |  | object | `{}` |
 | commonLabels |  | object | `{}` |

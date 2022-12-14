@@ -28,6 +28,10 @@ spec:
       {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{- end }}
+      {{- if .Values.backstage.podSecurityContext }}
+      securityContext:
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 8 }}
+      {{- end }}
       volumes:
         {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
         {{- range .Values.backstage.extraAppConfig }}
@@ -49,6 +53,10 @@ spec:
         - name: backstage-backend
           image: {{ include "backstage.image" . }}
           imagePullPolicy: {{ .Values.backstage.image.pullPolicy | quote -}}
+          {{- if .Values.backstage.containerSecurityContext }}
+          securityContext:
+            {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 12 }}
+          {{- end }}
           {{- if .Values.diagnosticMode.enabled }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
           {{- else if .Values.backstage.command }}
@@ -63,7 +71,7 @@ spec:
             - {{ . | quote }}
           {{- end }}
           {{- if .Values.backstage.resources }}
-          resources: {{- toYaml .Values.backstage.resources | nindent 12 }}
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.resources "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.backstage.extraAppConfig }}
           {{- range .Values.backstage.extraAppConfig }}

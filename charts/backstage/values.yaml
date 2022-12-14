@@ -136,6 +136,15 @@ backstage:
   #    memory: 250Mi
   #    cpu: 100m
 
+  ## @param backstage.podSecurityContext Security settings for a Pod.
+  ## The security settings that you specify for a Pod apply to all Containers in the Pod.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  podSecurityContext: {}
+
+  ## @param backstage.containerSecurityContext Security settings for a Container
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  containerSecurityContext: {}
+
 ## @section Traffic Exposure parameters
 
 ## Service parameters
