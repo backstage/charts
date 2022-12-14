@@ -2,145 +2,158 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-## @section Global parameters
-## Global Docker image parameters
-## Please, note that this will override the image parameters, including dependencies, configured to use the global value
-## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
-
-## @param global.imageRegistry Global Docker image registry
-## @param global.imagePullSecrets Global Docker registry secret names as an array
-##
+# -- Global parameters
+# Global Docker image parameters
+# Please, note that this will override the image parameters, including dependencies, configured to use the global value
+# Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+# @default -- See below
 global:
+  # -- Global Docker image registry
   imageRegistry: ""
-  ## E.g.
-  ## imagePullSecrets:
-  ##   - myRegistryKeySecretName
-  ##
+
+  # -- Global Docker registry secret names as an array
+  # </br> E.g. `imagePullSecrets: [myRegistryKeySecretName]`
   imagePullSecrets: []
 
-## @section Common parameters
+# -- Common parameters
 
-## @param kubeVersion Override Kubernetes version
-##
+# -- Override Kubernetes version
 kubeVersion: ""
-## @param nameOverride String to partially override common.names.fullname
-##
+
+# -- String to partially override common.names.fullname
 nameOverride: ""
-## @param fullnameOverride String to fully override common.names.fullname
-##
+
+# -- String to fully override common.names.fullname
 fullnameOverride: ""
-## @param clusterDomain Default Kubernetes cluster domain
-##
+
+# -- Default Kubernetes cluster domain
 clusterDomain: cluster.local
-## @param commonLabels Labels to add to all deployed objects
-##
+
+# -- Labels to add to all deployed objects
 commonLabels: {}
-## @param commonAnnotations Annotations to add to all deployed objects
-##
+
+# -- Annotations to add to all deployed objects
 commonAnnotations: {}
-## @param extraDeploy Array of extra objects to deploy with the release
-##
+
+# -- Array of extra objects to deploy with the release
 extraDeploy: []
-## Enable diagnostic mode in the statefulset
-##
+
+# -- Enable diagnostic mode in the Deployment
 diagnosticMode:
-  ## @param diagnosticMode.enabled Enable diagnostic mode (all probes will be disabled and the command will be overridden)
-  ##
+
+  # -- Enable diagnostic mode (all probes will be disabled and the command will be overridden)
   enabled: false
-  ## @param diagnosticMode.command Command to override all containers in the statefulset
-  ##
+
+  # -- Command to override all containers in the Deployment
   command:
     - sleep
-  ## @param diagnosticMode.args Args to override all containers in the statefulset
-  ##
+
+  # -- Args to override all containers in the Deployment
   args:
     - infinity
 
-## @section Ingress parameters
+# -- Ingress parameters
 ingress:
-  ## @param ingress.enabled Enable the creation of the ingress resource
+
+  # -- Enable the creation of the ingress resource
   enabled: false
 
-  ## @param ingress.className Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx)
+  # -- Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx)
   className: ""
 
-  ## @param ingress.annotations Additional annotations for the Ingress resource
+  # -- Additional annotations for the Ingress resource
   annotations: {}
 
-  ## @param host Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io)
+  # -- Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io)
   host: ""
 
-  ## @section Ingress TLS parameters
+  # -- Ingress TLS parameters
   tls:
 
-    ## @param ingress.tls.enabled Enable TLS configuration for the host defined at `ingress.host` parameter
+    # -- Enable TLS configuration for the host defined at `ingress.host` parameter
     enabled: false
 
-    ## @param ingress.tls.secretName The name to which the TLS Secret will be called
+    # -- The name to which the TLS Secret will be called
     secretName: ""
 
-## @section Backstage parameters
-
-## Backstage image version
-## @param image.registry Backstage image registry
-## @param image.repository Backstage image repository
-## @param image.tag Backstage image tag (immutable tags are recommended)
-## @param image.pullPolicy Backstage image pull policy
-## @param image.pullSecrets Specify docker-registry secret names as an array
-## @param image.debug Specify if debug values should be set
-##
-
+# -- Backstage parameters
+# @default -- See below
 backstage:
   image:
+
+    # -- Backstage image registry
     registry: ghcr.io
+
+    # -- Backstage image repository
     repository: backstage/backstage
+
+    # -- Backstage image tag (immutable tags are recommended)
     tag: latest
-    ## Specify a imagePullPolicy
-    ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-    ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-    ##
+
+    # -- Specify a imagePullPolicy.
+    # Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+    # <br /> Ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
     pullPolicy: Always
-    ## Optionally specify an array of imagePullSecrets.
-    ## Secrets must be manually created in the namespace.
-    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-    ## e.g:
-    ## pullSecrets:
-    ##   - myRegistryKeySecretName
-    ##
+
+    # -- Optionally specify an array of imagePullSecrets.
+    #  Secrets must be manually created in the namespace.
+    # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    # <br /> E.g: `pullSecrets: [myRegistryKeySecretName]`
     pullSecrets: []
-    ## Set to true if you would like to see extra information on logs
-    ##
+
+    # -- Set to true if you would like to see extra information on logs
     debug: false
+
+  # -- Container ports on the Deployment
   containerPorts:
     backend: 7007
+
+  # -- Backstage container command
   command: ["node", "packages/backend"]
+
+  # -- Backstage container command arguments
   args: []
+
+  # -- Extra app configuration files to inline into command arguments
   extraAppConfig: []
+
+  # -- Deployment sidecars
   extraContainers: []
+
+  # -- Backstage container environment variables
   extraEnvVars: []
-  extraEnvVarsSecrets:
+
+  # -- Backstage container environment variables from Secrets
+  extraEnvVarsSecrets: []
+
+  # -- Backstage container additional volume mounts
   extraVolumeMounts: []
+
+  # -- Backstage container additional volumes
   extraVolumes: []
+
+  # -- Backstage container init containers
   initContainers: []
-  # -- resource requests/limits
-  # ref: https://kubernetes.io/docs/user-guide/compute-resources/
-  ## E.g.
-  ## resources:
-  ##   limits:
-  ##     memory: 1Gi
-  ##     cpu: 1000m
-  ##   requests:
-  ##     memory: 250Mi
-  ##     cpu: 100m
+
+  # -- Resource requests/limits
+  # <br /> Ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  # <!-- E.g.
+  # resources:
+  #   limits:
+  #     memory: 1Gi
+  #     cpu: 1000m
+  #   requests:
+  #     memory: 250Mi
+  #     cpu: 100m -->
   resources: {}
 
-  ## @param backstage.podSecurityContext Security settings for a Pod.
-  ## The security settings that you specify for a Pod apply to all Containers in the Pod.
-  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  # -- Security settings for a Pod.
+  #  The security settings that you specify for a Pod apply to all Containers in the Pod.
+  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   podSecurityContext: {}
 
-  ## @param backstage.containerSecurityContext Security settings for a Container
-  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  # -- Security settings for a Container.
+  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   containerSecurityContext: {}
 
   # Allows to define the appConfig as a multiline string that generates a ConfigMap
@@ -157,75 +170,79 @@ backstage:
 
 ## Service parameters
 ##
+# -- Service parameters
+# @default -- See below
 service:
-  ## @param service.type Kubernetes Service type
-  ##
+
+  # -- Kubernetes Service type
   type: ClusterIP
-  ## @param service.ports.backend Backstage svc port for client connections
-  ##
+
+  # -- Backstage svc port for client connections
   ports:
     backend: 7007
-  ## @param service.nodePorts.backend Node port for the Backstage client connections
-  ## NOTE: choose port between <30000-32767>
-  ##
+
+  # -- Node port for the Backstage client connections
+  # Choose port between `30000-32767`
   nodePorts:
     backend: ""
-  ## @param service.sessionAffinity Control where client requests go, to the same pod or round-robin
-  ## Values: ClientIP or None
-  ## ref: https://kubernetes.io/docs/user-guide/services/
-  ##
+
+  # -- Control where client requests go, to the same pod or round-robin
+  # (values: `ClientIP` or `None`)
+  # <br /> Ref: https://kubernetes.io/docs/user-guide/services/
   sessionAffinity: None
-  ## @param service.clusterIP Backstage service Cluster IP
-  ## e.g.:
-  ## clusterIP: None
-  ##
+
+  # -- Backstage service Cluster IP
+  #
+  # <br /> E.g `clusterIP: None`
   clusterIP: ""
-  ## @param service.loadBalancerIP Backstage service Load Balancer IP
-  ## ref: https://kubernetes.io/docs/user-guide/services/#type-loadbalancer
-  ##
+
+  # -- Backstage service Load Balancer IP
+  #
+  # <br /> Ref: https://kubernetes.io/docs/user-guide/services/#type-loadbalancer
   loadBalancerIP: ""
-  ## @param service.loadBalancerSourceRanges Backstage service Load Balancer sources
-  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
-  ## e.g:
-  ## loadBalancerSourceRanges:
-  ##   - 10.10.10.0/24
-  ##
+
+  # -- Load Balancer sources
+  #
+  # <br /> Ref: https://kubernetes.io/docs/tasks/access-application-cluster/cnfigure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  # <br /> E.g `loadBalancerSourceRanges: [10.10.10.0/24]`
   loadBalancerSourceRanges: []
-  ## @param service.externalTrafficPolicy Backstage service external traffic policy
-  ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-  ##
+
+  # -- Backstage service external traffic policy
+  #
+  # Ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
   externalTrafficPolicy: Cluster
-  ## @param service.annotations Additional custom annotations for Backstage service
-  ##
+
+  # -- Additional custom annotations for Backstage service
   annotations: {}
-  ## @param service.extraPorts Extra ports to expose in the Backstage service (normally used with the `sidecar` value)
-  ##
+
+  # -- Extra ports to expose in the Backstage service (normally used with the `sidecar` value)
   extraPorts: []
 
-## Network policies
-## Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
-##
+# -- Network policies
+# <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
 networkPolicy:
-  ## @param networkPolicy.enabled Specifies whether a NetworkPolicy should be created
-  ##
+
+  # -- networkPolicy.enabled Specifies whether a NetworkPolicy should be created
   enabled: false
 
   externalAccess:
     from: []
-  ## @param networkPolicy.egressRules.customRules [object] Custom network policy rule
-  ##
+
+  # -- Custom network policy rule
   egressRules:
-    ## Additional custom egress rules
-    ## e.g:
-    ## customRules:
-    ##   - to:
-    ##       - namespaceSelector:
-    ##           matchLabels:
-    ##             label: example
+
+    # -- Additional custom egress rules
+    # e.g:
+    # customRules:
+    #   - to:
+    #       - namespaceSelector:
+    #           matchLabels:
+    #             label: example
     customRules: []
 
 
 # -- PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml)
+# @default -- See below
 postgresql:
 
   # -- Switch to enable or disable the PostgreSQL helm chart
@@ -259,6 +276,7 @@ postgresql:
   architecture: standalone
 
 # -- Service Account Configuration
+# @default -- See below
 serviceAccount:
 
   # -- Enable the creation of a ServiceAccount for Backstage pods

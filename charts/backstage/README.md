@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.10.1](https://img.shields.io/badge/Version-0.10.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -85,49 +85,54 @@ The command removes all the Kubernetes components associated with the chart and 
 
 | Key | Description | Type | Default |
 |-----|-------------|------|---------|
+| backstage | Backstage parameters | object | See below |
 | backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
-| backstage.args |  | list | `[]` |
-| backstage.command[0] |  | string | `"node"` |
-| backstage.command[1] |  | string | `"packages/backend"` |
-| backstage.containerPorts.backend |  | int | `7007` |
-| backstage.containerSecurityContext |  | object | `{}` |
-| backstage.extraAppConfig |  | list | `[]` |
-| backstage.extraContainers |  | list | `[]` |
-| backstage.extraEnvVars |  | list | `[]` |
-| backstage.extraEnvVarsSecrets |  | string | `nil` |
-| backstage.extraVolumeMounts |  | list | `[]` |
-| backstage.extraVolumes |  | list | `[]` |
-| backstage.image.debug |  | bool | `false` |
-| backstage.image.pullPolicy |  | string | `"Always"` |
-| backstage.image.pullSecrets |  | list | `[]` |
-| backstage.image.registry |  | string | `"ghcr.io"` |
-| backstage.image.repository |  | string | `"backstage/backstage"` |
-| backstage.image.tag |  | string | `"latest"` |
-| backstage.initContainers |  | list | `[]` |
-| backstage.podSecurityContext |  | object | `{}` |
-| backstage.resources | resource requests/limits ref: https://kubernetes.io/docs/user-guide/compute-resources/ # E.g. # resources: #   limits: #     memory: 1Gi #     cpu: 1000m #   requests: #     memory: 250Mi #     cpu: 100m | object | `{}` |
-| clusterDomain |  | string | `"cluster.local"` |
-| commonAnnotations |  | object | `{}` |
-| commonLabels |  | object | `{}` |
-| diagnosticMode.args[0] |  | string | `"infinity"` |
-| diagnosticMode.command[0] |  | string | `"sleep"` |
-| diagnosticMode.enabled |  | bool | `false` |
-| extraDeploy |  | list | `[]` |
-| fullnameOverride |  | string | `""` |
-| global.imagePullSecrets |  | list | `[]` |
-| global.imageRegistry |  | string | `""` |
-| ingress.annotations |  | object | `{}` |
-| ingress.className |  | string | `""` |
-| ingress.enabled |  | bool | `false` |
-| ingress.host |  | string | `""` |
-| ingress.tls.enabled |  | bool | `false` |
-| ingress.tls.secretName |  | string | `""` |
-| kubeVersion |  | string | `""` |
-| nameOverride |  | string | `""` |
-| networkPolicy.egressRules.customRules |  | list | `[]` |
-| networkPolicy.enabled |  | bool | `false` |
-| networkPolicy.externalAccess.from |  | list | `[]` |
-| postgresql | PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml) | object | `{"architecture":"standalone","auth":{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"},"enabled":false}` |
+| backstage.args | Backstage container command arguments | list | `[]` |
+| backstage.command | Backstage container command | list | `["node","packages/backend"]` |
+| backstage.containerPorts | Container ports on the Deployment | object | `{"backend":7007}` |
+| backstage.containerSecurityContext | Security settings for a Container. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container | object | `{}` |
+| backstage.extraAppConfig | Extra app configuration files to inline into command arguments | list | `[]` |
+| backstage.extraContainers | Deployment sidecars | list | `[]` |
+| backstage.extraEnvVars | Backstage container environment variables | list | `[]` |
+| backstage.extraEnvVarsSecrets | Backstage container environment variables from Secrets | list | `[]` |
+| backstage.extraVolumeMounts | Backstage container additional volume mounts | list | `[]` |
+| backstage.extraVolumes | Backstage container additional volumes | list | `[]` |
+| backstage.image.debug | Set to true if you would like to see extra information on logs | bool | `false` |
+| backstage.image.pullPolicy | Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent' <br /> Ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images | string | `"Always"` |
+| backstage.image.pullSecrets | Optionally specify an array of imagePullSecrets.  Secrets must be manually created in the namespace. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ <br /> E.g: `pullSecrets: [myRegistryKeySecretName]` | list | `[]` |
+| backstage.image.registry | Backstage image registry | string | `"ghcr.io"` |
+| backstage.image.repository | Backstage image repository | string | `"backstage/backstage"` |
+| backstage.image.tag | Backstage image tag (immutable tags are recommended) | string | `"latest"` |
+| backstage.initContainers | Backstage container init containers | list | `[]` |
+| backstage.podSecurityContext | Security settings for a Pod.  The security settings that you specify for a Pod apply to all Containers in the Pod. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod | object | `{}` |
+| backstage.resources | Resource requests/limits <br /> Ref: https://kubernetes.io/docs/user-guide/compute-resources/ <!-- E.g. resources:   limits:     memory: 1Gi     cpu: 1000m   requests:     memory: 250Mi     cpu: 100m --> | object | `{}` |
+| clusterDomain | Default Kubernetes cluster domain | string | `"cluster.local"` |
+| commonAnnotations | Annotations to add to all deployed objects | object | `{}` |
+| commonLabels | Labels to add to all deployed objects | object | `{}` |
+| diagnosticMode | Enable diagnostic mode in the Deployment | object | `{"args":["infinity"],"command":["sleep"],"enabled":false}` |
+| diagnosticMode.args | Args to override all containers in the Deployment | list | `["infinity"]` |
+| diagnosticMode.command | Command to override all containers in the Deployment | list | `["sleep"]` |
+| diagnosticMode.enabled | Enable diagnostic mode (all probes will be disabled and the command will be overridden) | bool | `false` |
+| extraDeploy | Array of extra objects to deploy with the release | list | `[]` |
+| fullnameOverride | String to fully override common.names.fullname | string | `""` |
+| global | Global parameters Global Docker image parameters Please, note that this will override the image parameters, including dependencies, configured to use the global value Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass | object | See below |
+| global.imagePullSecrets | Global Docker registry secret names as an array </br> E.g. `imagePullSecrets: [myRegistryKeySecretName]` | list | `[]` |
+| global.imageRegistry | Global Docker image registry | string | `""` |
+| ingress | Ingress parameters | object | `{"annotations":{},"className":"","enabled":false,"host":"","tls":{"enabled":false,"secretName":""}}` |
+| ingress.annotations | Additional annotations for the Ingress resource | object | `{}` |
+| ingress.className | Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx) | string | `""` |
+| ingress.enabled | Enable the creation of the ingress resource | bool | `false` |
+| ingress.host | Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io) | string | `""` |
+| ingress.tls | Ingress TLS parameters | object | `{"enabled":false,"secretName":""}` |
+| ingress.tls.enabled | Enable TLS configuration for the host defined at `ingress.host` parameter | bool | `false` |
+| ingress.tls.secretName | The name to which the TLS Secret will be called | string | `""` |
+| kubeVersion | Override Kubernetes version | string | `""` |
+| nameOverride | String to partially override common.names.fullname | string | `""` |
+| networkPolicy | Network policies <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/ | object | `{"egressRules":{"customRules":[]},"enabled":false,"externalAccess":{"from":[]}}` |
+| networkPolicy.egressRules | Custom network policy rule | object | `{"customRules":[]}` |
+| networkPolicy.egressRules.customRules | Additional custom egress rules e.g: customRules:   - to:       - namespaceSelector:           matchLabels:             label: example | list | `[]` |
+| networkPolicy.enabled | networkPolicy.enabled Specifies whether a NetworkPolicy should be created | bool | `false` |
+| postgresql | PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml) | object | See below |
 | postgresql.architecture | PostgreSQL architecture (`standalone` or `replication`) | string | `"standalone"` |
 | postgresql.auth | The authentication details of the Postgres database | object | `{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"}` |
 | postgresql.auth.existingSecret | Name of existing secret to use for PostgreSQL credentials | string | `""` |
@@ -138,17 +143,18 @@ The command removes all the Kubernetes components associated with the chart and 
 | postgresql.auth.secretKeys.userPasswordKey | The key in which Postgres will look for, for the user password, in the existing Secret | string | `"user-password"` |
 | postgresql.auth.username | Name for a custom user to create | string | `"bn_backstage"` |
 | postgresql.enabled | Switch to enable or disable the PostgreSQL helm chart | bool | `false` |
-| service.annotations |  | object | `{}` |
-| service.clusterIP |  | string | `""` |
-| service.externalTrafficPolicy |  | string | `"Cluster"` |
-| service.extraPorts |  | list | `[]` |
-| service.loadBalancerIP |  | string | `""` |
-| service.loadBalancerSourceRanges |  | list | `[]` |
-| service.nodePorts.backend |  | string | `""` |
-| service.ports.backend |  | int | `7007` |
-| service.sessionAffinity |  | string | `"None"` |
-| service.type |  | string | `"ClusterIP"` |
-| serviceAccount | Service Account Configuration | object | `{"annotations":{},"automountServiceAccountToken":true,"create":false,"labels":{},"name":""}` |
+| service | Service parameters | object | See below |
+| service.annotations | Additional custom annotations for Backstage service | object | `{}` |
+| service.clusterIP | Backstage service Cluster IP  <br /> E.g `clusterIP: None` | string | `""` |
+| service.externalTrafficPolicy | Backstage service external traffic policy  Ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip | string | `"Cluster"` |
+| service.extraPorts | Extra ports to expose in the Backstage service (normally used with the `sidecar` value) | list | `[]` |
+| service.loadBalancerIP | Backstage service Load Balancer IP  <br /> Ref: https://kubernetes.io/docs/user-guide/services/#type-loadbalancer | string | `""` |
+| service.loadBalancerSourceRanges | Load Balancer sources  <br /> Ref: https://kubernetes.io/docs/tasks/access-application-cluster/cnfigure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service <br /> E.g `loadBalancerSourceRanges: [10.10.10.0/24]` | list | `[]` |
+| service.nodePorts | Node port for the Backstage client connections Choose port between `30000-32767` | object | `{"backend":""}` |
+| service.ports | Backstage svc port for client connections | object | `{"backend":7007}` |
+| service.sessionAffinity | Control where client requests go, to the same pod or round-robin (values: `ClientIP` or `None`) <br /> Ref: https://kubernetes.io/docs/user-guide/services/ | string | `"None"` |
+| service.type | Kubernetes Service type | string | `"ClusterIP"` |
+| serviceAccount | Service Account Configuration | object | See below |
 | serviceAccount.annotations | Additional custom annotations for the ServiceAccount. | object | `{}` |
 | serviceAccount.automountServiceAccountToken | Auto-mount the service account token in the pod | bool | `true` |
 | serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
