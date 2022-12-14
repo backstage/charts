@@ -33,7 +33,7 @@ Charts are also available in OCI format. The list of available charts can be fou
 Install one of the available charts:
 
 ```shell
-helm upgrade -i oci://ghcr.io/backstage/charts/backstage --version=<version>
+helm upgrade -i <release_name> oci://ghcr.io/backstage/charts/backstage --version=<version>
 ```
 
 ## Backstage Chart
