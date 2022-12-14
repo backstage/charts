@@ -5,5 +5,5 @@ metadata:
   name: backstage-app-config
 data:
   app-config.yaml: |
-    {{- toYaml .Values.backstage.appConfig | nindent 4 }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | nindent 4 }}
 {{- end }}
