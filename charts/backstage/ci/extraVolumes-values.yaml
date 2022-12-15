@@ -1,0 +1,12 @@
+backstage:
+  extraVolumeMounts:
+    - name: backstage-secretstore
+      mountPath: /mnt/secretstore
+      readOnly: true
+  extraVolumes:
+    - name: backstage-secretstore
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: backstage-secretstore
