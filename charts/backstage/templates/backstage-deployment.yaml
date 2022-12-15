@@ -27,7 +27,7 @@ spec:
     spec:
       {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
-      {{- end }}     
+      {{- end }}
       {{- if .Values.backstage.podSecurityContext }}
       securityContext:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 8 }}
@@ -38,7 +38,7 @@ spec:
         - name: {{ .configMapRef }}
           configMap:
             name: {{ .configMapRef }}
-        {{- end }}            
+        {{- end }}
         {{- if .Values.backstage.extraVolumes }}
           {{- toYaml .Values.backstage.extraVolumes | nindent 8 }}
         {{- end }}
@@ -70,6 +70,9 @@ spec:
           {{- range .Values.backstage.args }}
             - {{ . | quote }}
           {{- end }}
+          {{- if .Values.backstage.resources }}
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.resources "context" $) | nindent 12 }}
+          {{- end }}
           {{- if .Values.backstage.extraAppConfig }}
           {{- range .Values.backstage.extraAppConfig }}
             - "--config"
@@ -92,7 +95,7 @@ spec:
               value: {{ include "backstage.postgresql.host" . }}
             - name: POSTGRES_PORT
               value: "5432"
-            - name: POSTGRES_USER     
+            - name: POSTGRES_USER
               value: {{ .Values.postgresql.auth.username }}
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -112,7 +115,7 @@ spec:
             {{- range .Values.backstage.extraAppConfig }}
             - name: {{ .configMapRef }}
               mountPath: "/app/{{ .filename }}"
-              subPath: {{ .filename }} 
+              subPath: {{ .filename }}
             {{- end }}
             {{- if .Values.backstage.extraVolumeMounts }}
               {{- toYaml .Values.backstage.extraVolumeMounts | nindent 12 }}

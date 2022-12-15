@@ -120,6 +120,17 @@ backstage:
   extraEnvVarsSecrets:
   extraVolumeMounts: []
   extraVolumes: []
+  # -- resource requests/limits
+  # ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  ## E.g.
+  ## resources:
+  ##   limits:
+  ##     memory: 1Gi
+  ##     cpu: 1000m
+  ##   requests:
+  ##     memory: 250Mi
+  ##     cpu: 100m
+  resources: {}
 
   ## @param backstage.podSecurityContext Security settings for a Pod.
   ## The security settings that you specify for a Pod apply to all Containers in the Pod.
