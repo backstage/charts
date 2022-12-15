@@ -242,7 +242,9 @@ The chart will mount the content of the ConfigMap as a new `app-config.extra.yam
 
 ### Pass configuration to be stored in a ConfigMap
 
-Instead of following the previus step (`Pass extra configuration files`), you can get the Config Map automatically deployed with this Helm Chart by defining the key `appConfig`:
+> :warning: In case of using both appConfig and extraAppConfig, appConfig will have higher priority over extraAppConfig.
+
+In addition to following the previus step (`Pass extra configuration files`), you can get the Config Map automatically deployed with this Helm Chart by defining the key `appConfig`:
 
 ```diff
   backstage:
