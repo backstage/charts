@@ -1,0 +1,9 @@
+{{- if .Values.backstage.appConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-app-config
+data:
+  app-config.yaml: |
+    {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | nindent 4 }}
+{{- end }}

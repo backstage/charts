@@ -1,0 +1,10 @@
+backstage:
+  appConfig:
+    app:
+      # Let's test that everything is fine with comments
+      title: The very best Backstage Helm Chart! :D
+      baseUrl: https://somedomain.tl
+    backend:
+      baseUrl: https://somedomain.tl
+      listen:
+        port: 12345
