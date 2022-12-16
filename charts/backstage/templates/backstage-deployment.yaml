@@ -40,7 +40,7 @@ spec:
             name: {{ .configMapRef }}
         {{- end }}
         {{- if .Values.backstage.extraVolumes }}
-          {{- toYaml .Values.backstage.extraVolumes | nindent 8 }}
+          {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumes "context" $ ) | nindent 8 }}
         {{- end }}
         {{- end }}
       {{- if .Values.backstage.image.pullSecrets }}
@@ -118,6 +118,6 @@ spec:
               subPath: {{ .filename }}
             {{- end }}
             {{- if .Values.backstage.extraVolumeMounts }}
-              {{- toYaml .Values.backstage.extraVolumeMounts | nindent 12 }}
+              {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumeMounts "context" $ ) | nindent 12 }}
             {{- end }}
           {{- end }}
