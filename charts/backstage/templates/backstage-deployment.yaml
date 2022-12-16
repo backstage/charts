@@ -49,6 +49,10 @@ spec:
           - name: {{ . }}
       {{- end }}
       {{- end }}
+      {{- if .Values.backstage.initContainers }}
+      initContainers:
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.initContainers "context" $) | nindent 8 }}
+      {{- end }}
       containers:
         - name: backstage-backend
           image: {{ include "backstage.image" . }}
@@ -121,3 +125,6 @@ spec:
               {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumeMounts "context" $ ) | nindent 12 }}
             {{- end }}
           {{- end }}
+        {{- if .Values.backstage.extraContainers }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraContainers "context" $) | nindent 8 }}
+        {{- end }}
