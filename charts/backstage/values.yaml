@@ -116,10 +116,12 @@ backstage:
   command: ["node", "packages/backend"]
   args: []
   extraAppConfig: []
+  extraContainers: []
   extraEnvVars: []
   extraEnvVarsSecrets:
   extraVolumeMounts: []
   extraVolumes: []
+  initContainers: []
   # -- resource requests/limits
   # ref: https://kubernetes.io/docs/user-guide/compute-resources/
   ## E.g.
