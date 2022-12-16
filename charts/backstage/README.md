@@ -242,9 +242,9 @@ The chart will mount the content of the ConfigMap as a new `app-config.extra.yam
 
 ### Pass configuration to be stored in a ConfigMap
 
-> :warning: In case of using both appConfig and extraAppConfig, appConfig will have higher priority over extraAppConfig.
+> :warning: In case of using both appConfig and extraAppConfig, appConfig will have higher priority over extraAppConfig. For more information you can check the [Backstage docs](https://backstage.io/docs/conf/writing#configuration-files) and how this [Helm Chart configures the Backstage arguments](templates/backstage-deployment.yaml)
 
-In addition to following the previus step (`Pass extra configuration files`), you can get the Config Map automatically deployed with this Helm Chart by defining the key `appConfig`:
+In addition to following the [previus step "Pass extra configuration files"](#pass-extra-configuration-files), you can get the Config Map automatically deployed with this Helm Chart by defining the key `appConfig`:
 
 ```diff
   backstage:
