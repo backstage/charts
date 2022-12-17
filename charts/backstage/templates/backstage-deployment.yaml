@@ -79,18 +79,15 @@ spec:
           {{- range .Values.backstage.args }}
             - {{ . | quote }}
           {{- end }}
-          {{- if .Values.backstage.resources }}
-          resources: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.resources "context" $) | nindent 12 }}
-          {{- end }}
           {{- if .Values.backstage.extraAppConfig }}
           {{- range .Values.backstage.extraAppConfig }}
             - "--config"
-            - {{ .filename | quote }}
+            - "{{ .Values.backstage.installDir }}/{{ .filename }}"
           {{- end }}
           {{- end }}
           {{- if .Values.backstage.appConfig }}
             - "--config"
-            - "app-config-from-configmap.yaml"
+            - "{{ .Values.backstage.installDir }}/app-config-from-configmap.yaml"
           {{- end }}
           {{- end }}
           {{- if .Values.backstage.extraEnvVarsSecrets }}
@@ -119,6 +116,9 @@ spec:
             {{- if .Values.backstage.extraEnvVars }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
+          {{- if .Values.backstage.resources }}
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.resources "context" $) | nindent 12 }}
+          {{- end }}
           ports:
             - name: backend
               containerPort: {{ .Values.backstage.containerPorts.backend }}
@@ -127,12 +127,12 @@ spec:
           volumeMounts:
             {{- range .Values.backstage.extraAppConfig }}
             - name: {{ .configMapRef }}
-              mountPath: "/app/{{ .filename }}"
+              mountPath: "{{ .Values.backstage.installDir }}/{{ .filename }}"
               subPath: {{ .filename }}
             {{- end }}
             {{- if .Values.backstage.appConfig }}
             - name: backstage-app-config
-              mountPath: /app/app-config-from-configmap.yaml
+              mountPath: "{{ .Values.backstage.installDir }}/app-config-from-configmap.yaml"
               subPath: app-config.yaml
             {{- end }}
             {{- if .Values.backstage.extraVolumeMounts }}

@@ -122,6 +122,7 @@ backstage:
   extraVolumeMounts: []
   extraVolumes: []
   initContainers: []
+  installDir: /app
   # -- resource requests/limits
   # ref: https://kubernetes.io/docs/user-guide/compute-resources/
   ## E.g.
