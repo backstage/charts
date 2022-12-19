@@ -115,120 +115,110 @@ backstage:
     backend: 7007
   command: ["node", "packages/backend"]
   args: []
-  extraAppConfig:
-    - filename: app-config.yaml
-      configMapRef: app-config
-      data: |
-        app:
-          title: Scaffolded Backstage App
-          baseUrl: http://localhost:3000
+  extraAppConfig: []
+  # extraAppConfig:
+  #   - filename: app-config.yaml
+  #     configMapRef: app-config
+  #     data: |
+  #       app:
+  #         title: Scaffolded Backstage App
+  #         baseUrl: http://localhost:3000
 
-        organization:
-          name: localhost
+  #       organization:
+  #         name: localhost
 
-        backend:
-          baseUrl: http://localhost:7007
-          listen:
-            port: 7007
-          csp:
-            connect-src: ["'self'", 'http:', 'https:']
-            img-src: ["'self'", 'data:', 'https://avatars.githubusercontent.com']
-          cors:
-            origin: http://localhost:3000
-            methods: [GET, POST, PUT, DELETE]
-            credentials: true
-          database:
-            client: pg
-            connection:
-              host: ${POSTGRES_HOST}
-              port: ${POSTGRES_PORT}
-              user: ${POSTGRES_USER}
-              password: ${POSTGRES_PASSWORD}
-          cache:
-            store: memory
+  #       backend:
+  #         baseUrl: http://localhost:7007
+  #         listen:
+  #           port: 7007
+  #         csp:
+  #           connect-src: ["'self'", 'http:', 'https:']
+  #           img-src: ["'self'", 'data:', 'https://avatars.githubusercontent.com']
+  #         cors:
+  #           origin: http://localhost:3000
+  #           methods: [GET, POST, PUT, DELETE]
+  #           credentials: true
+  #         database:
+  #           client: pg
+  #           connection:
+  #             host: ${POSTGRES_HOST}
+  #             port: ${POSTGRES_PORT}
+  #             user: ${POSTGRES_USER}
+  #             password: ${POSTGRES_PASSWORD}
+  #         cache:
+  #           store: memory
 
-        integrations:
-          github:
-            - host: github.com
-              token: ${GITHUB_TOKEN}
+  #       integrations:
+  #         github:
+  #           - host: github.com
+  #             token: ${GITHUB_TOKEN}
 
-        techdocs:
-          builder: 'local' # Alternatives - 'external'
-          generator:
-            runIn: 'local' # Alternatives - 'local or docker'
-          publisher:
-            type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+  #       techdocs:
+  #         builder: 'local' # Alternatives - 'external'
+  #         generator:
+  #           runIn: 'local' # Alternatives - 'local or docker'
+  #         publisher:
+  #           type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
-        auth:
-          environment: development
-          providers:
-            github:
-              development:
-                clientId: ${AUTH_GITHUB_CLIENT_ID}
-                clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+  #       auth:
+  #         environment: development
+  #         providers:
+  #           github:
+  #             development:
+  #               clientId: ${AUTH_GITHUB_CLIENT_ID}
+  #               clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
 
 
-    - filename: app-config.production.yaml
-      configMapRef: app-config-production    
-      data: |
-        app:
-          title: somedomain
-          baseUrl: https://platform.somedomain.ltd
+  #   - filename: app-config.production.yaml
+  #     configMapRef: app-config-production    
+  #     data: |
+  #       app:
+  #         title: somedomain
+  #         baseUrl: https://platform.somedomain.ltd
 
-        backend:
-          baseUrl: https://platform.somedomain.ltd
-          listen:
-            port: 7007
+  #       backend:
+  #         baseUrl: https://platform.somedomain.ltd
+  #         listen:
+  #           port: 7007
 
-          csp:
-            connect-src: ["'self'", 'http:', 'https:']
+  #         csp:
+  #           connect-src: ["'self'", 'http:', 'https:']
 
-          cors:
-            origin: https://platform.somedomain.ltd
-          database:
-            client: pg
-            connection:
-              host: ${POSTGRES_HOST}
-              port: ${POSTGRES_PORT}
-              user: ${POSTGRES_USER}
-              password: ${POSTGRES_PASSWORD}
+  #         cors:
+  #           origin: https://platform.somedomain.ltd
+  #         database:
+  #           client: pg
+  #           connection:
+  #             host: ${POSTGRES_HOST}
+  #             port: ${POSTGRES_PORT}
+  #             user: ${POSTGRES_USER}
+  #             password: ${POSTGRES_PASSWORD}
 
-          cache:
-            store: memory
+  #         cache:
+  #           store: memory
 
-        integrations:
-          github:
-            - host: github.com
-              token: ${GITHUB_TOKEN}
+  #       integrations:
+  #         github:
+  #           - host: github.com
+  #             token: ${GITHUB_TOKEN}
 
-        techdocs:
-          builder: 'local' # Alternatives - 'external'
-          generator:
-            runIn: 'local' # Alternatives - 'local'
-          publisher:
-            type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+  #       techdocs:
+  #         builder: 'local' # Alternatives - 'external'
+  #         generator:
+  #           runIn: 'local' # Alternatives - 'local'
+  #         publisher:
+  #           type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
-        auth:
-          environment: production
-          providers:
-            github:
-              production:
-                clientId: ${AUTH_GITHUB_CLIENT_ID}
-                clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-                # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
-  extraEnvVars:
-    - name: APP_CONFIG_backend_baseUrl
-      value: https://platform.polarpoint.io
-    - name: APP_CONFIG_backend_origin
-      value: https://platform.polarpoint.io
-    - name: APP_CONFIG_app_baseUrl
-      value: https://platform.polarpoint.io
-    - name: POSTGRES_HOST
-      value: "backstage-postgresql-non-prod"
-  extraEnvVarsSecrets:
-    - backstage-database-authentication
-    - backstage-kubernetes-authentication
-    - backstage-github-authentication
+  #       auth:
+  #         environment: production
+  #         providers:
+  #           github:
+  #             production:
+  #               clientId: ${AUTH_GITHUB_CLIENT_ID}
+  #               clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+  #               # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
+  extraEnvVars: []
+  extraEnvVarsSecrets: []
   extraVolumeMounts: []
   extraVolumes: []
 
@@ -240,7 +230,15 @@ backstage:
   ## @param backstage.containerSecurityContext Security settings for a Container
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   containerSecurityContext: {}
-
+  # Allows to define the appConfig as a multiline string that generates a ConfigMap
+  # automatically, not requiring to have it pre provisioned as with the extraAppConfig key.
+  # DO NOT USE if you need to put sensitive data in the appConfig.
+  # E.g:
+  # appConfig:
+  #   app:
+  #     baseUrl: https://somedomain.tld
+  # -- Generates ConfigMap and configures it in the Backstage pods
+  appConfig: {}
 ## @section Traffic Exposure parameters
 
 ## Service parameters

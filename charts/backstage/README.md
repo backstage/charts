@@ -84,28 +84,15 @@ The command removes all the Kubernetes components associated with the chart and 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| backstage.appConfig | object | `{}` |  |
 | backstage.args | list | `[]` |  |
 | backstage.command[0] | string | `"node"` |  |
 | backstage.command[1] | string | `"packages/backend"` |  |
 | backstage.containerPorts.backend | int | `7007` |  |
 | backstage.containerSecurityContext | object | `{}` |  |
-| backstage.extraAppConfig[0].configMapRef | string | `"app-config"` |  |
-| backstage.extraAppConfig[0].data | string | `"app:\n  title: Scaffolded Backstage App\n  baseUrl: http://localhost:3000\n\norganization:\n  name: localhost\n\nbackend:\n  baseUrl: http://localhost:7007\n  listen:\n    port: 7007\n  csp:\n    connect-src: [\"'self'\", 'http:', 'https:']\n    img-src: [\"'self'\", 'data:', 'https://avatars.githubusercontent.com']\n  cors:\n    origin: http://localhost:3000\n    methods: [GET, POST, PUT, DELETE]\n    credentials: true\n  database:\n    client: pg\n    connection:\n      host: ${POSTGRES_HOST}\n      port: ${POSTGRES_PORT}\n      user: ${POSTGRES_USER}\n      password: ${POSTGRES_PASSWORD}\n  cache:\n    store: memory\n\nintegrations:\n  github:\n    - host: github.com\n      token: ${GITHUB_TOKEN}\n\ntechdocs:\n  builder: 'local' # Alternatives - 'external'\n  generator:\n    runIn: 'local' # Alternatives - 'local or docker'\n  publisher:\n    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.\n\nauth:\n  environment: development\n  providers:\n    github:\n      development:\n        clientId: ${AUTH_GITHUB_CLIENT_ID}\n        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}\n"` |  |
-| backstage.extraAppConfig[0].filename | string | `"app-config.yaml"` |  |
-| backstage.extraAppConfig[1].configMapRef | string | `"app-config-production"` |  |
-| backstage.extraAppConfig[1].data | string | `"app:\n  title: somedomain\n  baseUrl: https://platform.somedomain.ltd\n\nbackend:\n  baseUrl: https://platform.somedomain.ltd\n  listen:\n    port: 7007\n\n  csp:\n    connect-src: [\"'self'\", 'http:', 'https:']\n\n  cors:\n    origin: https://platform.somedomain.ltd\n  database:\n    client: pg\n    connection:\n      host: ${POSTGRES_HOST}\n      port: ${POSTGRES_PORT}\n      user: ${POSTGRES_USER}\n      password: ${POSTGRES_PASSWORD}\n\n  cache:\n    store: memory\n\nintegrations:\n  github:\n    - host: github.com\n      token: ${GITHUB_TOKEN}\n\ntechdocs:\n  builder: 'local' # Alternatives - 'external'\n  generator:\n    runIn: 'local' # Alternatives - 'local'\n  publisher:\n    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.\n\nauth:\n  environment: production\n  providers:\n    github:\n      production:\n        clientId: ${AUTH_GITHUB_CLIENT_ID}\n        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}\n        # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}\n"` |  |
-| backstage.extraAppConfig[1].filename | string | `"app-config.production.yaml"` |  |
-| backstage.extraEnvVarsSecrets[0] | string | `"backstage-database-authentication"` |  |
-| backstage.extraEnvVarsSecrets[1] | string | `"backstage-kubernetes-authentication"` |  |
-| backstage.extraEnvVarsSecrets[2] | string | `"backstage-github-authentication"` |  |
-| backstage.extraEnvVars[0].name | string | `"APP_CONFIG_backend_baseUrl"` |  |
-| backstage.extraEnvVars[0].value | string | `"https://platform.polarpoint.io"` |  |
-| backstage.extraEnvVars[1].name | string | `"APP_CONFIG_backend_origin"` |  |
-| backstage.extraEnvVars[1].value | string | `"https://platform.polarpoint.io"` |  |
-| backstage.extraEnvVars[2].name | string | `"APP_CONFIG_app_baseUrl"` |  |
-| backstage.extraEnvVars[2].value | string | `"https://platform.polarpoint.io"` |  |
-| backstage.extraEnvVars[3].name | string | `"POSTGRES_HOST"` |  |
-| backstage.extraEnvVars[3].value | string | `"backstage-postgresql-non-prod"` |  |
+| backstage.extraAppConfig | list | `[]` |  |
+| backstage.extraEnvVars | list | `[]` |  |
+| backstage.extraEnvVarsSecrets | list | `[]` |  |
 | backstage.extraVolumeMounts | list | `[]` |  |
 | backstage.extraVolumes | list | `[]` |  |
 | backstage.image.debug | bool | `false` |  |
@@ -248,6 +235,39 @@ Now that the ConfigMap has been created on your Kubernetes cluster, you can refe
 ```
 
 The chart will mount the content of the ConfigMap as a new `app-config.extra.yaml` file and automatically pass the extra configuration to your instance.
+
+It's also possible to add your configuration to the helm values.yaml and create the ConfigMap as part of your helm install.
+
+```yaml
+  extraAppConfig:
+    - filename: app-config.yaml
+      configMapRef: app-config
+      data: |
+        app:
+          title: Scaffolded Backstage App
+          baseUrl: http://localhost:3000
+```
+
+This allows multiple app configs to be added. i.e.
+
+```yaml
+  extraAppConfig:
+    - filename: app-config.yaml
+      configMapRef: app-config
+      data: |
+        app:
+          title: Scaffolded Backstage App
+          baseUrl: http://localhost:3000
+        ...  
+    - filename: app-config.production.yaml
+      configMapRef: app-config-production    
+      data: |
+        app:
+          title: somedomain
+          baseUrl: https://somedomain.tld
+```
+
+
 
 ### Pass configuration to be stored in a ConfigMap
 
