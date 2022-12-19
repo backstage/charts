@@ -1,4 +1,3 @@
-
 # Backstage Helm Chart
 
 ![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
@@ -83,77 +82,87 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ## Values
 
-| Key | Description | Type | Default |
-|-----|-------------|------|---------|
-| backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
-| backstage.args |  | list | `[]` |
-| backstage.command[0] |  | string | `"node"` |
-| backstage.command[1] |  | string | `"packages/backend"` |
-| backstage.containerPorts.backend |  | int | `7007` |
-| backstage.containerSecurityContext |  | object | `{}` |
-| backstage.extraAppConfig |  | list | `[]` |
-| backstage.extraContainers |  | list | `[]` |
-| backstage.extraEnvVars |  | list | `[]` |
-| backstage.extraEnvVarsSecrets |  | string | `nil` |
-| backstage.extraVolumeMounts |  | list | `[]` |
-| backstage.extraVolumes |  | list | `[]` |
-| backstage.image.debug |  | bool | `false` |
-| backstage.image.pullPolicy |  | string | `"Always"` |
-| backstage.image.pullSecrets |  | list | `[]` |
-| backstage.image.registry |  | string | `"ghcr.io"` |
-| backstage.image.repository |  | string | `"backstage/backstage"` |
-| backstage.image.tag |  | string | `"latest"` |
-| backstage.initContainers |  | list | `[]` |
-| backstage.podSecurityContext |  | object | `{}` |
-| backstage.resources | resource requests/limits ref: https://kubernetes.io/docs/user-guide/compute-resources/ # E.g. # resources: #   limits: #     memory: 1Gi #     cpu: 1000m #   requests: #     memory: 250Mi #     cpu: 100m | object | `{}` |
-| clusterDomain |  | string | `"cluster.local"` |
-| commonAnnotations |  | object | `{}` |
-| commonLabels |  | object | `{}` |
-| diagnosticMode.args[0] |  | string | `"infinity"` |
-| diagnosticMode.command[0] |  | string | `"sleep"` |
-| diagnosticMode.enabled |  | bool | `false` |
-| extraDeploy |  | list | `[]` |
-| fullnameOverride |  | string | `""` |
-| global.imagePullSecrets |  | list | `[]` |
-| global.imageRegistry |  | string | `""` |
-| ingress.annotations |  | object | `{}` |
-| ingress.className |  | string | `""` |
-| ingress.enabled |  | bool | `false` |
-| ingress.host |  | string | `""` |
-| ingress.tls.enabled |  | bool | `false` |
-| ingress.tls.secretName |  | string | `""` |
-| kubeVersion |  | string | `""` |
-| nameOverride |  | string | `""` |
-| networkPolicy.egressRules.customRules |  | list | `[]` |
-| networkPolicy.enabled |  | bool | `false` |
-| networkPolicy.externalAccess.from |  | list | `[]` |
-| postgresql | PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml) | object | `{"architecture":"standalone","auth":{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"},"enabled":false}` |
-| postgresql.architecture | PostgreSQL architecture (`standalone` or `replication`) | string | `"standalone"` |
-| postgresql.auth | The authentication details of the Postgres database | object | `{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"}` |
-| postgresql.auth.existingSecret | Name of existing secret to use for PostgreSQL credentials | string | `""` |
-| postgresql.auth.password | Password for the custom user to create | string | `""` |
-| postgresql.auth.secretKeys | The secret keys Postgres will look for to retrieve the relevant password | object | `{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"}` |
-| postgresql.auth.secretKeys.adminPasswordKey | The key in which Postgres will look for, for the admin password, in the existing Secret | string | `"admin-password"` |
-| postgresql.auth.secretKeys.replicationPasswordKey | The key in which Postgres will look for, for the replication password, in the existing Secret | string | `"replication-password"` |
-| postgresql.auth.secretKeys.userPasswordKey | The key in which Postgres will look for, for the user password, in the existing Secret | string | `"user-password"` |
-| postgresql.auth.username | Name for a custom user to create | string | `"bn_backstage"` |
-| postgresql.enabled | Switch to enable or disable the PostgreSQL helm chart | bool | `false` |
-| service.annotations |  | object | `{}` |
-| service.clusterIP |  | string | `""` |
-| service.externalTrafficPolicy |  | string | `"Cluster"` |
-| service.extraPorts |  | list | `[]` |
-| service.loadBalancerIP |  | string | `""` |
-| service.loadBalancerSourceRanges |  | list | `[]` |
-| service.nodePorts.backend |  | string | `""` |
-| service.ports.backend |  | int | `7007` |
-| service.sessionAffinity |  | string | `"None"` |
-| service.type |  | string | `"ClusterIP"` |
-| serviceAccount | Service Account Configuration | object | `{"annotations":{},"automountServiceAccountToken":true,"create":false,"labels":{},"name":""}` |
-| serviceAccount.annotations | Additional custom annotations for the ServiceAccount. | object | `{}` |
-| serviceAccount.automountServiceAccountToken | Auto-mount the service account token in the pod | bool | `true` |
-| serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
-| serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
-| serviceAccount.name | Name of the created ServiceAccount If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| backstage.args | list | `[]` |  |
+| backstage.command[0] | string | `"node"` |  |
+| backstage.command[1] | string | `"packages/backend"` |  |
+| backstage.containerPorts.backend | int | `7007` |  |
+| backstage.containerSecurityContext | object | `{}` |  |
+| backstage.extraAppConfig[0].configMapRef | string | `"app-config"` |  |
+| backstage.extraAppConfig[0].data | string | `"app:\n  title: Scaffolded Backstage App\n  baseUrl: http://localhost:3000\n\norganization:\n  name: localhost\n\nbackend:\n  baseUrl: http://localhost:7007\n  listen:\n    port: 7007\n  csp:\n    connect-src: [\"'self'\", 'http:', 'https:']\n    img-src: [\"'self'\", 'data:', 'https://avatars.githubusercontent.com']\n  cors:\n    origin: http://localhost:3000\n    methods: [GET, POST, PUT, DELETE]\n    credentials: true\n  database:\n    client: pg\n    connection:\n      host: ${POSTGRES_HOST}\n      port: ${POSTGRES_PORT}\n      user: ${POSTGRES_USER}\n      password: ${POSTGRES_PASSWORD}\n  cache:\n    store: memory\n\nintegrations:\n  github:\n    - host: github.com\n      token: ${GITHUB_TOKEN}\n\ntechdocs:\n  builder: 'local' # Alternatives - 'external'\n  generator:\n    runIn: 'local' # Alternatives - 'local or docker'\n  publisher:\n    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.\n\nauth:\n  environment: development\n  providers:\n    github:\n      development:\n        clientId: ${AUTH_GITHUB_CLIENT_ID}\n        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}\n"` |  |
+| backstage.extraAppConfig[0].filename | string | `"app-config.yaml"` |  |
+| backstage.extraAppConfig[1].configMapRef | string | `"app-config-production"` |  |
+| backstage.extraAppConfig[1].data | string | `"app:\n  title: somedomain\n  baseUrl: https://platform.somedomain.ltd\n\nbackend:\n  baseUrl: https://platform.somedomain.ltd\n  listen:\n    port: 7007\n\n  csp:\n    connect-src: [\"'self'\", 'http:', 'https:']\n\n  cors:\n    origin: https://platform.somedomain.ltd\n  database:\n    client: pg\n    connection:\n      host: ${POSTGRES_HOST}\n      port: ${POSTGRES_PORT}\n      user: ${POSTGRES_USER}\n      password: ${POSTGRES_PASSWORD}\n\n  cache:\n    store: memory\n\nintegrations:\n  github:\n    - host: github.com\n      token: ${GITHUB_TOKEN}\n\ntechdocs:\n  builder: 'local' # Alternatives - 'external'\n  generator:\n    runIn: 'local' # Alternatives - 'local'\n  publisher:\n    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.\n\nauth:\n  environment: production\n  providers:\n    github:\n      production:\n        clientId: ${AUTH_GITHUB_CLIENT_ID}\n        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}\n        # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}\n"` |  |
+| backstage.extraAppConfig[1].filename | string | `"app-config.production.yaml"` |  |
+| backstage.extraEnvVarsSecrets[0] | string | `"backstage-database-authentication"` |  |
+| backstage.extraEnvVarsSecrets[1] | string | `"backstage-kubernetes-authentication"` |  |
+| backstage.extraEnvVarsSecrets[2] | string | `"backstage-github-authentication"` |  |
+| backstage.extraEnvVars[0].name | string | `"APP_CONFIG_backend_baseUrl"` |  |
+| backstage.extraEnvVars[0].value | string | `"https://platform.polarpoint.io"` |  |
+| backstage.extraEnvVars[1].name | string | `"APP_CONFIG_backend_origin"` |  |
+| backstage.extraEnvVars[1].value | string | `"https://platform.polarpoint.io"` |  |
+| backstage.extraEnvVars[2].name | string | `"APP_CONFIG_app_baseUrl"` |  |
+| backstage.extraEnvVars[2].value | string | `"https://platform.polarpoint.io"` |  |
+| backstage.extraEnvVars[3].name | string | `"POSTGRES_HOST"` |  |
+| backstage.extraEnvVars[3].value | string | `"backstage-postgresql-non-prod"` |  |
+| backstage.extraVolumeMounts | list | `[]` |  |
+| backstage.extraVolumes | list | `[]` |  |
+| backstage.image.debug | bool | `false` |  |
+| backstage.image.pullPolicy | string | `"Always"` |  |
+| backstage.image.pullSecrets | list | `[]` |  |
+| backstage.image.registry | string | `"ghcr.io"` |  |
+| backstage.image.repository | string | `"backstage/backstage"` |  |
+| backstage.image.tag | string | `"latest"` |  |
+| backstage.podSecurityContext | object | `{}` |  |
+| clusterDomain | string | `"cluster.local"` |  |
+| commonAnnotations | object | `{}` |  |
+| commonLabels | object | `{}` |  |
+| diagnosticMode.args[0] | string | `"infinity"` |  |
+| diagnosticMode.command[0] | string | `"sleep"` |  |
+| diagnosticMode.enabled | bool | `false` |  |
+| extraDeploy | list | `[]` |  |
+| fullnameOverride | string | `""` |  |
+| global.imagePullSecrets | list | `[]` |  |
+| global.imageRegistry | string | `""` |  |
+| ingress.annotations | object | `{}` |  |
+| ingress.className | string | `""` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.host | string | `""` |  |
+| ingress.tls.enabled | bool | `false` |  |
+| ingress.tls.secretName | string | `""` |  |
+| kubeVersion | string | `""` |  |
+| nameOverride | string | `""` |  |
+| networkPolicy.egressRules.customRules | list | `[]` |  |
+| networkPolicy.enabled | bool | `false` |  |
+| networkPolicy.externalAccess.from | list | `[]` |  |
+| postgresql | object | `{"architecture":"standalone","auth":{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"},"enabled":false}` | PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml) |
+| postgresql.architecture | string | `"standalone"` | PostgreSQL architecture (`standalone` or `replication`) |
+| postgresql.auth | object | `{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"}` | The authentication details of the Postgres database |
+| postgresql.auth.existingSecret | string | `""` | Name of existing secret to use for PostgreSQL credentials |
+| postgresql.auth.password | string | `""` | Password for the custom user to create |
+| postgresql.auth.secretKeys | object | `{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"}` | The secret keys Postgres will look for to retrieve the relevant password |
+| postgresql.auth.secretKeys.adminPasswordKey | string | `"admin-password"` | The key in which Postgres will look for, for the admin password, in the existing Secret |
+| postgresql.auth.secretKeys.replicationPasswordKey | string | `"replication-password"` | The key in which Postgres will look for, for the replication password, in the existing Secret |
+| postgresql.auth.secretKeys.userPasswordKey | string | `"user-password"` | The key in which Postgres will look for, for the user password, in the existing Secret |
+| postgresql.auth.username | string | `"bn_backstage"` | Name for a custom user to create |
+| postgresql.enabled | bool | `false` | Switch to enable or disable the PostgreSQL helm chart |
+| service.annotations | object | `{}` |  |
+| service.clusterIP | string | `""` |  |
+| service.externalTrafficPolicy | string | `"Cluster"` |  |
+| service.extraPorts | list | `[]` |  |
+| service.loadBalancerIP | string | `""` |  |
+| service.loadBalancerSourceRanges | list | `[]` |  |
+| service.nodePorts.backend | string | `""` |  |
+| service.ports.backend | int | `7007` |  |
+| service.sessionAffinity | string | `"None"` |  |
+| service.type | string | `"ClusterIP"` |  |
+| serviceAccount | object | `{"annotations":{},"automountServiceAccountToken":true,"create":false,"labels":{},"name":""}` | Service Account Configuration |
+| serviceAccount.annotations | object | `{}` | Additional custom annotations for the ServiceAccount. |
+| serviceAccount.automountServiceAccountToken | bool | `true` | Auto-mount the service account token in the pod |
+| serviceAccount.create | bool | `false` | Enable the creation of a ServiceAccount for Backstage pods |
+| serviceAccount.labels | object | `{}` | Additional custom labels to the service ServiceAccount. |
+| serviceAccount.name | string | `""` | Name of the created ServiceAccount If not set and `serviceAccount.create` is true, a name is generated |
 
 ## Configure your Backstage instance
 
