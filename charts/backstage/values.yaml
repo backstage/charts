@@ -115,24 +115,283 @@ backstage:
     backend: 7007
   command: ["node", "packages/backend"]
   args: []
-  extraAppConfig: []
-  extraContainers: []
-  extraEnvVars: []
+  extraAppConfig:
+    - filename: app-config.yaml
+      configMapRef: app-config
+      data: |
+        app:
+          title: Scaffolded Backstage App
+          baseUrl: http://localhost:3000
+
+          support:
+            url: https://github.com/polarpoint-io/backstage/issues # Used by common ErrorPage
+            items: # Used by common SupportButton component
+              - title: Issues
+                icon: github
+                links:
+                  - url: https://github.com/backstage/backstage/issues
+                    title: GitHub Issues
+              - title: Slack Chatroom
+                icon: chat
+                links:
+                  - url: https://polarpoint.slack.com/archives/C03T35W09HC
+                    title: '#backstage'
+
+        organization:
+          name: Polarpoint
+
+        backend:
+          # Used for enabling authentication, secret is shared by all backend plugins
+          # See https://backstage.io/docs/tutorials/backend-to-backend-auth for
+          # information on the format
+          # auth:
+          #   keys:
+          #     - secret: ${BACKEND_SECRET}
+          baseUrl: http://localhost:7007
+          listen:
+            port: 7007
+          csp:
+            connect-src: ["'self'", 'http:', 'https:']
+            img-src: ["'self'", 'data:', 'https://avatars.githubusercontent.com']
+            # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+            # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+          cors:
+            origin: http://localhost:3000
+            methods: [GET, POST, PUT, DELETE]
+            credentials: true
+          database:
+            client: pg
+            connection:
+              host: ${POSTGRES_HOST}
+              port: ${POSTGRES_PORT}
+              user: ${POSTGRES_USER}
+              password: ${POSTGRES_PASSWORD}
+          cache:
+            store: memory
+          # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+
+
+        integrations:
+          github:
+            - host: github.com
+              token: ${GITHUB_TOKEN}
+            ### Example for how to add your GitHub Enterprise instance using the API:
+            # - host: ghe.example.net
+            #   apiBaseUrl: https://ghe.example.net/api/v3
+            #   token: ${GHE_TOKEN}
+
+        kubernetes:
+          serviceLocatorMethod:
+            type: multiTenant
+          clusterLocatorMethods:
+            - type: config
+              clusters:
+                - url: ${K8S_URL}
+                  name: tooling
+                  authProvider: serviceAccount
+                  skipTLSVerify: true
+                  skipMetricsLookup: true
+                  serviceAccountToken: ${K8S_TOKEN}
+
+        # Reference documentation http://backstage.io/docs/features/techdocs/configuration
+        # Note: After experimenting with basic setup, use CI/CD to generate docs
+        # and an external cloud storage when deploying TechDocs for production use-case.
+        # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
+        techdocs:
+          builder: 'local' # Alternatives - 'external'
+          generator:
+            runIn: 'local' # Alternatives - 'local or docker'
+          publisher:
+            type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
+        # techdocs:
+        #   publisher:
+        #     type: 'awsS3'
+        #     awsS3:
+        #       bucketName: 'name-of-techdocs-storage-bucket'
+        #       region: ${AWS_REGION}
+        #       credentials:
+        #         accessKeyId: ${AWS_ACCESS_KEY_ID}
+        #         secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+
+        proxy:
+          '/sonarqube':
+            target: http://sonar.sonar.svc/api
+            allowedMethods: ['GET']
+            # note that the colon after the token is required
+            auth: '${SONARQUBE_TOKEN}:'
+            # Environmental variable: SONARQUBE_TOKEN
+            # Fetch the sonar-auth-token from https://sonarcloud.io/account/security/
+
+          '/argocd/api':
+            target: http://argocd-server.argocd.svc/api/v1/
+            changeOrigin: true
+            # only if your argocd api has self-signed cert
+            secure: true
+            headers:
+              Cookie:
+                $env: ARGOCD_AUTH_TOKEN
+
+          '/grafana/api':
+            # May be an internal DNS
+            target: http://grafana.monitoring.svc:3000/
+            headers:
+              Authorization: Bearer ${GRAFANA_TOKEN}
+
+          '/prometheus/api':
+            # url to the api and path of your hosted prometheus instance
+            target: http://prometheus.monitoring.svc:9090/api/v1/
+
+
+        sonarQube:
+          baseUrl: https://code-analysis.polarpoint.io
+
+        grafana:
+          domain: https://dashboard.polarpoint.io
+
+        # auth:
+        #   # see https://backstage.io/docs/auth/ to learn about auth providers
+        #   providers: {}
+
+        auth:
+          environment: development
+          ### Providing an auth.session.secret will enable session support in the auth-backend
+          # session:
+          #   secret: custom session secret
+          providers:
+            github:
+              development:
+                clientId: ${AUTH_GITHUB_CLIENT_ID}
+                clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+                # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
+
+        scaffolder:
+          # see https://backstage.io/docs/features/software-templates/configuration for software template options
+          defaultAuthor:
+            name: ':robot: [backstage-bot]'
+            email: mail@polarpoint.io
+          # defaultCommitMessage: "🤖 U can't touch this" # Defaults to 'Initial commit'
+
+        # Force Deploy
+
+        catalog:
+          import:
+            entityFilename: catalog-info.yaml
+            pullRequestBranchName: backstage-integration
+          rules:
+            - allow:
+                - API
+                - Component
+                - Domain
+                - Group
+                - System
+                - User
+                - Template
+                - Resource
+                - Location
+
+          locations:
+            # Backstage components
+            - type: url
+              target: https://github.com/polarpoint-io/backstage-catalog/blob/main/all.yaml
+    - filename: app-config.production.yaml
+      configMapRef: app-config-production    
+      data: |
+        app:
+          title: polarpoint
+          baseUrl: https://platform.polarpoint.io
+
+        backend:
+          # Note that the baseUrl should be the URL that the browser and other clients
+          # should use when communicating with the backend, i.e. it needs to be
+          # reachable not just from within the backend host, but from all of your
+          # callers. When its value is "http://localhost:7007", it's strictly private
+          # and can't be reached by others.
+          baseUrl: https://platform.polarpoint.io
+          listen:
+            port: 7007
+            # The following host directive binds to all IPv4 interfaces when its value
+            # is "0.0.0.0". This is the most permissive setting. The right value depends
+            # on your specific deployment. If you remove the host line entirely, the
+            # backend will bind on the interface that corresponds to the backend.baseUrl
+            # hostname.
+            host: 0.0.0.0
+
+          csp:
+            connect-src: ["'self'", 'http:', 'https:']
+            # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+            # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+
+          cors:
+            origin: https://platform.polarpoint.io
+            #methods: [GET, POST, PUT, DELETE]
+            #credentials: true
+          # config options: https://node-postgres.com/api/client
+          database:
+            client: pg
+            connection:
+              host: ${POSTGRES_HOST}
+              port: ${POSTGRES_PORT}
+              user: ${POSTGRES_USER}
+              password: ${POSTGRES_PASSWORD}
+              # https://node-postgres.com/features/ssl
+              # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
+              # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
+              # ssl:
+              #   ca: # if you have a CA file and want to verify it you can uncomment this section
+              #     $file: <file-path>/ca/server.crt
+
+          cache:
+            store: memory
+          # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+
+        integrations:
+          github:
+            - host: github.com
+              token: ${GITHUB_TOKEN}
+            ### Example for how to add your GitHub Enterprise instance using the API:
+            # - host: ghe.example.net
+            #   apiBaseUrl: https://ghe.example.net/api/v3
+            #   token: ${GHE_TOKEN}
+
+        # Reference documentation http://backstage.io/docs/features/techdocs/configuration
+        # Note: After experimenting with basic setup, use CI/CD to generate docs
+        # and an external cloud storage when deploying TechDocs for production use-case.
+        # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
+
+        techdocs:
+          builder: 'local' # Alternatives - 'external'
+          generator:
+            runIn: 'local' # Alternatives - 'local'
+          publisher:
+            type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
+        auth:
+          environment: production
+          ### Providing an auth.session.secret will enable session support in the auth-backend
+          # session:
+          #   secret: custom session secret
+          providers:
+            github:
+              production:
+                clientId: ${AUTH_GITHUB_CLIENT_ID}
+                clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+                # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
+  extraEnvVars:
+    - name: APP_CONFIG_backend_baseUrl
+      value: https://platform.polarpoint.io
+    - name: APP_CONFIG_backend_origin
+      value: https://platform.polarpoint.io
+    - name: APP_CONFIG_app_baseUrl
+      value: https://platform.polarpoint.io
+    - name: POSTGRES_HOST
+      value: "backstage-postgresql-non-prod"
   extraEnvVarsSecrets:
+    - backstage-database-authentication
+    - backstage-kubernetes-authentication
+    - backstage-github-authentication
   extraVolumeMounts: []
   extraVolumes: []
-  initContainers: []
-  # -- resource requests/limits
-  # ref: https://kubernetes.io/docs/user-guide/compute-resources/
-  ## E.g.
-  ## resources:
-  ##   limits:
-  ##     memory: 1Gi
-  ##     cpu: 1000m
-  ##   requests:
-  ##     memory: 250Mi
-  ##     cpu: 100m
-  resources: {}
 
   ## @param backstage.podSecurityContext Security settings for a Pod.
   ## The security settings that you specify for a Pod apply to all Containers in the Pod.
@@ -142,16 +401,6 @@ backstage:
   ## @param backstage.containerSecurityContext Security settings for a Container
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   containerSecurityContext: {}
-
-  # Allows to define the appConfig as a multiline string that generates a ConfigMap
-  # automatically, not requiring to have it pre provisioned as with the extraAppConfig key.
-  # DO NOT USE if you need to put sensitive data in the appConfig.
-  # E.g:
-  # appConfig:
-  #   app:
-  #     baseUrl: https://somedomain.tld
-  # -- Generates ConfigMap and configures it in the Backstage pods
-  appConfig: {}
 
 ## @section Traffic Exposure parameters
 
