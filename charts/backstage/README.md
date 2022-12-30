@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.10.1](https://img.shields.io/badge/Version-0.10.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -104,6 +104,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | backstage.image.repository |  | string | `"backstage/backstage"` |
 | backstage.image.tag |  | string | `"latest"` |
 | backstage.initContainers |  | list | `[]` |
+| backstage.installDir |  | string | `"/app"` |
 | backstage.podSecurityContext |  | object | `{}` |
 | backstage.resources | resource requests/limits ref: https://kubernetes.io/docs/user-guide/compute-resources/ # E.g. # resources: #   limits: #     memory: 1Gi #     cpu: 1000m #   requests: #     memory: 250Mi #     cpu: 100m | object | `{}` |
 | clusterDomain |  | string | `"cluster.local"` |
