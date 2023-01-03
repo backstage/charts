@@ -116,6 +116,7 @@ backstage:
   command: ["node", "packages/backend"]
   args: []
   extraAppConfig: []
+  initContainers: []
   # extraAppConfig:
   #   - filename: app-config.yaml
   #     configMapRef: app-config
