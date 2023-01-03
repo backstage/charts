@@ -1,0 +1,23 @@
+{{- range $extraAppConfig := .Values.backstage.extraAppConfig }}
+{{- $configMap := lookup "v1" "ConfigMap" $.Release.Namespace $extraAppConfig.configMapRef  -}}
+{{- if $configMap -}}
+{{/*
+   Use existing configMap
+*/}}
+{{- else -}}
+{{/*
+    Generate new configMap from helm values
+*/}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .configMapRef }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" $ | nindent 4 }}
+    app.kubernetes.io/component: backstage
+data:
+  {{ .filename }}: |
+    {{- .data | nindent 4 }}
+{{- end }}
+{{- end }}

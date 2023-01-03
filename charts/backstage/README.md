@@ -1,4 +1,3 @@
-
 # Backstage Helm Chart
 
 ![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
@@ -83,77 +82,74 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ## Values
 
-| Key | Description | Type | Default |
-|-----|-------------|------|---------|
-| backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
-| backstage.args |  | list | `[]` |
-| backstage.command[0] |  | string | `"node"` |
-| backstage.command[1] |  | string | `"packages/backend"` |
-| backstage.containerPorts.backend |  | int | `7007` |
-| backstage.containerSecurityContext |  | object | `{}` |
-| backstage.extraAppConfig |  | list | `[]` |
-| backstage.extraContainers |  | list | `[]` |
-| backstage.extraEnvVars |  | list | `[]` |
-| backstage.extraEnvVarsSecrets |  | string | `nil` |
-| backstage.extraVolumeMounts |  | list | `[]` |
-| backstage.extraVolumes |  | list | `[]` |
-| backstage.image.debug |  | bool | `false` |
-| backstage.image.pullPolicy |  | string | `"Always"` |
-| backstage.image.pullSecrets |  | list | `[]` |
-| backstage.image.registry |  | string | `"ghcr.io"` |
-| backstage.image.repository |  | string | `"backstage/backstage"` |
-| backstage.image.tag |  | string | `"latest"` |
-| backstage.initContainers |  | list | `[]` |
-| backstage.podSecurityContext |  | object | `{}` |
-| backstage.resources | resource requests/limits ref: https://kubernetes.io/docs/user-guide/compute-resources/ # E.g. # resources: #   limits: #     memory: 1Gi #     cpu: 1000m #   requests: #     memory: 250Mi #     cpu: 100m | object | `{}` |
-| clusterDomain |  | string | `"cluster.local"` |
-| commonAnnotations |  | object | `{}` |
-| commonLabels |  | object | `{}` |
-| diagnosticMode.args[0] |  | string | `"infinity"` |
-| diagnosticMode.command[0] |  | string | `"sleep"` |
-| diagnosticMode.enabled |  | bool | `false` |
-| extraDeploy |  | list | `[]` |
-| fullnameOverride |  | string | `""` |
-| global.imagePullSecrets |  | list | `[]` |
-| global.imageRegistry |  | string | `""` |
-| ingress.annotations |  | object | `{}` |
-| ingress.className |  | string | `""` |
-| ingress.enabled |  | bool | `false` |
-| ingress.host |  | string | `""` |
-| ingress.tls.enabled |  | bool | `false` |
-| ingress.tls.secretName |  | string | `""` |
-| kubeVersion |  | string | `""` |
-| nameOverride |  | string | `""` |
-| networkPolicy.egressRules.customRules |  | list | `[]` |
-| networkPolicy.enabled |  | bool | `false` |
-| networkPolicy.externalAccess.from |  | list | `[]` |
-| postgresql | PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml) | object | `{"architecture":"standalone","auth":{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"},"enabled":false}` |
-| postgresql.architecture | PostgreSQL architecture (`standalone` or `replication`) | string | `"standalone"` |
-| postgresql.auth | The authentication details of the Postgres database | object | `{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"}` |
-| postgresql.auth.existingSecret | Name of existing secret to use for PostgreSQL credentials | string | `""` |
-| postgresql.auth.password | Password for the custom user to create | string | `""` |
-| postgresql.auth.secretKeys | The secret keys Postgres will look for to retrieve the relevant password | object | `{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"}` |
-| postgresql.auth.secretKeys.adminPasswordKey | The key in which Postgres will look for, for the admin password, in the existing Secret | string | `"admin-password"` |
-| postgresql.auth.secretKeys.replicationPasswordKey | The key in which Postgres will look for, for the replication password, in the existing Secret | string | `"replication-password"` |
-| postgresql.auth.secretKeys.userPasswordKey | The key in which Postgres will look for, for the user password, in the existing Secret | string | `"user-password"` |
-| postgresql.auth.username | Name for a custom user to create | string | `"bn_backstage"` |
-| postgresql.enabled | Switch to enable or disable the PostgreSQL helm chart | bool | `false` |
-| service.annotations |  | object | `{}` |
-| service.clusterIP |  | string | `""` |
-| service.externalTrafficPolicy |  | string | `"Cluster"` |
-| service.extraPorts |  | list | `[]` |
-| service.loadBalancerIP |  | string | `""` |
-| service.loadBalancerSourceRanges |  | list | `[]` |
-| service.nodePorts.backend |  | string | `""` |
-| service.ports.backend |  | int | `7007` |
-| service.sessionAffinity |  | string | `"None"` |
-| service.type |  | string | `"ClusterIP"` |
-| serviceAccount | Service Account Configuration | object | `{"annotations":{},"automountServiceAccountToken":true,"create":false,"labels":{},"name":""}` |
-| serviceAccount.annotations | Additional custom annotations for the ServiceAccount. | object | `{}` |
-| serviceAccount.automountServiceAccountToken | Auto-mount the service account token in the pod | bool | `true` |
-| serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
-| serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
-| serviceAccount.name | Name of the created ServiceAccount If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| backstage.appConfig | object | `{}` |  |
+| backstage.args | list | `[]` |  |
+| backstage.command[0] | string | `"node"` |  |
+| backstage.command[1] | string | `"packages/backend"` |  |
+| backstage.containerPorts.backend | int | `7007` |  |
+| backstage.containerSecurityContext | object | `{}` |  |
+| backstage.extraAppConfig | list | `[]` |  |
+| backstage.extraEnvVars | list | `[]` |  |
+| backstage.extraEnvVarsSecrets | list | `[]` |  |
+| backstage.extraVolumeMounts | list | `[]` |  |
+| backstage.extraVolumes | list | `[]` |  |
+| backstage.image.debug | bool | `false` |  |
+| backstage.image.pullPolicy | string | `"Always"` |  |
+| backstage.image.pullSecrets | list | `[]` |  |
+| backstage.image.registry | string | `"ghcr.io"` |  |
+| backstage.image.repository | string | `"backstage/backstage"` |  |
+| backstage.image.tag | string | `"latest"` |  |
+| backstage.podSecurityContext | object | `{}` |  |
+| clusterDomain | string | `"cluster.local"` |  |
+| commonAnnotations | object | `{}` |  |
+| commonLabels | object | `{}` |  |
+| diagnosticMode.args[0] | string | `"infinity"` |  |
+| diagnosticMode.command[0] | string | `"sleep"` |  |
+| diagnosticMode.enabled | bool | `false` |  |
+| extraDeploy | list | `[]` |  |
+| fullnameOverride | string | `""` |  |
+| global.imagePullSecrets | list | `[]` |  |
+| global.imageRegistry | string | `""` |  |
+| ingress.annotations | object | `{}` |  |
+| ingress.className | string | `""` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.host | string | `""` |  |
+| ingress.tls.enabled | bool | `false` |  |
+| ingress.tls.secretName | string | `""` |  |
+| kubeVersion | string | `""` |  |
+| nameOverride | string | `""` |  |
+| networkPolicy.egressRules.customRules | list | `[]` |  |
+| networkPolicy.enabled | bool | `false` |  |
+| networkPolicy.externalAccess.from | list | `[]` |  |
+| postgresql | object | `{"architecture":"standalone","auth":{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"},"enabled":false}` | PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml) |
+| postgresql.architecture | string | `"standalone"` | PostgreSQL architecture (`standalone` or `replication`) |
+| postgresql.auth | object | `{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"}` | The authentication details of the Postgres database |
+| postgresql.auth.existingSecret | string | `""` | Name of existing secret to use for PostgreSQL credentials |
+| postgresql.auth.password | string | `""` | Password for the custom user to create |
+| postgresql.auth.secretKeys | object | `{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"}` | The secret keys Postgres will look for to retrieve the relevant password |
+| postgresql.auth.secretKeys.adminPasswordKey | string | `"admin-password"` | The key in which Postgres will look for, for the admin password, in the existing Secret |
+| postgresql.auth.secretKeys.replicationPasswordKey | string | `"replication-password"` | The key in which Postgres will look for, for the replication password, in the existing Secret |
+| postgresql.auth.secretKeys.userPasswordKey | string | `"user-password"` | The key in which Postgres will look for, for the user password, in the existing Secret |
+| postgresql.auth.username | string | `"bn_backstage"` | Name for a custom user to create |
+| postgresql.enabled | bool | `false` | Switch to enable or disable the PostgreSQL helm chart |
+| service.annotations | object | `{}` |  |
+| service.clusterIP | string | `""` |  |
+| service.externalTrafficPolicy | string | `"Cluster"` |  |
+| service.extraPorts | list | `[]` |  |
+| service.loadBalancerIP | string | `""` |  |
+| service.loadBalancerSourceRanges | list | `[]` |  |
+| service.nodePorts.backend | string | `""` |  |
+| service.ports.backend | int | `7007` |  |
+| service.sessionAffinity | string | `"None"` |  |
+| service.type | string | `"ClusterIP"` |  |
+| serviceAccount | object | `{"annotations":{},"automountServiceAccountToken":true,"create":false,"labels":{},"name":""}` | Service Account Configuration |
+| serviceAccount.annotations | object | `{}` | Additional custom annotations for the ServiceAccount. |
+| serviceAccount.automountServiceAccountToken | bool | `true` | Auto-mount the service account token in the pod |
+| serviceAccount.create | bool | `false` | Enable the creation of a ServiceAccount for Backstage pods |
+| serviceAccount.labels | object | `{}` | Additional custom labels to the service ServiceAccount. |
+| serviceAccount.name | string | `""` | Name of the created ServiceAccount If not set and `serviceAccount.create` is true, a name is generated |
 
 ## Configure your Backstage instance
 
@@ -239,6 +235,39 @@ Now that the ConfigMap has been created on your Kubernetes cluster, you can refe
 ```
 
 The chart will mount the content of the ConfigMap as a new `app-config.extra.yaml` file and automatically pass the extra configuration to your instance.
+
+It's also possible to add your configuration to the helm values.yaml and create the ConfigMap as part of your helm install.
+
+```yaml
+  extraAppConfig:
+    - filename: app-config.yaml
+      configMapRef: app-config
+      data: |
+        app:
+          title: Scaffolded Backstage App
+          baseUrl: http://localhost:3000
+```
+
+This allows multiple app configs to be added. i.e.
+
+```yaml
+  extraAppConfig:
+    - filename: app-config.yaml
+      configMapRef: app-config
+      data: |
+        app:
+          title: Scaffolded Backstage App
+          baseUrl: http://localhost:3000
+        ...  
+    - filename: app-config.production.yaml
+      configMapRef: app-config-production    
+      data: |
+        app:
+          title: somedomain
+          baseUrl: https://somedomain.tld
+```
+
+
 
 ### Pass configuration to be stored in a ConfigMap
 
