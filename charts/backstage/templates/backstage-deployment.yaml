@@ -24,6 +24,8 @@ spec:
     metadata:
       labels: {{- include "common.labels.standard" . | nindent 8 }}
         app.kubernetes.io/component: backstage
+      annotations:
+        checksum/app-config: {{ include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | sha256sum }}
     spec:
       {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
