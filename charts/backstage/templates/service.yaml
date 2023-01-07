@@ -37,7 +37,7 @@ spec:
   ports:
     - name: http-backend
       port: {{ .Values.service.ports.backend }}
-      targetPort: backend
+      targetPort: {{ .Values.service.ports.targetPort }}
       protocol: TCP
       {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) (not (empty .Values.service.nodePorts.backend)) }}
       nodePort: {{ .Values.service.nodePorts.backend }}

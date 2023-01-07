@@ -181,6 +181,9 @@ service:
   ports:
     backend: 7007
 
+    # -- Backstage svc target port referencing receiving pod container port
+    targetPort: backend
+
   # -- Node port for the Backstage client connections
   # Choose port between `30000-32767`
   nodePorts:
