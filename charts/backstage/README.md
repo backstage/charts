@@ -161,6 +161,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
 | serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
 | serviceAccount.name | Name of the created ServiceAccount If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
+| tolerations | Specify tolerations <br /> Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/ | list | `[]` |
 
 ## Configure your Backstage instance
 
