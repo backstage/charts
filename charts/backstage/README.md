@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.12.0](https://img.shields.io/badge/Version-0.12.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.13.0](https://img.shields.io/badge/Version-0.13.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -160,7 +160,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceAccount.automountServiceAccountToken | Auto-mount the service account token in the pod | bool | `true` |
 | serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
 | serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
-| serviceAccount.name | Name of the created ServiceAccount If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
+| serviceAccount.name | Name of the ServiceAccount to use If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
 
 ## Configure your Backstage instance
 

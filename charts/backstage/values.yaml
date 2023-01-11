@@ -285,7 +285,7 @@ serviceAccount:
   # -- Enable the creation of a ServiceAccount for Backstage pods
   create: false
 
-  # -- Name of the created ServiceAccount
+  # -- Name of the ServiceAccount to use
   # If not set and `serviceAccount.create` is true, a name is generated
   name: ""
 
