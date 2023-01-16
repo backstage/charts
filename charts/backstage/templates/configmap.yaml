@@ -1,10 +1,4 @@
 {{- range $extraAppConfig := .Values.backstage.extraAppConfig }}
-{{- $configMap := lookup "v1" "ConfigMap" $.Release.Namespace $extraAppConfig.configMapRef  -}}
-{{- if $configMap -}}
-{{/*
-   Use existing configMap
-*/}}
-{{- else -}}
 {{/*
     Generate new configMap from helm values
 */}}
@@ -19,5 +13,4 @@ metadata:
 data:
   {{ .filename }}: |
     {{- .data | nindent 4 }}
-{{- end }}
 {{- end }}
