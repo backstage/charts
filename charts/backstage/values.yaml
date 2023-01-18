@@ -166,6 +166,14 @@ backstage:
   # -- Generates ConfigMap and configures it in the Backstage pods
   appConfig: {}
 
+  # -- Node tolerations for server scheduling to nodes with taints
+  # <br /> Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  tolerations: []
+  #  - key: "key"
+  #    operator: "Equal|Exists"
+  #    value: "value"
+  #    effect: "NoSchedule|PreferNoSchedule|NoExecute"
+
 ## @section Traffic Exposure parameters
 
 ## Service parameters
