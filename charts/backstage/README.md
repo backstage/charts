@@ -92,6 +92,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | backstage.containerPorts | Container ports on the Deployment | object | `{"backend":7007}` |
 | backstage.containerSecurityContext | Security settings for a Container. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container | object | `{}` |
 | backstage.extraAppConfig | Extra app configuration files to inline into command arguments | list | `[]` |
+| backstage.extraConfigMap | Extra ConfigMap to add to Deployment | list | `[]` |
 | backstage.extraContainers | Deployment sidecars | list | `[]` |
 | backstage.extraEnvVars | Backstage container environment variables | list | `[]` |
 | backstage.extraEnvVarsSecrets | Backstage container environment variables from Secrets | list | `[]` |

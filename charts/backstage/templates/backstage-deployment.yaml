@@ -37,11 +37,11 @@ spec:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.tolerations "context" $) | nindent 8 }}
       {{- end }}
       volumes:
-        {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
-        {{- range .Values.backstage.extraAppConfig }}
-        - name: {{ .configMapRef }}
+        {{- if (or .Values.backstage.extraConfigMap (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
+        {{- range .Values.backstage.extraConfigMap }}
+        - name: {{ . }}
           configMap:
-            name: {{ .configMapRef }}
+            name: {{ . }}
         {{- end }}
         {{- if .Values.backstage.extraVolumes }}
           {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumes "context" $ ) | nindent 8 }}
@@ -55,7 +55,7 @@ spec:
       {{- if .Values.backstage.image.pullSecrets }}
       imagePullSecrets:
       {{- range .Values.backstage.image.pullSecrets }}
-          - name: {{ . }}
+        - name: {{ . }}
       {{- end }}
       {{- end }}
       {{- if .Values.backstage.initContainers }}
