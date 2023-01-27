@@ -83,9 +83,6 @@ spec:
           {{- range .Values.backstage.args }}
             - {{ . | quote }}
           {{- end }}
-          {{- if .Values.backstage.resources }}
-          resources: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.resources "context" $) | nindent 12 }}
-          {{- end }}
           {{- if .Values.backstage.extraAppConfig }}
           {{- range .Values.backstage.extraAppConfig }}
             - "--config"
@@ -96,6 +93,9 @@ spec:
             - "--config"
             - "app-config-from-configmap.yaml"
           {{- end }}
+          {{- end }}
+          {{- if .Values.backstage.resources }}
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.resources "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.backstage.extraEnvVarsSecrets }}
           envFrom:
