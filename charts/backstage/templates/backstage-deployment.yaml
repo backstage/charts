@@ -26,6 +26,9 @@ spec:
         app.kubernetes.io/component: backstage
       annotations:
         checksum/app-config: {{ include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | sha256sum }}
+        {{- if .Values.backstage.podAnnotations }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podAnnotations "context" $ ) | nindent 8 }}
+        {{- end }}
     spec:
       serviceAccountName: {{ include "backstage.serviceAccountName" . }}
       {{- if .Values.backstage.podSecurityContext }}
