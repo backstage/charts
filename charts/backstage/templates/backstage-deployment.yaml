@@ -71,7 +71,7 @@ spec:
           imagePullPolicy: {{ .Values.backstage.image.pullPolicy | quote -}}
           {{- if .Values.backstage.containerSecurityContext }}
           securityContext:
-            {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 12 }}
+            {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.containerSecurityContext "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.diagnosticMode.enabled }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
