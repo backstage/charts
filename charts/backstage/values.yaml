@@ -135,6 +135,9 @@ backstage:
   # -- Backstage container init containers
   initContainers: []
 
+  # -- Directory containing the backstage installation
+  installDir: /app
+
   # -- Resource requests/limits
   # <br /> Ref: https://kubernetes.io/docs/user-guide/compute-resources/
   # <!-- E.g.

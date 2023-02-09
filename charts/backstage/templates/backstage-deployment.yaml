@@ -1,5 +1,6 @@
 {{- $imageRepository := .Values.backstage.image.repository | required "The repository name of the image is required (e.g. my-backstage:tag | docker.io/my-backstage:tag) !" -}}
 {{- $imageTag := .Values.backstage.image.tag | required "The image tag is required (e.g my-backstage:tag | docker.io/my-backstage:tag) !" -}}
+{{- $installDir := .Values.backstage.installDir -}}
 ---
 apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
@@ -89,12 +90,12 @@ spec:
           {{- if .Values.backstage.extraAppConfig }}
           {{- range .Values.backstage.extraAppConfig }}
             - "--config"
-            - {{ .filename | quote }}
+            - "{{ $installDir }}/{{ .filename }}"
           {{- end }}
           {{- end }}
           {{- if .Values.backstage.appConfig }}
             - "--config"
-            - "app-config-from-configmap.yaml"
+            - "{{ $installDir }}/app-config-from-configmap.yaml"
           {{- end }}
           {{- end }}
           {{- if .Values.backstage.resources }}
@@ -134,12 +135,12 @@ spec:
           volumeMounts:
             {{- range .Values.backstage.extraAppConfig }}
             - name: {{ .configMapRef }}
-              mountPath: "/app/{{ .filename }}"
+              mountPath: "{{ $installDir }}/{{ .filename }}"
               subPath: {{ .filename }}
             {{- end }}
             {{- if .Values.backstage.appConfig }}
             - name: backstage-app-config
-              mountPath: /app/app-config-from-configmap.yaml
+              mountPath: "{{ $installDir }}/app-config-from-configmap.yaml"
               subPath: app-config.yaml
             {{- end }}
             {{- if .Values.backstage.extraVolumeMounts }}
