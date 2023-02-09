@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.15.2](https://img.shields.io/badge/Version-0.15.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.16.0](https://img.shields.io/badge/Version-0.16.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -163,6 +163,12 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
 | serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
 | serviceAccount.name | Name of the ServiceAccount to use If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
+| serviceMonitor.annotations | ServiceMonitor annotations | object | `{}` |
+| serviceMonitor.enabled | If enabled, ServiceMonitor resources for Prometheus Operator are created | bool | `false` |
+| serviceMonitor.interval | ServiceMonitor scrape interval | string | `nil` |
+| serviceMonitor.labels | Additional ServiceMonitor labels | object | `{}` |
+| serviceMonitor.namespaceSelector | Namespace selector for ServiceMonitor resources | object | `{}` |
+| serviceMonitor.path | ServiceMonitor endpoint path | string | `"/metrics"` |
 
 ## Configure your Backstage instance
 

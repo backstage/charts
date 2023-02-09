@@ -1,0 +1,32 @@
+{{- with .Values.serviceMonitor }}
+{{- if .enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "common.names.fullname" $ }}
+  namespace: {{ $.Release.Namespace | quote }}
+  {{- with .annotations }}
+  annotations:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  labels: {{ include "common.labels.standard" $ | nindent 4 }}
+    app.kubernetes.io/component: backstage
+    {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- with .namespaceSelector }}
+  namespaceSelector:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels: {{ include "common.labels.standard" $ | nindent 6 }}
+      app.kubernetes.io/component: backstage
+  endpoints:
+  - port: http-backend
+    path: {{ .path }}
+    {{- with .interval }}
+    interval: {{ . }}
+    {{- end }}
+{{- end -}}
+{{- end -}}
