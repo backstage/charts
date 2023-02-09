@@ -2,6 +2,25 @@ apiVersion: v1
 entries:
   backstage:
   - apiVersion: v2
+    created: "2023-02-09T15:48:51.066122266Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: A Helm chart for deploying a Backstage application
+    digest: d9338ad3850822b2ac5d657b3f5c74855bed849811079ae4e706dca77d794863
+    name: backstage
+    type: application
+    urls:
+    - https://github.com/backstage/charts/releases/download/backstage-0.16.0/backstage-0.16.0.tgz
+    version: 0.16.0
+  - apiVersion: v2
     created: "2023-02-06T14:08:25.617558944Z"
     dependencies:
     - name: common
@@ -400,4 +419,4 @@ entries:
     urls:
     - https://github.com/backstage/charts/releases/download/backstage-0.5.0/backstage-0.5.0.tgz
     version: 0.5.0
-generated: "2023-02-06T14:08:25.617942868Z"
+generated: "2023-02-09T15:48:51.066258965Z"
