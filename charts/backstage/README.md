@@ -129,6 +129,13 @@ The command removes all the Kubernetes components associated with the chart and 
 | ingress.tls.enabled | Enable TLS configuration for the host defined at `ingress.host` parameter | bool | `false` |
 | ingress.tls.secretName | The name to which the TLS Secret will be called | string | `""` |
 | kubeVersion | Override Kubernetes version | string | `""` |
+| metrics | Metrics configuration | object | `{"serviceMonitor":{"annotations":{},"enabled":false,"interval":null,"labels":{},"path":"/metrics"}}` |
+| metrics.serviceMonitor | ServiceMonitor configuration <br /> Allows configuring your backstage instance as a scrape target for [Prometheus](https://github.com/prometheus/prometheus) using a ServiceMonitor custom resource that [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) can understand. | object | `{"annotations":{},"enabled":false,"interval":null,"labels":{},"path":"/metrics"}` |
+| metrics.serviceMonitor.annotations | ServiceMonitor annotations | object | `{}` |
+| metrics.serviceMonitor.enabled | If enabled, a ServiceMonitor resource for Prometheus Operator is created <br /> Prometheus Operator must be installed in your cluster prior to enabling. | bool | `false` |
+| metrics.serviceMonitor.interval | ServiceMonitor scrape interval | string | `nil` |
+| metrics.serviceMonitor.labels | Additional ServiceMonitor labels | object | `{}` |
+| metrics.serviceMonitor.path | ServiceMonitor endpoint path <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/6f7eb97c755224bca1915050c4505d4d4a7ed60a/contrib/docs/tutorials/prometheus-metrics.md). | string | `"/metrics"` |
 | nameOverride | String to partially override common.names.fullname | string | `""` |
 | networkPolicy | Network policies <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/ | object | `{"egressRules":{"customRules":[]},"enabled":false,"externalAccess":{"from":[]}}` |
 | networkPolicy.egressRules | Custom network policy rule | object | `{"customRules":[]}` |
@@ -163,12 +170,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
 | serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
 | serviceAccount.name | Name of the ServiceAccount to use If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
-| serviceMonitor.annotations | ServiceMonitor annotations | object | `{}` |
-| serviceMonitor.enabled | If enabled, ServiceMonitor resources for Prometheus Operator are created | bool | `false` |
-| serviceMonitor.interval | ServiceMonitor scrape interval | string | `nil` |
-| serviceMonitor.labels | Additional ServiceMonitor labels | object | `{}` |
-| serviceMonitor.namespaceSelector | Namespace selector for ServiceMonitor resources | object | `{}` |
-| serviceMonitor.path | ServiceMonitor endpoint path | string | `"/metrics"` |
 
 ## Configure your Backstage instance
 
