@@ -136,7 +136,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | metrics.serviceMonitor.enabled | If enabled, a ServiceMonitor resource for Prometheus Operator is created <br /> Prometheus Operator must be installed in your cluster prior to enabling. | bool | `false` |
 | metrics.serviceMonitor.interval | ServiceMonitor scrape interval | string | `nil` |
 | metrics.serviceMonitor.labels | Additional ServiceMonitor labels | object | `{}` |
-| metrics.serviceMonitor.path | ServiceMonitor endpoint path <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/6f7eb97c755224bca1915050c4505d4d4a7ed60a/contrib/docs/tutorials/prometheus-metrics.md). | string | `"/metrics"` |
+| metrics.serviceMonitor.path | ServiceMonitor endpoint path <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md). | string | `"/metrics"` |
 | nameOverride | String to partially override common.names.fullname | string | `""` |
 | networkPolicy | Network policies <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/ | object | `{"egressRules":{"customRules":[]},"enabled":false,"externalAccess":{"from":[]}}` |
 | networkPolicy.egressRules | Custom network policy rule | object | `{"customRules":[]}` |

@@ -333,5 +333,5 @@ metrics:
     interval: null
 
     # -- ServiceMonitor endpoint path
-    # <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/6f7eb97c755224bca1915050c4505d4d4a7ed60a/contrib/docs/tutorials/prometheus-metrics.md).
+    # <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md).
     path: /metrics
