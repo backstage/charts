@@ -311,3 +311,27 @@ serviceAccount:
 
   # -- Auto-mount the service account token in the pod
   automountServiceAccountToken: true
+
+# -- Metrics configuration
+metrics:
+
+  # -- ServiceMonitor configuration
+  # <br /> Allows configuring your backstage instance as a scrape target for [Prometheus](https://github.com/prometheus/prometheus) using a ServiceMonitor custom resource that [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) can understand.
+  serviceMonitor:
+
+    # -- If enabled, a ServiceMonitor resource for Prometheus Operator is created
+    # <br /> Prometheus Operator must be installed in your cluster prior to enabling.
+    enabled: false
+
+    # -- ServiceMonitor annotations
+    annotations: {}
+
+    # -- Additional ServiceMonitor labels
+    labels: {}
+
+    # -- ServiceMonitor scrape interval
+    interval: null
+
+    # -- ServiceMonitor endpoint path
+    # <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md).
+    path: /metrics
