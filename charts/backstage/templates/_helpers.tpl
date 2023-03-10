@@ -6,6 +6,13 @@ Return the proper image name
 {{- end -}}
 
 {{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "backstage.renderImagePullSecrets" -}}
+{{- include "common.images.renderPullSecrets" (dict "images" (list .Values.backstage.image) "context" $) -}}
+{{- end -}}
+
+{{/*
  Create the name of the service account to use
  */}}
 {{- define "backstage.serviceAccountName" -}}
