@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.17.1](https://img.shields.io/badge/Version-0.17.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.18.0](https://img.shields.io/badge/Version-0.18.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -161,7 +161,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | service.loadBalancerIP | Backstage service Load Balancer IP  <br /> Ref: https://kubernetes.io/docs/user-guide/services/#type-loadbalancer | string | `""` |
 | service.loadBalancerSourceRanges | Load Balancer sources  <br /> Ref: https://kubernetes.io/docs/tasks/access-application-cluster/cnfigure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service <br /> E.g `loadBalancerSourceRanges: [10.10.10.0/24]` | list | `[]` |
 | service.nodePorts | Node port for the Backstage client connections Choose port between `30000-32767` | object | `{"backend":""}` |
-| service.ports | Backstage svc port for client connections | object | `{"backend":7007,"targetPort":"backend"}` |
+| service.ports | Backstage svc port for client connections | object | `{"backend":7007,"name":"http-backend","targetPort":"backend"}` |
+| service.ports.name | Backstage svc port name | string | `"http-backend"` |
 | service.ports.targetPort | Backstage svc target port referencing receiving pod container port | string | `"backend"` |
 | service.sessionAffinity | Control where client requests go, to the same pod or round-robin (values: `ClientIP` or `None`) <br /> Ref: https://kubernetes.io/docs/user-guide/services/ | string | `"None"` |
 | service.type | Kubernetes Service type | string | `"ClusterIP"` |

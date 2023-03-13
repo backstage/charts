@@ -35,7 +35,7 @@ spec:
   sessionAffinity: {{ .Values.service.sessionAffinity }}
   {{- end }}
   ports:
-    - name: http-backend
+    - name: {{ .Values.service.ports.name }}
       port: {{ .Values.service.ports.backend }}
       targetPort: {{ .Values.service.ports.targetPort }}
       protocol: TCP

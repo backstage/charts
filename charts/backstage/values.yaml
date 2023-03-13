@@ -195,6 +195,9 @@ service:
   ports:
     backend: 7007
 
+    # -- Backstage svc port name
+    name: http-backend
+
     # -- Backstage svc target port referencing receiving pod container port
     targetPort: backend
 
