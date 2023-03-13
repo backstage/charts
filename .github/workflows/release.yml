@@ -55,7 +55,7 @@ jobs:
             file_name=${chart##*/}
             chart_name=${file_name%-*}
             digest=$(awk -F "[, ]+" '/Digest/{print $NF}' < helm-push-output.log)
-            cosign sign "ghcr.io/${GITHUB_REPOSITORY}/${chart_name}@${digest}"
+            cosign sign -y "ghcr.io/${GITHUB_REPOSITORY}/${chart_name}@${digest}"
           done
         env:
           COSIGN_EXPERIMENTAL: 1
