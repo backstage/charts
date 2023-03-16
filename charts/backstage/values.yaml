@@ -81,7 +81,6 @@ ingress:
 backstage:
   # -- Number of deployment replicas
   replicas: 1
-  
   image:
 
     # -- Backstage image registry
