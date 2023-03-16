@@ -79,6 +79,9 @@ ingress:
 # -- Backstage parameters
 # @default -- See below
 backstage:
+  # -- Number of deployment replicas
+  replicas: 1
+  
   image:
 
     # -- Backstage image registry
