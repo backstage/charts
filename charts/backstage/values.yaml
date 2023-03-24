@@ -173,6 +173,10 @@ backstage:
   # -- Generates ConfigMap and configures it in the Backstage pods
   appConfig: {}
 
+  # -- Node labels for pod assignment
+  # <br /> Ref: https://kubernetes.io/docs/user-guide/node-selection/
+  nodeSelector: {}
+
   # -- Node tolerations for server scheduling to nodes with taints
   # <br /> Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   tolerations: []

@@ -36,6 +36,10 @@ spec:
       securityContext:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 8 }}
       {{- end }}
+      {{- with .Values.backstage.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if .Values.backstage.tolerations }}
       tolerations:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.tolerations "context" $) | nindent 8 }}
