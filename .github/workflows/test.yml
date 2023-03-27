@@ -46,7 +46,7 @@ jobs:
           python-version: 3.7
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@afea100a513515fbd68b0e72a7bb0ae34cb62aec # pin@v2.3.0
+        uses: helm/chart-testing-action@e8788873172cb653a90ca2e819d79d65a66d4e76 # pin@v2.3.0
 
       - name: "Add NGINX Ingress and Bitnami Repository"
         run: |
