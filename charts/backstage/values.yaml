@@ -188,6 +188,9 @@ backstage:
   # -- Annotations to add to the backend deployment pods
   podAnnotations: {}
 
+  # -- Additional custom annotations for the `Deployment` resource
+  annotations: {}
+
 ## @section Traffic Exposure parameters
 
 ## Service parameters
