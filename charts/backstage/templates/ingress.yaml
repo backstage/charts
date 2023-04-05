@@ -1,9 +1,10 @@
 {{- if .Values.ingress.enabled }}
+{{- $host := required `property "ingress.host" must be set` .Values.ingress.host }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "common.names.fullname" . }}
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: backstage
     {{- if .Values.commonLabels }}
@@ -23,11 +24,11 @@ spec:
   {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
-      - {{ .Values.ingress.host }}
-      secretName: {{ .Values.ingress.tls.secretName }}
+      - {{ $host | quote }}
+      secretName: {{ required `property "ingress.tls.secretName" must be set` .Values.ingress.tls.secretName }}
   {{- end }}
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{ $host | quote }}
       http:
         paths:
           - path: /
@@ -36,5 +37,5 @@ spec:
               service:
                 name: {{ include "common.names.fullname" . }}
                 port:
-                  number: {{ .Values.service.ports.backend }}
+                  name: {{ .Values.service.ports.name }}
 {{- end }}

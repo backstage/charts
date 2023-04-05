@@ -2,8 +2,8 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "common.names.fullname" $ }}
-  namespace: {{ .Release.Namespace | quote }}
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   {{- if or .Values.commonAnnotations .Values.metrics.serviceMonitor.annotations  }}
   annotations:
     {{- if $.Values.commonAnnotations }}
@@ -13,7 +13,7 @@ metadata:
     {{- include "common.tplvalues.render" ( dict "value" .Values.metrics.serviceMonitor.annotations "context" $ ) | nindent 4 }}
     {{- end }}
   {{- end }}
-  labels: {{ include "common.labels.standard" . | nindent 4 }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: backstage
     {{- if .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
@@ -24,14 +24,23 @@ metadata:
 spec:
   namespaceSelector:
     matchNames:
-      - {{ .Release.Namespace | quote }}
+      - {{ include "common.names.namespace" . | quote }}
   selector:
-    matchLabels: {{ include "common.labels.standard" . | nindent 6 }}
+    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: backstage
   endpoints:
   - port: http-backend
     path: {{ .Values.metrics.serviceMonitor.path }}
     {{- with .Values.metrics.serviceMonitor.interval }}
     interval: {{ . }}
+    {{- end }}
+    {{- with .Values.metrics.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ . }}
+    {{- end }}
+    {{- with .Values.metrics.serviceMonitor.relabelings }}
+    relabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 6 }}
+    {{- end }}
+    {{- with .Values.metrics.serviceMonitor.metricRelabelings }}
+    metricRelabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 6 }}
     {{- end }}
 {{- end -}}

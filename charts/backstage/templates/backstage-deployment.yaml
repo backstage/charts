@@ -1,12 +1,12 @@
 {{- $imageRepository := .Values.backstage.image.repository | required "The repository name of the image is required (e.g. my-backstage:tag | docker.io/my-backstage:tag) !" -}}
 {{- $imageTag := .Values.backstage.image.tag | required "The image tag is required (e.g my-backstage:tag | docker.io/my-backstage:tag) !" -}}
-{{- $installDir := .Values.backstage.installDir -}}
+{{- $installDir := .Values.backstage.installDir | trimSuffix "/" -}}
 ---
 apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
   name: {{ include "common.names.fullname" . }}
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{ include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: backstage
     {{- if .Values.commonLabels }}
@@ -50,9 +50,9 @@ spec:
       volumes:
         {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
         {{- range .Values.backstage.extraAppConfig }}
-        - name: {{ .configMapRef }}
+        - name: {{ required `property "backstage.extraAppConfig[].configMapRef" must be set` .configMapRef | quote }}
           configMap:
-            name: {{ .configMapRef }}
+            name: {{ .configMapRef | quote }}
         {{- end }}
         {{- if .Values.backstage.extraVolumes }}
           {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumes "context" $ ) | nindent 8 }}
@@ -61,7 +61,7 @@ spec:
         {{- if .Values.backstage.appConfig }}
         - name: backstage-app-config
           configMap:
-            name: backstage-app-config
+            name: {{ include "backstage.appConfigName" . | quote }}
         {{- end }}
       {{- include "backstage.renderImagePullSecrets" . | nindent 6 }}
       {{- if .Values.backstage.initContainers }}
@@ -92,12 +92,12 @@ spec:
           {{- if .Values.backstage.extraAppConfig }}
           {{- range .Values.backstage.extraAppConfig }}
             - "--config"
-            - "{{ $installDir }}/{{ .filename }}"
+            - {{ printf "%s/%s" $installDir .filename | quote }}
           {{- end }}
           {{- end }}
           {{- if .Values.backstage.appConfig }}
             - "--config"
-            - "{{ $installDir }}/app-config-from-configmap.yaml"
+            - {{ printf "%s/app-config-from-configmap.yaml" $installDir | quote }}
           {{- end }}
           {{- end }}
           {{- if .Values.backstage.resources }}
@@ -113,13 +113,13 @@ spec:
           env:
             - name: APP_CONFIG_backend_listen_port
               value: {{ .Values.backstage.containerPorts.backend | quote }}
-            {{- if .Values.postgresql.enabled }}
+            {{- if or .Values.postgresql.enabled .Values.externalPostgresql.enabled }}
             - name: POSTGRES_HOST
-              value: {{ include "backstage.postgresql.host" . }}
+              value: {{ include "backstage.postgresql.host" . | quote }}
             - name: POSTGRES_PORT
-              value: "5432"
+              value: {{ include "backstage.postgresql.port" . | quote }}
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.auth.username }}
+              value: {{ include "backstage.postgresql.username" . | quote }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -136,13 +136,13 @@ spec:
           {{- if (or .Values.backstage.extraAppConfig .Values.backstage.appConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
           volumeMounts:
             {{- range .Values.backstage.extraAppConfig }}
-            - name: {{ .configMapRef }}
-              mountPath: "{{ $installDir }}/{{ .filename }}"
-              subPath: {{ .filename }}
+            - name: {{ .configMapRef | quote }}
+              mountPath: {{ printf "%s/%s" $installDir .filename | quote }}
+              subPath: {{ required (printf `property "backstage.extraAppConfig[@configMapRef='%s'].filename" must be set` .configMapRef) .filename | quote }}
             {{- end }}
             {{- if .Values.backstage.appConfig }}
             - name: backstage-app-config
-              mountPath: "{{ $installDir }}/app-config-from-configmap.yaml"
+              mountPath: {{ printf "%s/app-config-from-configmap.yaml" $installDir | quote }}
               subPath: app-config.yaml
             {{- end }}
             {{- if .Values.backstage.extraVolumeMounts }}

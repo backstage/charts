@@ -271,6 +271,26 @@ networkPolicy:
     #             label: example
     customRules: []
 
+# -- External PostgreSQL Server Configuration.
+externalPostgresql:
+
+  # -- Switch to enable or disable the external PostgreSQL Server Configuration.
+  enabled: false
+
+  # -- External PostgreSQL Server Hostname.
+  host: ~
+
+  # -- External PostgreSQL Server Port.
+  port: 5432
+
+  # -- External PostgreSQL Server Username.
+  username: ~
+
+  # -- Kubernetes Secret Name that contains password for External PostgreSQL Server.
+  passwordSecret: ~
+
+  # -- Key in the Kubernetes Secret Name with PostgreSQL Server password.
+  passwordSecretKey: password
 
 # -- PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml)
 # @default -- See below
@@ -346,6 +366,15 @@ metrics:
     # -- ServiceMonitor scrape interval
     interval: null
 
+    # -- ServiceMonitor scrape timeout
+    scrapeTimeout: null
+
     # -- ServiceMonitor endpoint path
     # <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md).
     path: /metrics
+
+    # -- ServiceMonitor relabelings
+    relabelings: []
+
+    # -- ServiceMonitor metric relabelings
+    metricRelabelings: []
