@@ -113,13 +113,13 @@ spec:
           env:
             - name: APP_CONFIG_backend_listen_port
               value: {{ .Values.backstage.containerPorts.backend | quote }}
-            {{- if .Values.postgresql.enabled }}
+            {{- if or .Values.postgresql.enabled .Values.externalPostgresql.enabled }}
             - name: POSTGRES_HOST
-              value: {{ include "backstage.postgresql.host" . }}
+              value: {{ include "backstage.postgresql.host" . | quote }}
             - name: POSTGRES_PORT
-              value: "5432"
+              value: {{ include "backstage.postgresql.port" . | quote }}
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.auth.username }}
+              value: {{ include "backstage.postgresql.username" . | quote }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

@@ -1,0 +1,6 @@
+externalPostgresql:
+  enabled: true
+  host: backstage-postgresql
+  username: backstage
+  passwordSecret: backstage-postgresql
+  passwordSecretKey: password
