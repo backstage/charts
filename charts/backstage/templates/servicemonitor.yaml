@@ -29,9 +29,18 @@ spec:
     matchLabels: {{ include "common.labels.standard" . | nindent 6 }}
       app.kubernetes.io/component: backstage
   endpoints:
-  - port: http-backend
+  - port: {{ .Values.service.ports.name }}
     path: {{ .Values.metrics.serviceMonitor.path }}
     {{- with .Values.metrics.serviceMonitor.interval }}
     interval: {{ . }}
+    {{- end }}
+    {{- with .Values.metrics.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ . }}
+    {{- end }}
+    {{- with .Values.metrics.serviceMonitor.relabelings }}
+    relabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 6 }}
+    {{- end }}
+    {{- with .Values.metrics.serviceMonitor.metricRelabelings }}
+    metricRelabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 6 }}
     {{- end }}
 {{- end -}}

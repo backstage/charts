@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.21.0](https://img.shields.io/badge/Version-0.21.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.22.0](https://img.shields.io/badge/Version-0.22.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -133,13 +133,16 @@ The command removes all the Kubernetes components associated with the chart and 
 | ingress.tls.enabled | Enable TLS configuration for the host defined at `ingress.host` parameter | bool | `false` |
 | ingress.tls.secretName | The name to which the TLS Secret will be called | string | `""` |
 | kubeVersion | Override Kubernetes version | string | `""` |
-| metrics | Metrics configuration | object | `{"serviceMonitor":{"annotations":{},"enabled":false,"interval":null,"labels":{},"path":"/metrics"}}` |
-| metrics.serviceMonitor | ServiceMonitor configuration <br /> Allows configuring your backstage instance as a scrape target for [Prometheus](https://github.com/prometheus/prometheus) using a ServiceMonitor custom resource that [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) can understand. | object | `{"annotations":{},"enabled":false,"interval":null,"labels":{},"path":"/metrics"}` |
+| metrics | Metrics configuration | object | `{"serviceMonitor":{"annotations":{},"enabled":false,"interval":null,"labels":{},"metricRelabelings":[],"path":"/metrics","relabelings":[],"scrapeTimeout":null}}` |
+| metrics.serviceMonitor | ServiceMonitor configuration <br /> Allows configuring your backstage instance as a scrape target for [Prometheus](https://github.com/prometheus/prometheus) using a ServiceMonitor custom resource that [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) can understand. | object | `{"annotations":{},"enabled":false,"interval":null,"labels":{},"metricRelabelings":[],"path":"/metrics","relabelings":[],"scrapeTimeout":null}` |
 | metrics.serviceMonitor.annotations | ServiceMonitor annotations | object | `{}` |
 | metrics.serviceMonitor.enabled | If enabled, a ServiceMonitor resource for Prometheus Operator is created <br /> Prometheus Operator must be installed in your cluster prior to enabling. | bool | `false` |
 | metrics.serviceMonitor.interval | ServiceMonitor scrape interval | string | `nil` |
 | metrics.serviceMonitor.labels | Additional ServiceMonitor labels | object | `{}` |
+| metrics.serviceMonitor.metricRelabelings | ServiceMonitor metric relabelings | list | `[]` |
 | metrics.serviceMonitor.path | ServiceMonitor endpoint path <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md). | string | `"/metrics"` |
+| metrics.serviceMonitor.relabelings | ServiceMonitor relabelings | list | `[]` |
+| metrics.serviceMonitor.scrapeTimeout | ServiceMonitor scrape timeout | string | `nil` |
 | nameOverride | String to partially override common.names.fullname | string | `""` |
 | networkPolicy | Network policies <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/ | object | `{"egressRules":{"customRules":[]},"enabled":false,"externalAccess":{"from":[]}}` |
 | networkPolicy.egressRules | Custom network policy rule | object | `{"customRules":[]}` |

@@ -346,6 +346,15 @@ metrics:
     # -- ServiceMonitor scrape interval
     interval: null
 
+    # -- ServiceMonitor scrape timeout
+    scrapeTimeout: null
+
     # -- ServiceMonitor endpoint path
     # <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md).
     path: /metrics
+
+    # -- ServiceMonitor relabelings
+    relabelings: []
+
+    # -- ServiceMonitor metric relabelings
+    metricRelabelings: []

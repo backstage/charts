@@ -1,0 +1,13 @@
+metrics:
+  serviceMonitor:
+    interval: 30s
+    scrapeTimeout: 10s
+    relabelings:
+      - action: labeldrop
+        regex: "^(test)$"
+    metricRelabelings:
+      - action: labeldrop
+        regex: "^(endpoint|instance)$"
+      - action: replace
+        targetLabel: job
+        replacement: '{{ include "common.names.fullname" . }}'
