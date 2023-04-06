@@ -1,0 +1,9 @@
+backstage:
+  topologySpreadConstraints: |-
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          {{- include "common.labels.matchLabels" . | nindent 6 }}
+          app.kubernetes.io/component: backstage

@@ -1,0 +1,8 @@
+backstage:
+  podAffinityPreset: soft
+  podAntiAffinityPreset: soft
+  nodeAffinityPreset:
+    type: hard
+    key: kubernetes.io/os
+    values:
+      - linux

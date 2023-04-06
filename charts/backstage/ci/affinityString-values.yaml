@@ -1,0 +1,21 @@
+backstage:
+  affinity: |-
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                  - linux
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            topologyKey: kubernetes.io/hostname
+            namespaces:
+              - {{ include "common.names.namespace" . | quote }}
+            labelSelector:
+              matchLabels:
+                {{- include "common.labels.matchLabels" . | nindent 12 }}
+                app.kubernetes.io/component: backstage
+          weight: 1

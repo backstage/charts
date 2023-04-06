@@ -39,6 +39,22 @@ spec:
       securityContext:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 8 }}
       {{- end }}
+      {{- if .Values.backstage.affinity }}
+      affinity:
+        {{- include "common.tplvalues.render" (dict "value" .Values.backstage.affinity "context" $) | nindent 8 }}
+      {{- else }}
+      affinity:
+        podAffinity:
+          {{- include "common.affinities.pods" (dict "type" .Values.backstage.podAffinityPreset "component" "backstage" "context" $) | nindent 10 }}
+        podAntiAffinity:
+          {{- include "common.affinities.pods" (dict "type" .Values.backstage.podAntiAffinityPreset "component" "backstage" "context" $) | nindent 10 }}
+        nodeAffinity:
+          {{- include "common.affinities.nodes" (dict "type" .Values.backstage.nodeAffinityPreset.type "key" .Values.backstage.nodeAffinityPreset.key "values" .Values.backstage.nodeAffinityPreset.values) | nindent 10 }}
+      {{- end }}
+      {{- if .Values.backstage.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- include "common.tplvalues.render" (dict "value" .Values.backstage.topologySpreadConstraints "context" .) | nindent 8 }}
+      {{- end }}
       {{- if .Values.backstage.nodeSelector }}
       nodeSelector:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.nodeSelector "context" $) | nindent 8 }}

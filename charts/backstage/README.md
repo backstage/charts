@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.21.0](https://img.shields.io/badge/Version-0.21.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.22.0](https://img.shields.io/badge/Version-0.22.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -86,6 +86,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Key | Description | Type | Default |
 |-----|-------------|------|---------|
 | backstage | Backstage parameters | object | See below |
+| backstage.affinity | Affinity for pod assignment <br /> Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity <br /> Note: podAffinityPreset, podAntiAffinityPreset, and nodeAffinityPreset will be ignored when it's set  | object | `{}` |
 | backstage.annotations | Additional custom annotations for the `Deployment` resource | object | `{}` |
 | backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
 | backstage.args | Backstage container command arguments | list | `[]` |
@@ -106,12 +107,19 @@ The command removes all the Kubernetes components associated with the chart and 
 | backstage.image.tag | Backstage image tag (immutable tags are recommended) | string | `"latest"` |
 | backstage.initContainers | Backstage container init containers | list | `[]` |
 | backstage.installDir | Directory containing the backstage installation | string | `"/app"` |
+| backstage.nodeAffinityPreset | Node affinity preset <br /> Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity | object | `{"key":"","type":"","values":[]}` |
+| backstage.nodeAffinityPreset.key | Node label key to match Ignored if `affinity` is set. <!-- E.g. key: "kubernetes.io/e2e-az-name" --> | string | `""` |
+| backstage.nodeAffinityPreset.type | Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard` | string | `""` |
+| backstage.nodeAffinityPreset.values | Node label values to match. Ignored if `affinity` is set. <!-- E.g. values:   - e2e-az1   - e2e-az2 --> | list | `[]` |
 | backstage.nodeSelector | Node labels for pod assignment <br /> Ref: https://kubernetes.io/docs/user-guide/node-selection/ | object | `{}` |
+| backstage.podAffinityPreset | Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard` <br /> Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity | string | `""` |
 | backstage.podAnnotations | Annotations to add to the backend deployment pods | object | `{}` |
+| backstage.podAntiAffinityPreset | Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard` <br /> Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity | string | `""` |
 | backstage.podSecurityContext | Security settings for a Pod.  The security settings that you specify for a Pod apply to all Containers in the Pod. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod | object | `{}` |
 | backstage.replicas | Number of deployment replicas | int | `1` |
 | backstage.resources | Resource requests/limits <br /> Ref: https://kubernetes.io/docs/user-guide/compute-resources/ <!-- E.g. resources:   limits:     memory: 1Gi     cpu: 1000m   requests:     memory: 250Mi     cpu: 100m --> | object | `{}` |
 | backstage.tolerations | Node tolerations for server scheduling to nodes with taints <br /> Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/ | list | `[]` |
+| backstage.topologySpreadConstraints | Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template <br /> Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods  | list | `[]` |
 | clusterDomain | Default Kubernetes cluster domain | string | `"cluster.local"` |
 | commonAnnotations | Annotations to add to all deployed objects | object | `{}` |
 | commonLabels | Labels to add to all deployed objects | object | `{}` |
