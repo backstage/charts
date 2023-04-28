@@ -1,0 +1,7 @@
+extraDeploy:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: foo
+  data:
+    bar: baz
