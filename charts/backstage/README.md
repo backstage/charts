@@ -5,6 +5,19 @@
 
 A Helm chart for deploying a Backstage application
 
+**Homepage:** <https://backstage.io>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Backstage |  | <https://backstage.io> |
+
+## Source Code
+
+* <https://github.com/backstage/charts>
+* <https://github.com/backstage/backstage>
+
 ---
 
 [Backstage](https://backstage.io) is an open platform for building developer portals. Powered by a centralized software catalog, Backstage restores order to your microservices and infrastructure and enables your product teams to ship high-quality code quickly — without compromising autonomy.
