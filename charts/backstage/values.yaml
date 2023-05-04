@@ -96,7 +96,7 @@ backstage:
 
     # -- Specify a imagePullPolicy.
     # Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-    # <br /> Ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+    # <br /> Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     pullPolicy: Always
 
     # -- Optionally specify an array of imagePullSecrets.
@@ -143,7 +143,7 @@ backstage:
   installDir: /app
 
   # -- Resource requests/limits
-  # <br /> Ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  # <br /> Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
   # <!-- E.g.
   # resources:
   #   limits:
@@ -174,11 +174,11 @@ backstage:
   appConfig: {}
 
   # -- Node labels for pod assignment
-  # <br /> Ref: https://kubernetes.io/docs/user-guide/node-selection/
+  # <br /> Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
   nodeSelector: {}
 
   # -- Node tolerations for server scheduling to nodes with taints
-  # <br /> Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  # <br /> Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
   tolerations: []
   #  - key: "key"
   #    operator: "Equal|Exists"
@@ -219,7 +219,7 @@ service:
 
   # -- Control where client requests go, to the same pod or round-robin
   # (values: `ClientIP` or `None`)
-  # <br /> Ref: https://kubernetes.io/docs/user-guide/services/
+  # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/service/#session-stickiness
   sessionAffinity: None
 
   # -- Backstage service Cluster IP
@@ -229,12 +229,12 @@ service:
 
   # -- Backstage service Load Balancer IP
   #
-  # <br /> Ref: https://kubernetes.io/docs/user-guide/services/#type-loadbalancer
+  # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer
   loadBalancerIP: ""
 
   # -- Load Balancer sources
   #
-  # <br /> Ref: https://kubernetes.io/docs/tasks/access-application-cluster/cnfigure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer
   # <br /> E.g `loadBalancerSourceRanges: [10.10.10.0/24]`
   loadBalancerSourceRanges: []
 
