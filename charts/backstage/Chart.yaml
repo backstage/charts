@@ -25,6 +25,7 @@ icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/backstage/i
 keywords:
   - backstage
   - idp
+kubeVersion: ">= 1.19.0-0"
 maintainers:
   - name: Backstage
     url: https://backstage.io
@@ -37,4 +38,4 @@ sources:
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.22.1
+version: 0.22.2
