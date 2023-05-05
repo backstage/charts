@@ -306,7 +306,7 @@
                     "type": "array",
                     "description": "Translates into array of `envFrom.[].secretRef.name`",
                     "items": {
-                        "type": "object"
+                        "type": "string"
                     },
                     "default": [],
                     "examples": [
