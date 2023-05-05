@@ -1,7 +1,7 @@
 
 # Backstage Helm Chart
 
-![Version: 0.22.1](https://img.shields.io/badge/Version-0.22.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.22.2](https://img.shields.io/badge/Version-0.22.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
 
@@ -99,6 +99,8 @@ helm uninstall my-backstage-release
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
 ## Requirements
+
+Kubernetes: `>= 1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
