@@ -40,7 +40,6 @@ extraDeploy: []
 
 # -- Enable diagnostic mode in the Deployment
 diagnosticMode:
-
   # -- Enable diagnostic mode (all probes will be disabled and the command will be overridden)
   enabled: false
 
@@ -54,7 +53,6 @@ diagnosticMode:
 
 # -- Ingress parameters
 ingress:
-
   # -- Enable the creation of the ingress resource
   enabled: false
 
@@ -69,7 +67,6 @@ ingress:
 
   # -- Ingress TLS parameters
   tls:
-
     # -- Enable TLS configuration for the host defined at `ingress.host` parameter
     enabled: false
 
@@ -79,12 +76,10 @@ ingress:
 # -- Backstage parameters
 # @default -- See below
 backstage:
-
   # -- Number of deployment replicas
   replicas: 1
 
   image:
-
     # -- Backstage image registry
     registry: ghcr.io
 
@@ -154,6 +149,36 @@ backstage:
   #     cpu: 100m -->
   resources: {}
 
+  # -- Readiness Probe
+  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+  # <!-- E.g.
+  # readinessProbe:
+  #   failureThreshold: 3
+  #   httpGet:
+  #     path: /healthcheck
+  #     port: 7007
+  #     scheme: HTTP
+  #   initialDelaySeconds: 30
+  #   periodSeconds: 10
+  #   successThreshold: 2
+  #   timeoutSeconds: 2
+  readinessProbe: {}
+
+  # -- Liveness Probe
+  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+  # <!-- E.g.
+  # livenessProbe:
+  #   failureThreshold: 3
+  #   httpGet:
+  #     path: /healthcheck
+  #     port: 7007
+  #     scheme: HTTP
+  #   initialDelaySeconds: 60
+  #   periodSeconds: 10
+  #   successThreshold: 1
+  #   timeoutSeconds: 2
+  livenessProbe: {}
+
   # -- Security settings for a Pod.
   #  The security settings that you specify for a Pod apply to all Containers in the Pod.
   # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
@@ -198,7 +223,6 @@ backstage:
 # -- Service parameters
 # @default -- See below
 service:
-
   # -- Kubernetes Service type
   type: ClusterIP
 
@@ -252,7 +276,6 @@ service:
 # -- Network policies
 # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
 networkPolicy:
-
   # -- networkPolicy.enabled Specifies whether a NetworkPolicy should be created
   enabled: false
 
@@ -261,7 +284,6 @@ networkPolicy:
 
   # -- Custom network policy rule
   egressRules:
-
     # -- Additional custom egress rules
     # e.g:
     # customRules:
@@ -271,17 +293,14 @@ networkPolicy:
     #             label: example
     customRules: []
 
-
 # -- PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml)
 # @default -- See below
 postgresql:
-
   # -- Switch to enable or disable the PostgreSQL helm chart
   enabled: false
 
   # -- The authentication details of the Postgres database
   auth:
-
     # -- Name for a custom user to create
     username: bn_backstage
 
@@ -293,7 +312,6 @@ postgresql:
 
     # -- The secret keys Postgres will look for to retrieve the relevant password
     secretKeys:
-
       # -- The key in which Postgres will look for, for the admin password, in the existing Secret
       adminPasswordKey: admin-password
 
@@ -309,7 +327,6 @@ postgresql:
 # -- Service Account Configuration
 # @default -- See below
 serviceAccount:
-
   # -- Enable the creation of a ServiceAccount for Backstage pods
   create: false
 
@@ -328,11 +345,9 @@ serviceAccount:
 
 # -- Metrics configuration
 metrics:
-
   # -- ServiceMonitor configuration
   # <br /> Allows configuring your backstage instance as a scrape target for [Prometheus](https://github.com/prometheus/prometheus) using a ServiceMonitor custom resource that [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) can understand.
   serviceMonitor:
-
     # -- If enabled, a ServiceMonitor resource for Prometheus Operator is created
     # <br /> Prometheus Operator must be installed in your cluster prior to enabling.
     enabled: false

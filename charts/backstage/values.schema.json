@@ -362,6 +362,46 @@
                         }
                     ]
                 },
+                "readinessProbe": {
+                    "title": "Readiness probe",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "default": {},
+                    "examples": [
+                        {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthcheck",
+                                "port": 7007,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 30,
+                            "periodSeconds": 10,
+                            "successThreshold": 2,
+                            "timeoutSeconds": 2
+                        }
+                    ]
+                },
+                "livenessProbe": {
+                    "title": "Liveness probe",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "default": {},
+                    "examples": [
+                        {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthcheck",
+                                "port": 7007,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 2
+                        }
+                    ]
+                },
                 "podSecurityContext": {
                     "title": "Security settings for a Pod.",
                     "description": "The security settings that you specify for a Pod apply to all Containers in the Pod. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod",
