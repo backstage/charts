@@ -143,6 +143,7 @@ backstage:
   installDir: /app
 
   # -- Resource requests/limits
+  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
   # <br /> Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
   # <!-- E.g.
   # resources:
@@ -301,6 +302,7 @@ networkPolicy:
     #           matchLabels:
     #             label: example
     customRules: []
+
 
 # -- PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml)
 # @default -- See below
