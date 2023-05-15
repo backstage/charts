@@ -143,7 +143,6 @@ backstage:
   installDir: /app
 
   # -- Resource requests/limits
-  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
   # <br /> Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
   # <!-- E.g.
   # resources:
@@ -172,6 +171,7 @@ backstage:
   readinessProbe: {}
 
   # -- Liveness Probe
+  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
   # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
   # <!-- E.g.
   # livenessProbe:
