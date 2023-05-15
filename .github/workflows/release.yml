@@ -48,6 +48,9 @@ jobs:
       - name: Install Cosign
         uses: sigstore/cosign-installer@204a51a57a74d190b284a0ce69b44bc37201f343 #pin@v3.0.3
 
+      - name: Install Oras
+        uses: oras-project/setup-oras@c90396b2ddabd5a364e6551a79984c86cc036996 # v1.0.0
+
       - name: Publish and Sign OCI Charts
         run: |
           for chart in `find .cr-release-packages -name '*.tgz' -print`; do
@@ -56,6 +59,8 @@ jobs:
             chart_name=${file_name%-*}
             digest=$(awk -F "[, ]+" '/Digest/{print $NF}' < helm-push-output.log)
             cosign sign -y "ghcr.io/${GITHUB_REPOSITORY}/${chart_name}@${digest}"
+
+            oras push "ghcr.io/${GITHUB_REPOSITORY}/${chart_name}:artifacthub.io" "./charts/${chart_name}/artifacthub-repo.yml:application/vnd.cncf.artifacthub.repository-metadata.layer.v1.yaml"
           done
         env:
           COSIGN_EXPERIMENTAL: 1
