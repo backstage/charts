@@ -46,7 +46,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Cosign
-        uses: sigstore/cosign-installer@204a51a57a74d190b284a0ce69b44bc37201f343 #pin@v3.0.3
+        uses: sigstore/cosign-installer@dd6b2e2b610a11fd73dd187a43d57cc1394e35f9 #pin@v3.0.5
 
       - name: Install Oras
         uses: oras-project/setup-oras@c90396b2ddabd5a364e6551a79984c86cc036996 # v1.0.0
