@@ -154,6 +154,38 @@ backstage:
   #     cpu: 100m -->
   resources: {}
 
+  # -- Readiness Probe
+  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
+  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+  # <!-- E.g.
+  # readinessProbe:
+  #   failureThreshold: 3
+  #   httpGet:
+  #     path: /healthcheck
+  #     port: 7007
+  #     scheme: HTTP
+  #   initialDelaySeconds: 30
+  #   periodSeconds: 10
+  #   successThreshold: 2
+  #   timeoutSeconds: 2
+  readinessProbe: {}
+
+  # -- Liveness Probe
+  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
+  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+  # <!-- E.g.
+  # livenessProbe:
+  #   failureThreshold: 3
+  #   httpGet:
+  #     path: /healthcheck
+  #     port: 7007
+  #     scheme: HTTP
+  #   initialDelaySeconds: 60
+  #   periodSeconds: 10
+  #   successThreshold: 1
+  #   timeoutSeconds: 2
+  livenessProbe: {}
+
   # -- Security settings for a Pod.
   #  The security settings that you specify for a Pod apply to all Containers in the Pod.
   # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod

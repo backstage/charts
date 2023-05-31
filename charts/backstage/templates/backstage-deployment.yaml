@@ -103,6 +103,12 @@ spec:
           {{- if .Values.backstage.resources }}
           resources: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.resources "context" $) | nindent 12 }}
           {{- end }}
+          {{- if .Values.backstage.readinessProbe }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.readinessProbe "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.backstage.livenessProbe }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.livenessProbe "context" $) | nindent 12 }}
+          {{- end }}
           {{- if .Values.backstage.extraEnvVarsSecrets }}
           envFrom:
             {{- range .Values.backstage.extraEnvVarsSecrets }}
