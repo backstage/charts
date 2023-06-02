@@ -28,6 +28,9 @@ spec:
     metadata:
       labels: {{- include "common.labels.standard" . | nindent 8 }}
         app.kubernetes.io/component: backstage
+        {{- if .Values.backstage.podLabels }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podLabels "context" $ ) | nindent 8 }}
+        {{- end }}
       annotations:
         checksum/app-config: {{ include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | sha256sum }}
         {{- if .Values.backstage.podAnnotations }}

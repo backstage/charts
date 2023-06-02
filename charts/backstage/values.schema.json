@@ -455,6 +455,14 @@
                     },
                     "default": {}
                 },
+                "podLabels": {
+                    "title": "Labels to add to the backend deployment pods",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
                 "annotations": {
                     "title": "Additional custom annotations for the `Deployment` resource",
                     "type": "object",
