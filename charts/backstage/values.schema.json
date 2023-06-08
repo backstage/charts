@@ -608,99 +608,99 @@
                     }
                 }
             }
-        }
-    },
-    "postgresql": {
-        "title": "PostgreSQL chart configuration",
-        "description": "Ref. https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml",
-        "$ref": "https://raw.githubusercontent.com/bitnami/charts/main/bitnami/postgresql/values.schema.json"
-    },
-    "serviceAccount": {
-        "title": "Service Account Configuration",
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-            "create": {
-                "title": "Enable the creation of a ServiceAccount for Backstage pods",
-                "type": "boolean",
-                "default": false
-            },
-            "name": {
-                "title": "Name of the ServiceAccount to use",
-                "description": "If not set and `serviceAccount.create` is true, a name is generated",
-                "type": "string",
-                "default": ""
-            },
-            "labels": {
-                "title": "Additional custom labels to the service ServiceAccount.",
-                "type": "object",
-                "additionalProperties": {
-                    "type": "string"
+        },
+        "postgresql": {
+            "title": "PostgreSQL chart configuration",
+            "description": "Ref. https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml",
+            "$ref": "https://raw.githubusercontent.com/bitnami/charts/main/bitnami/postgresql/values.schema.json"
+        },
+        "serviceAccount": {
+            "title": "Service Account Configuration",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "create": {
+                    "title": "Enable the creation of a ServiceAccount for Backstage pods",
+                    "type": "boolean",
+                    "default": false
                 },
-                "default": {}
-            },
-            "annotations": {
-                "title": "Additional custom annotations for the ServiceAccount.",
-                "type": "object",
-                "additionalProperties": {
-                    "type": "string"
+                "name": {
+                    "title": "Name of the ServiceAccount to use",
+                    "description": "If not set and `serviceAccount.create` is true, a name is generated",
+                    "type": "string",
+                    "default": ""
                 },
-                "default": {}
-            },
-            "automountServiceAccountToken": {
-                "title": "Auto-mount the service account token in the pod",
-                "type": "boolean",
-                "default": true
+                "labels": {
+                    "title": "Additional custom labels to the service ServiceAccount.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "annotations": {
+                    "title": "Additional custom annotations for the ServiceAccount.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "automountServiceAccountToken": {
+                    "title": "Auto-mount the service account token in the pod",
+                    "type": "boolean",
+                    "default": true
+                }
             }
-        }
-    },
-    "metrics": {
-        "title": "Metrics configuration",
-        "description": "Allows configuring your backstage instance as a scrape target for Prometheus. Ref: https://github.com/prometheus/prometheus",
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-            "serviceMonitor": {
-                "title": "ServiceMonitor configuration",
-                "description": "A custom resource that is consumed by Prometheus Operator. Ref: https://github.com/prometheus-operator/prometheus-operator",
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                    "enabled": {
-                        "title": "If enabled, a ServiceMonitor resource for Prometheus Operator is created",
-                        "description": "Prometheus Operator must be installed in your cluster prior to enabling.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "annotations": {
-                        "title": "ServiceMonitor annotations",
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
+        },
+        "metrics": {
+            "title": "Metrics configuration",
+            "description": "Allows configuring your backstage instance as a scrape target for Prometheus. Ref: https://github.com/prometheus/prometheus",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "serviceMonitor": {
+                    "title": "ServiceMonitor configuration",
+                    "description": "A custom resource that is consumed by Prometheus Operator. Ref: https://github.com/prometheus-operator/prometheus-operator",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "title": "If enabled, a ServiceMonitor resource for Prometheus Operator is created",
+                            "description": "Prometheus Operator must be installed in your cluster prior to enabling.",
+                            "type": "boolean",
+                            "default": false
                         },
-                        "default": {}
-                    },
-                    "labels": {
-                        "title": "Additional ServiceMonitor labels",
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
+                        "annotations": {
+                            "title": "ServiceMonitor annotations",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "default": {}
                         },
-                        "default": {}
-                    },
-                    "interval": {
-                        "title": "ServiceMonitor scrape interval",
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "default": null
-                    },
-                    "path": {
-                        "title": "ServiceMonitor endpoint path",
-                        "description": "ote that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the Prometheus metrics tutorial. https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md",
-                        "type": "string",
-                        "default": "/metrics"
+                        "labels": {
+                            "title": "Additional ServiceMonitor labels",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "default": {}
+                        },
+                        "interval": {
+                            "title": "ServiceMonitor scrape interval",
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "default": null
+                        },
+                        "path": {
+                            "title": "ServiceMonitor endpoint path",
+                            "description": "ote that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the Prometheus metrics tutorial. https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md",
+                            "type": "string",
+                            "default": "/metrics"
+                        }
                     }
                 }
             }
