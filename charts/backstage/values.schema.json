@@ -416,7 +416,10 @@
                 },
                 "appConfig": {
                     "title": "Generates ConfigMap and configures it in the Backstage pods",
-                    "type": "object",
+                    "type": [
+                        "object",
+                        "string"
+                    ],
                     "default": {},
                     "examples": [
                         {
