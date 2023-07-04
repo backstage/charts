@@ -220,6 +220,9 @@ backstage:
   # -- Annotations to add to the backend deployment pods
   podAnnotations: {}
 
+  # -- Labels to add to the backend deployment pods
+  podLabels: {}
+
   # -- Additional custom annotations for the `Deployment` resource
   annotations: {}
 
