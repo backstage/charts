@@ -256,7 +256,7 @@ Make sure to customize the name of the secret by changing `metadata.name` proper
 Now create the new secret in your Kubernetes cluster by running the following command:
 
 ```bash
-$ kubectl apply -f my-backstage-secrets.yaml`
+$ kubectl apply -f my-backstage-secrets.yaml
 ```
 
 Once the secret has been created, pass the secret's reference to your backstage instance by adding the following lines to your `values.yaml`:
@@ -277,7 +277,7 @@ It is possible to pass extra configuration files by defining them as [ConfigMap]
 To do so, run:
 
 ```bash
-$ kubectl create configmap my-app-config --from-file=app-config.extra.yaml=./local/path/to/your/app-config.extra.yaml`
+$ kubectl create configmap my-app-config --from-file=app-config.extra.yaml=./local/path/to/your/app-config.extra.yaml
 ```
 
 This command parses your local `app-config.extra.yaml` and creates a new ConfigMap called `my-app-config` which internally contains a file called `app-config.extra.yaml` with the content of the parsed file.
