@@ -49,7 +49,7 @@ jobs:
         uses: sigstore/cosign-installer@11086d25041f77fe8fe7b9ea4e48e3b9192b8f19 #pin@v3.1.2
 
       - name: Install Oras
-        uses: oras-project/setup-oras@c90396b2ddabd5a364e6551a79984c86cc036996 # v1.0.0
+        uses: oras-project/setup-oras@ee7dbe1144cb00080a89497f937dae78f85fce29 # v1.1.0
 
       - name: Publish and Sign OCI Charts
         run: |
