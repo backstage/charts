@@ -113,6 +113,9 @@ spec:
           {{- if .Values.backstage.livenessProbe }}
           livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.livenessProbe "context" $) | nindent 12 }}
           {{- end }}
+          {{- if .Values.backstage.startupProbe }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.startupProbe "context" $) | nindent 12 }}
+          {{- end }}
           {{- if .Values.backstage.extraEnvVarsSecrets }}
           envFrom:
             {{- range .Values.backstage.extraEnvVarsSecrets }}
