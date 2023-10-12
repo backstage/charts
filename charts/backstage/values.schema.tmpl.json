@@ -1,0 +1,772 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "Backstage chart schema",
+    "properties": {
+        "global": {
+            "title": "Global parameters.",
+            "type": "object",
+            "properties": {
+                "imageRegistry": {
+                    "title": "Global Docker image registry",
+                    "type": "string",
+                    "default": ""
+                },
+                "imagePullSecrets": {
+                    "title": "Global Docker registry secret names as an array",
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true,
+                    "examples": [
+                        [
+                            "myRegistryKeySecretName"
+                        ]
+                    ]
+                }
+            }
+        },
+        "kubeVersion": {
+            "title": "Override Kubernetes version",
+            "type": "string",
+            "default": ""
+        },
+        "nameOverride": {
+            "title": "String to partially override common.names.fullname",
+            "type": "string",
+            "default": ""
+        },
+        "fullnameOverride": {
+            "title": "String to fully override common.names.fullname",
+            "type": "string",
+            "default": ""
+        },
+        "clusterDomain": {
+            "title": "Default Kubernetes cluster domain",
+            "type": "string",
+            "default": "cluster.local"
+        },
+        "commonLabels": {
+            "title": "Labels to add to all deployed objects",
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            },
+            "default": {}
+        },
+        "commonAnnotations": {
+            "title": "Annotations to add to all deployed objects",
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            },
+            "default": {}
+        },
+        "extraDeploy": {
+            "title": "Array of extra objects to deploy with the release",
+            "type": "array",
+            "default": [],
+            "items": {
+                "type": [
+                    "string",
+                    "object"
+                ]
+            },
+            "uniqueItems": true
+        },
+        "diagnosticMode": {
+            "title": "Enable diagnostic mode in the Deployment",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "title": "Enable diagnostic mode",
+                    "description": "All probes will be disabled and the command will be overridden",
+                    "type": "boolean",
+                    "default": false
+                },
+                "command": {
+                    "title": "Command to override all containers in the Deployment",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "sleep"
+                    ]
+                },
+                "args": {
+                    "title": "Args to override all containers in the Deployment",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "infinity"
+                    ]
+                }
+            }
+        },
+        "ingress": {
+            "title": "Ingress parameters",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "title": "Enable the creation of the ingress resource",
+                    "type": "boolean",
+                    "default": false
+                },
+                "className": {
+                    "title": "Name of the IngressClass cluster resource which defines which controller will implement the resource.",
+                    "type": "string",
+                    "default": "",
+                    "examples": [
+                        "nginx"
+                    ]
+                },
+                "annotations": {
+                    "title": "Additional annotations for the Ingress resource",
+                    "type": "object",
+                    "default": {},
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "host": {
+                    "title": "Hostname to be used to expose the route to access the backstage application.",
+                    "type": "string",
+                    "default": "",
+                    "examples": [
+                        "backstage.10.0.0.1.nip.io"
+                    ]
+                },
+                "tls": {
+                    "title": "Ingress TLS parameters",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "title": "Enable TLS configuration",
+                            "description": "TLS for the host defined at `ingress.host` parameter",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "secretName": {
+                            "title": "The name to which the TLS Secret will be called",
+                            "type": "string",
+                            "default": ""
+                        }
+                    }
+                }
+            }
+        },
+        "backstage": {
+            "title": "Backstage parameters",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "replicas": {
+                    "title": "Number of deployment replicas",
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 1
+                },
+                "revisionHistoryLimit": {
+                    "title": "The count of deployment revisions",
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 10
+                },
+                "image": {
+                    "title": "Image parameters",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "registry": {
+                            "title": "Backstage image registry",
+                            "type": "string",
+                            "default": "ghcr.io",
+                            "examples": [
+                                "ghcr.io",
+                                "quay.io",
+                                "docker.io"
+                            ]
+                        },
+                        "repository": {
+                            "title": "Backstage image repository",
+                            "type": "string",
+                            "default": "backstage/backstage"
+                        },
+                        "tag": {
+                            "title": "Backstage image tag",
+                            "description": "Immutable tags are recommended.",
+                            "type": "string",
+                            "default": "latest"
+                        },
+                        "pullPolicy": {
+                            "title": "Specify a imagePullPolicy.",
+                            "description": "Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy",
+                            "type": "string",
+                            "default": "Always",
+                            "enum": [
+                                "Always",
+                                "IfNotPresent"
+                            ]
+                        },
+                        "pullSecrets": {
+                            "title": "Optionally specify an array of imagePullSecrets.",
+                            "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": [],
+                            "examples": [
+                                "myRegistryKeySecretName"
+                            ]
+                        },
+                        "debug": {
+                            "title": "Set to true if you would like to see extra information on logs",
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                },
+                "containerPorts": {
+                    "title": "Container ports on the Deployment",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "backend": {
+                            "title": "Backstage backend port.",
+                            "type": "integer",
+                            "default": 7007
+                        }
+                    }
+                },
+                "command": {
+                    "title": "Backstage container command",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "node",
+                        "packages/backend"
+                    ]
+                },
+                "args": {
+                    "title": "Backstage container command arguments",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": []
+                },
+                "extraAppConfig": {
+                    "title": "Extra app configuration files to inline into command arguments",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "filename": {
+                                "type": "string"
+                            },
+                            "configMapRef": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "extraContainers": {
+                    "title": "Deployment sidecars.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Container"
+                    },
+                    "default": []
+                },
+                "extraEnvVars": {
+                    "title": "Backstage container environment variables",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.EnvVar"
+                    },
+                    "default": [],
+                    "examples": [
+                        [
+                            {
+                                "name": "APP_CONFIG_backend_cache_store",
+                                "value": "memory"
+                            }
+                        ]
+                    ]
+                },
+                "extraEnvVarsSecrets": {
+                    "title": "Backstage container environment variables from Secrets",
+                    "type": "array",
+                    "description": "Translates into array of `envFrom.[].secretRef.name`",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "examples": [
+                        [
+                            "my-backstage-secrets"
+                        ]
+                    ]
+                },
+                "extraVolumeMounts": {
+                    "title": "Backstage container additional volume mounts",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.VolumeMount"
+                    },
+                    "default": []
+                },
+                "extraVolumes": {
+                    "title": "Backstage container additional volumes",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Volume"
+                    },
+                    "default": []
+                },
+                "initContainers": {
+                    "title": "Backstage container init containers",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Container"
+                    },
+                    "default": []
+                },
+                "installDir": {
+                    "title": "Directory containing the backstage installation",
+                    "type": "string",
+                    "default": "/app"
+                },
+                "resources": {
+                    "title": "Resource requests/limits",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements",
+                    "default": {},
+                    "examples": [
+                        {
+                            "limits": {
+                                "memory": "1Gi",
+                                "cpu": "1000m"
+                            },
+                            "requests": {
+                                "memory": "250Mi",
+                                "cpu": "100m"
+                            }
+                        }
+                    ]
+                },
+                "readinessProbe": {
+                    "title": "Readiness probe",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "default": {},
+                    "examples": [
+                        {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthcheck",
+                                "port": 7007,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 30,
+                            "periodSeconds": 10,
+                            "successThreshold": 2,
+                            "timeoutSeconds": 2
+                        }
+                    ]
+                },
+                "livenessProbe": {
+                    "title": "Liveness probe",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "default": {},
+                    "examples": [
+                        {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthcheck",
+                                "port": 7007,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 2
+                        }
+                    ]
+                },
+                "startupProbe": {
+                    "title": "Startup probe",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "default": {},
+                    "examples": [
+                        {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthcheck",
+                                "port": 7007,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 2
+                        }
+                    ]
+                },
+                "podSecurityContext": {
+                    "title": "Security settings for a Pod.",
+                    "description": "The security settings that you specify for a Pod apply to all Containers in the Pod. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext",
+                    "default": {}
+                },
+                "containerSecurityContext": {
+                    "title": "Security settings for a Container.",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container",
+                    "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext",
+                    "default": {}
+                },
+                "appConfig": {
+                    "title": "Generates ConfigMap and configures it in the Backstage pods",
+                    "type": [
+                        "object",
+                        "string"
+                    ],
+                    "default": {},
+                    "examples": [
+                        {
+                            "app": {
+                                "baseUrl": "https://somedomain.tld"
+                            }
+                        }
+                    ]
+                },
+                "nodeSelector": {
+                    "title": "Node labels for pod assignment",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "tolerations": {
+                    "title": "Node tolerations for server scheduling to nodes with taints",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.api.core.v1.Toleration"
+                    },
+                    "default": []
+                },
+                "podAnnotations": {
+                    "title": "Annotations to add to the backend deployment pods",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "podLabels": {
+                    "title": "Labels to add to the backend deployment pods",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "annotations": {
+                    "title": "Additional custom annotations for the `Deployment` resource",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                }
+            }
+        },
+        "service": {
+            "title": "Service parameters",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "title": "Kubernetes Service type",
+                    "type": "string",
+                    "default": "ClusterIP",
+                    "enum": [
+                        "ClusterIP",
+                        "NodePort",
+                        "LoadBalancer",
+                        "ExternalName"
+                    ]
+                },
+                "ports": {
+                    "title": "Backstage svc port for client connections",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "backend": {
+                            "title": "Backstage svc port number",
+                            "type": "integer",
+                            "default": 7007
+                        },
+                        "name": {
+                            "title": "Backstage svc port name",
+                            "type": "string",
+                            "default": "http-backend"
+                        },
+                        "targetPort": {
+                            "title": "Backstage svc target port referencing receiving pod container port",
+                            "type": "string",
+                            "default": "backend"
+                        }
+                    }
+                },
+                "nodePorts": {
+                    "title": "Node port for the Backstage client connections",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "backend": {
+                            "title": "Node port for backend",
+                            "type": [
+                                "string",
+                                "integer"
+                            ],
+                            "default": "",
+                            "minimum": 30000,
+                            "maximum": 32767
+                        }
+                    }
+                },
+                "sessionAffinity": {
+                    "title": "Control where client requests go, to the same pod or round-robin",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/service/#session-stickiness",
+                    "type": "string",
+                    "default": "None",
+                    "enum": [
+                        "None",
+                        "ClientIP"
+                    ]
+                },
+                "clusterIP": {
+                    "title": "Backstage service Cluster IP",
+                    "type": "string",
+                    "default": ""
+                },
+                "loadBalancerIP": {
+                    "title": "Backstage service Load Balancer IP",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer",
+                    "type": "string",
+                    "default": ""
+                },
+                "loadBalancerSourceRanges": {
+                    "title": "Load Balancer sources",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "examples": [
+                        "10.10.10.0/24"
+                    ]
+                },
+                "externalTrafficPolicy": {
+                    "title": "Backstage service external traffic policy",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip",
+                    "type": "string",
+                    "default": "Cluster",
+                    "enum": [
+                        "Cluster",
+                        "Local"
+                    ]
+                },
+                "annotations": {
+                    "title": "Additional custom annotations for Backstage service",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "extraPorts": {
+                    "title": "Extra ports to expose in the Backstage service",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                }
+            }
+        },
+        "networkPolicy": {
+            "title": "Network policies",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "title": "Specifies whether a NetworkPolicy should be created",
+                    "type": "boolean",
+                    "default": false
+                },
+                "ingressRules": {
+                    "title": "Custom egress rules for the network policy",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "customRules": {
+                            "title": "",
+                            "type": "array",
+                            "items": {
+                                "$ref": "https://kubernetesjsonschema.dev/v1.8.7/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyIngressRule"
+                            }
+                        },
+                        "namespaceSelector": {
+                            "title": "Namespace Selector.",
+                            "description": "Selects Namespaces using cluster scoped-labels.",
+                            "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+                            "default": {}
+                        },
+                        "podSelector": {
+                            "title": "Pod Selector.",
+                            "description": "Selects selects Pods in this namespace.",
+                            "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+                            "default": {}
+                        }
+                    }
+                },
+                "egressRules": {
+                    "title": "Custom egress rules for the network policy",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "customRules": {
+                            "title": "",
+                            "type": "array",
+                            "items": {
+                                "$ref": "https://kubernetesjsonschema.dev/v1.8.7/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyEgressRule"
+                            }
+                        },
+                        "denyConnectionsToExternal": {
+                            "title": "Deny external connections. Should not be enabled when working with an external database.",
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                }
+            }
+        },
+        "postgresql": {
+            "title": "PostgreSQL chart configuration",
+            "description": "Ref. https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml",
+            "$ref": "https://raw.githubusercontent.com/bitnami/charts/main/bitnami/postgresql/values.schema.json"
+        },
+        "serviceAccount": {
+            "title": "Service Account Configuration",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "create": {
+                    "title": "Enable the creation of a ServiceAccount for Backstage pods",
+                    "type": "boolean",
+                    "default": false
+                },
+                "name": {
+                    "title": "Name of the ServiceAccount to use",
+                    "description": "If not set and `serviceAccount.create` is true, a name is generated",
+                    "type": "string",
+                    "default": ""
+                },
+                "labels": {
+                    "title": "Additional custom labels to the service ServiceAccount.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "annotations": {
+                    "title": "Additional custom annotations for the ServiceAccount.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {}
+                },
+                "automountServiceAccountToken": {
+                    "title": "Auto-mount the service account token in the pod",
+                    "type": "boolean",
+                    "default": true
+                }
+            }
+        },
+        "metrics": {
+            "title": "Metrics configuration",
+            "description": "Allows configuring your backstage instance as a scrape target for Prometheus. Ref: https://github.com/prometheus/prometheus",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "serviceMonitor": {
+                    "title": "ServiceMonitor configuration",
+                    "description": "A custom resource that is consumed by Prometheus Operator. Ref: https://github.com/prometheus-operator/prometheus-operator",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "title": "If enabled, a ServiceMonitor resource for Prometheus Operator is created",
+                            "description": "Prometheus Operator must be installed in your cluster prior to enabling.",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "annotations": {
+                            "title": "ServiceMonitor annotations",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "default": {}
+                        },
+                        "labels": {
+                            "title": "Additional ServiceMonitor labels",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "default": {}
+                        },
+                        "interval": {
+                            "title": "ServiceMonitor scrape interval",
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "default": null
+                        },
+                        "path": {
+                            "title": "ServiceMonitor endpoint path",
+                            "description": "ote that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the Prometheus metrics tutorial. https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md",
+                            "type": "string",
+                            "default": "/metrics"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
