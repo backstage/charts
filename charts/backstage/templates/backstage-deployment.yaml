@@ -65,7 +65,7 @@ spec:
         {{- if .Values.backstage.appConfig }}
         - name: backstage-app-config
           configMap:
-            name: backstage-app-config
+            name: {{ include "common.names.fullname" . }}-app-config
         {{- end }}
       {{- include "backstage.renderImagePullSecrets" . | nindent 6 }}
       {{- if .Values.backstage.initContainers }}
