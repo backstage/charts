@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backstage-app-config
+  name: {{ include "common.names.fullname" . }}-app-config
 data:
   app-config.yaml: |
     {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | nindent 4 }}
