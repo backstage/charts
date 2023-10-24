@@ -617,7 +617,6 @@
         },
         "networkPolicy": {
             "title": "Network policies",
-            "description": "Not used in any template. Ref. https://kubernetes.io/docs/concepts/services-networking/network-policies/",
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -626,9 +625,31 @@
                     "type": "boolean",
                     "default": false
                 },
-                "externalAccess": {
-                    "title": "Probably custom ingress rules for the network policy",
-                    "type": "object"
+                "ingressRules": {
+                    "title": "Custom egress rules for the network policy",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "customRules": {
+                            "title": "",
+                            "type": "array",
+                            "items": {
+                                "$ref": "https://kubernetesjsonschema.dev/v1.8.7/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyIngressRule"
+                            }
+                        },
+                        "namespaceSelector": {
+                            "title": "Namespace Selector.",
+                            "description": "Selects Namespaces using cluster scoped-labels.",
+                            "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+                            "default": {}
+                        },
+                        "podSelector": {
+                            "title": "Pod Selector.",
+                            "description": "Selects selects Pods in this namespace.",
+                            "$ref": "https://kubernetesjsonschema.dev/master/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+                            "default": {}
+                        }
+                    }
                 },
                 "egressRules": {
                     "title": "Custom egress rules for the network policy",
@@ -641,6 +662,11 @@
                             "items": {
                                 "$ref": "https://kubernetesjsonschema.dev/v1.8.7/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyEgressRule"
                             }
+                        },
+                        "denyConnectionsToExternal": {
+                            "title": "Deny external connections. Should not be enabled when working with an external database.",
+                            "type": "boolean",
+                            "default": false
                         }
                     }
                 }

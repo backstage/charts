@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square)
+![Version: 1.5.1](https://img.shields.io/badge/Version-1.5.1-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -174,10 +174,12 @@ Kubernetes: `>= 1.19.0-0`
 | metrics.serviceMonitor.labels | Additional ServiceMonitor labels | object | `{}` |
 | metrics.serviceMonitor.path | ServiceMonitor endpoint path <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md). | string | `"/metrics"` |
 | nameOverride | String to partially override common.names.fullname | string | `""` |
-| networkPolicy | Network policies <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/ | object | `{"egressRules":{"customRules":[]},"enabled":false,"externalAccess":{"from":[]}}` |
-| networkPolicy.egressRules | Custom network policy rule | object | `{"customRules":[]}` |
-| networkPolicy.egressRules.customRules | Additional custom egress rules e.g: customRules:   - to:       - namespaceSelector:           matchLabels:             label: example | list | `[]` |
-| networkPolicy.enabled | networkPolicy.enabled Specifies whether a NetworkPolicy should be created | bool | `false` |
+| networkPolicy.egressRules.customRules | Additional custom egress rules | list | `[]` |
+| networkPolicy.egressRules.denyConnectionsToExternal | Deny external connections. Should not be enabled when working with an external database. | bool | `false` |
+| networkPolicy.enabled | Specifies whether a NetworkPolicy should be created | bool | `false` |
+| networkPolicy.ingressRules.customRules | Additional custom ingress rules | list | `[]` |
+| networkPolicy.ingressRules.namespaceSelector | Namespace selector label allowed to access the Backstage instance | object | `{}` |
+| networkPolicy.ingressRules.podSelector | Pod selector label allowed to access the Backstage instance | object | `{}` |
 | postgresql | PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml) | object | See below |
 | postgresql.architecture | PostgreSQL architecture (`standalone` or `replication`) | string | `"standalone"` |
 | postgresql.auth | The authentication details of the Postgres database | object | `{"existingSecret":"","password":"","secretKeys":{"adminPasswordKey":"admin-password","replicationPasswordKey":"replication-password","userPasswordKey":"user-password"},"username":"bn_backstage"}` |

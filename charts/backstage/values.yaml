@@ -304,27 +304,42 @@ service:
   # -- Extra ports to expose in the Backstage service (normally used with the `sidecar` value)
   extraPorts: []
 
-# -- Network policies
-# <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
+## @section NetworkPolicy parameters
+##
 networkPolicy:
-
-  # -- networkPolicy.enabled Specifies whether a NetworkPolicy should be created
+  # -- Specifies whether a NetworkPolicy should be created
   enabled: false
 
-  externalAccess:
-    from: []
+  ## Ingress Rules
+  ##
+  ingressRules:
 
-  # -- Custom network policy rule
-  egressRules:
+    # -- Namespace selector label allowed to access the Backstage instance
+    namespaceSelector: {}
 
-    # -- Additional custom egress rules
-    # e.g:
-    # customRules:
+    # -- Pod selector label allowed to access the Backstage instance
+    podSelector: {}
+
+    # -- Additional custom ingress rules
+    customRules: []
     #   - to:
     #       - namespaceSelector:
     #           matchLabels:
     #             label: example
+
+  ## Egress Rules
+  ##
+  egressRules:
+
+    # -- Deny external connections. Should not be enabled when working with an external database.
+    denyConnectionsToExternal: false
+
+    # -- Additional custom egress rules
     customRules: []
+    #   - to:
+    #       - namespaceSelector:
+    #           matchLabels:
+    #             label: example
 
 
 # -- PostgreSQL [chart configuration](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml)
