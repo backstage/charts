@@ -10,3 +10,11 @@ repos:
           - --template-files=./_templates.gotmpl
           # A base filename makes it relative to each chart directory found
           - --template-files=README.md.gotmpl
+  - repo: local
+    hooks:
+      - id: jsonschema-dereference
+        name: jsonschema-dereference
+        entry: python .pre-commit/jsonschema-dereference.py
+        additional_dependencies: [jsonref]
+        language: python
+        types_or: [yaml, json]
