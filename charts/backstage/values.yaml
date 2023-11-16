@@ -131,7 +131,10 @@ backstage:
   # -- Backstage container environment variables
   extraEnvVars: []
 
-  # -- Backstage container environment variables from Secrets
+  # -- Backstage container environment variables from existing ConfigMaps
+  extraEnvVarsCM: []
+
+  # -- Backstage container environment variables from existing Secrets
   extraEnvVarsSecrets: []
 
   # -- Backstage container additional volume mounts

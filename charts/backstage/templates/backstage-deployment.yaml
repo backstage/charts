@@ -116,8 +116,12 @@ spec:
           {{- if .Values.backstage.startupProbe }}
           startupProbe: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.startupProbe "context" $) | nindent 12 }}
           {{- end }}
-          {{- if .Values.backstage.extraEnvVarsSecrets }}
+          {{- if (or .Values.backstage.extraEnvVarsCM .Values.backstage.extraEnvVarsSecrets) }}
           envFrom:
+            {{- range .Values.backstage.extraEnvVarsCM }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
             {{- range .Values.backstage.extraEnvVarsSecrets }}
             - secretRef:
                 name: {{ . }}
