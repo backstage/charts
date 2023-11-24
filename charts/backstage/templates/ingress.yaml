@@ -27,7 +27,7 @@ spec:
       secretName: {{ .Values.ingress.tls.secretName }}
   {{- end }}
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{ include "common.tplvalues.render" ( dict "value" .Values.ingress.host "context" $ ) }}
       http:
         paths:
           - path: /
