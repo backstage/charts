@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 1.6.1](https://img.shields.io/badge/Version-1.6.1-informational?style=flat-square)
+![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -123,7 +123,8 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.extraAppConfig | Extra app configuration files to inline into command arguments | list | `[]` |
 | backstage.extraContainers | Deployment sidecars | list | `[]` |
 | backstage.extraEnvVars | Backstage container environment variables | list | `[]` |
-| backstage.extraEnvVarsSecrets | Backstage container environment variables from Secrets | list | `[]` |
+| backstage.extraEnvVarsCM | Backstage container environment variables from existing ConfigMaps | list | `[]` |
+| backstage.extraEnvVarsSecrets | Backstage container environment variables from existing Secrets | list | `[]` |
 | backstage.extraVolumeMounts | Backstage container additional volume mounts | list | `[]` |
 | backstage.extraVolumes | Backstage container additional volumes | list | `[]` |
 | backstage.image.debug | Set to true if you would like to see extra information on logs | bool | `false` |

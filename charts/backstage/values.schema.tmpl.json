@@ -307,8 +307,22 @@
                         ]
                     ]
                 },
+                "extraEnvVarsCM": {
+                    "title": "Backstage container environment variables from existing ConfigMaps",
+                    "type": "array",
+                    "description": "Translates into array of `envFrom.[].configMapRef.name`",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "examples": [
+                        [
+                            "my-backstage-configmap"
+                        ]
+                    ]
+                },
                 "extraEnvVarsSecrets": {
-                    "title": "Backstage container environment variables from Secrets",
+                    "title": "Backstage container environment variables from existing Secrets",
                     "type": "array",
                     "description": "Translates into array of `envFrom.[].secretRef.name`",
                     "items": {
