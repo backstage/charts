@@ -46,7 +46,9 @@ Return the Postgres Database hostname
 Return the Postgres Database Secret Name
 */}}
 {{- define "backstage.postgresql.databaseSecretName" -}}
-{{- if .Values.postgresql.auth.existingSecret }}
+{{- if ((((.Values).global).postgresql).auth).existingSecret }}
+    {{- tpl .Values.global.postgresql.auth.existingSecret $ -}}
+{{- else if .Values.postgresql.auth.existingSecret }}
     {{- tpl .Values.postgresql.auth.existingSecret $ -}}
 {{- else -}}
     {{- default (include "backstage.postgresql.fullname" .) (tpl .Values.postgresql.auth.existingSecret $) -}}
@@ -57,9 +59,16 @@ Return the Postgres Database Secret Name
 Return the Postgres databaseSecret key to retrieve credentials for database
 */}}
 {{- define "backstage.postgresql.databaseSecretKey" -}}
-{{- if .Values.postgresql.auth.existingSecret -}}
-    {{- .Values.postgresql.auth.secretKeys.userPasswordKey  -}}
+{{- $defaultDatabaseSecretKey := "password" -}}
+{{- if (or ((((.Values).global).postgresql).auth).existingSecret .Values.postgresql.auth.existingSecret) }}
+    {{- if (((((.Values).global).postgresql).auth).secretKeys).userPasswordKey -}}
+        {{- .Values.global.postgresql.auth.secretKeys.userPasswordKey  -}}
+    {{- else if ((((.Values).postgresql).auth).secretKeys).userPasswordKey -}}
+        {{- .Values.postgresql.auth.secretKeys.userPasswordKey  -}}
+    {{- else -}}
+        {{- print $defaultDatabaseSecretKey -}}
+    {{- end -}}
 {{- else -}}
-    {{- print "password" -}}
+    {{- print $defaultDatabaseSecretKey -}}
 {{- end -}}
 {{- end -}}
