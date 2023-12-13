@@ -3096,11 +3096,6 @@
                 "image": {
                     "additionalProperties": false,
                     "properties": {
-                        "debug": {
-                            "default": false,
-                            "title": "Set to true if you would like to see extra information on logs",
-                            "type": "boolean"
-                        },
                         "pullPolicy": {
                             "default": "Always",
                             "description": "Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy",
