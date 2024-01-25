@@ -44,7 +44,7 @@ This chart bootstraps a [Backstage](https://backstage.io/docs/deployment/docker)
 ## Prerequisites
 
 - Kubernetes 1.19+
-- Helm 3.2.0+
+- Helm 3.10+ minimum, 3.14+ recommended
 - PV provisioner support in the underlying infrastructure
 - [Backstage container image](https://backstage.io/docs/deployment/docker)
 
