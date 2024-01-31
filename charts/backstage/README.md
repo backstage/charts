@@ -114,6 +114,7 @@ Kubernetes: `>= 1.19.0-0`
 | Key | Description | Type | Default |
 |-----|-------------|------|---------|
 | backstage | Backstage parameters | object | See below |
+| backstage.affinity | Affinity for pod assignment | object | `{}` |
 | backstage.annotations | Additional custom annotations for the `Deployment` resource | object | `{}` |
 | backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
 | backstage.args | Backstage container command arguments | list | `[]` |

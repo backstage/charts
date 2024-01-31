@@ -4,6 +4,12 @@
         "backstage": {
             "additionalProperties": false,
             "properties": {
+                "affinity": {
+                    "default": {},
+                    "description": "Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity",
+                    "title": "Affinity for pod assignment",
+                    "type": "object"
+                },
                 "annotations": {
                     "additionalProperties": {
                         "type": "string"
