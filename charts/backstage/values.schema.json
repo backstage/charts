@@ -73,14 +73,16 @@
                                     "items": {
                                         "type": "string"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 },
                                 "drop": {
                                     "description": "Removed capabilities",
                                     "items": {
                                         "type": "string"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 }
                             },
                             "type": "object"
@@ -210,14 +212,16 @@
                                 "items": {
                                     "type": "string"
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
                             },
                             "command": {
                                 "description": "Entrypoint array. Not executed within a shell. The container image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
                                 "items": {
                                     "type": "string"
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
                             },
                             "env": {
                                 "description": "List of environment variables to set in the container. Cannot be updated.",
@@ -335,6 +339,10 @@
                                     "type": "object"
                                 },
                                 "type": "array",
+                                "x-kubernetes-list-map-keys": [
+                                    "name"
+                                ],
+                                "x-kubernetes-list-type": "map",
                                 "x-kubernetes-patch-merge-key": "name",
                                 "x-kubernetes-patch-strategy": "merge"
                             },
@@ -378,7 +386,8 @@
                                     },
                                     "type": "object"
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
                             },
                             "image": {
                                 "description": "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.",
@@ -402,7 +411,8 @@
                                                         "items": {
                                                             "type": "string"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     }
                                                 },
                                                 "type": "object"
@@ -434,7 +444,8 @@
                                                             ],
                                                             "type": "object"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     },
                                                     "path": {
                                                         "description": "Path to access on the HTTP server.",
@@ -511,7 +522,8 @@
                                                         "items": {
                                                             "type": "string"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     }
                                                 },
                                                 "type": "object"
@@ -543,7 +555,8 @@
                                                             ],
                                                             "type": "object"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     },
                                                     "path": {
                                                         "description": "Path to access on the HTTP server.",
@@ -623,7 +636,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -677,7 +691,8 @@
                                                     ],
                                                     "type": "object"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "path": {
                                                 "description": "Path to access on the HTTP server.",
@@ -811,7 +826,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -865,7 +881,8 @@
                                                     ],
                                                     "type": "object"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "path": {
                                                 "description": "Path to access on the HTTP server.",
@@ -1039,14 +1056,16 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "drop": {
                                                 "description": "Removed capabilities",
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -1160,7 +1179,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -1214,7 +1234,8 @@
                                                     ],
                                                     "type": "object"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "path": {
                                                 "description": "Path to access on the HTTP server.",
@@ -1332,6 +1353,10 @@
                                     "type": "object"
                                 },
                                 "type": "array",
+                                "x-kubernetes-list-map-keys": [
+                                    "devicePath"
+                                ],
+                                "x-kubernetes-list-type": "map",
                                 "x-kubernetes-patch-merge-key": "devicePath",
                                 "x-kubernetes-patch-strategy": "merge"
                             },
@@ -1372,6 +1397,10 @@
                                     "type": "object"
                                 },
                                 "type": "array",
+                                "x-kubernetes-list-map-keys": [
+                                    "mountPath"
+                                ],
+                                "x-kubernetes-list-type": "map",
                                 "x-kubernetes-patch-merge-key": "mountPath",
                                 "x-kubernetes-patch-strategy": "merge"
                             },
@@ -1676,7 +1705,8 @@
                                         "items": {
                                             "type": "string"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "path": {
                                         "description": "path is Optional: Used as the mounted root, rather than the full Ceph tree, default is /",
@@ -1776,7 +1806,8 @@
                                             ],
                                             "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "name": {
                                         "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
@@ -1902,7 +1933,8 @@
                                             ],
                                             "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     }
                                 },
                                 "type": "object"
@@ -1964,6 +1996,7 @@
                                                             "type": "string"
                                                         },
                                                         "type": "array",
+                                                        "x-kubernetes-list-type": "set",
                                                         "x-kubernetes-patch-strategy": "merge"
                                                     },
                                                     "generateName": {
@@ -2019,7 +2052,8 @@
                                                             },
                                                             "type": "object"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     },
                                                     "name": {
                                                         "description": "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names",
@@ -2069,6 +2103,10 @@
                                                             "x-kubernetes-map-type": "atomic"
                                                         },
                                                         "type": "array",
+                                                        "x-kubernetes-list-map-keys": [
+                                                            "uid"
+                                                        ],
+                                                        "x-kubernetes-list-type": "map",
                                                         "x-kubernetes-patch-merge-key": "uid",
                                                         "x-kubernetes-patch-strategy": "merge"
                                                     },
@@ -2095,7 +2133,8 @@
                                                         "items": {
                                                             "type": "string"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     },
                                                     "dataSource": {
                                                         "description": "TypedLocalObjectReference contains enough information to let you locate the typed referenced object inside the same namespace.",
@@ -2200,7 +2239,8 @@
                                                                             "items": {
                                                                                 "type": "string"
                                                                             },
-                                                                            "type": "array"
+                                                                            "type": "array",
+                                                                            "x-kubernetes-list-type": "atomic"
                                                                         }
                                                                     },
                                                                     "required": [
@@ -2209,7 +2249,8 @@
                                                                     ],
                                                                     "type": "object"
                                                                 },
-                                                                "type": "array"
+                                                                "type": "array",
+                                                                "x-kubernetes-list-type": "atomic"
                                                             },
                                                             "matchLabels": {
                                                                 "additionalProperties": {
@@ -2271,14 +2312,16 @@
                                         "items": {
                                             "type": "string"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "wwids": {
                                         "description": "wwids Optional: FC volume world wide identifiers (wwids) Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously.",
                                         "items": {
                                             "type": "string"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     }
                                 },
                                 "type": "object"
@@ -2459,7 +2502,8 @@
                                         "items": {
                                             "type": "string"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "readOnly": {
                                         "description": "readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false.",
@@ -2606,7 +2650,8 @@
                                                                                 "items": {
                                                                                     "type": "string"
                                                                                 },
-                                                                                "type": "array"
+                                                                                "type": "array",
+                                                                                "x-kubernetes-list-type": "atomic"
                                                                             }
                                                                         },
                                                                         "required": [
@@ -2615,7 +2660,8 @@
                                                                         ],
                                                                         "type": "object"
                                                                     },
-                                                                    "type": "array"
+                                                                    "type": "array",
+                                                                    "x-kubernetes-list-type": "atomic"
                                                                 },
                                                                 "matchLabels": {
                                                                     "additionalProperties": {
@@ -2678,7 +2724,8 @@
                                                                 ],
                                                                 "type": "object"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         },
                                                         "name": {
                                                             "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
@@ -2760,7 +2807,8 @@
                                                                 ],
                                                                 "type": "object"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         }
                                                     },
                                                     "type": "object"
@@ -2793,7 +2841,8 @@
                                                                 ],
                                                                 "type": "object"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         },
                                                         "name": {
                                                             "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
@@ -2831,7 +2880,8 @@
                                             },
                                             "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     }
                                 },
                                 "type": "object"
@@ -2890,7 +2940,8 @@
                                         "items": {
                                             "type": "string"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "pool": {
                                         "description": "pool is the rados pool name. Default is rbd. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it",
@@ -3013,7 +3064,8 @@
                                             ],
                                             "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "optional": {
                                         "description": "optional field specify whether the Secret or its keys must be defined",
@@ -3153,14 +3205,16 @@
                                 "items": {
                                     "type": "string"
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
                             },
                             "command": {
                                 "description": "Entrypoint array. Not executed within a shell. The container image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
                                 "items": {
                                     "type": "string"
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
                             },
                             "env": {
                                 "description": "List of environment variables to set in the container. Cannot be updated.",
@@ -3278,6 +3332,10 @@
                                     "type": "object"
                                 },
                                 "type": "array",
+                                "x-kubernetes-list-map-keys": [
+                                    "name"
+                                ],
+                                "x-kubernetes-list-type": "map",
                                 "x-kubernetes-patch-merge-key": "name",
                                 "x-kubernetes-patch-strategy": "merge"
                             },
@@ -3321,7 +3379,8 @@
                                     },
                                     "type": "object"
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
                             },
                             "image": {
                                 "description": "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.",
@@ -3345,7 +3404,8 @@
                                                         "items": {
                                                             "type": "string"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     }
                                                 },
                                                 "type": "object"
@@ -3377,7 +3437,8 @@
                                                             ],
                                                             "type": "object"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     },
                                                     "path": {
                                                         "description": "Path to access on the HTTP server.",
@@ -3454,7 +3515,8 @@
                                                         "items": {
                                                             "type": "string"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     }
                                                 },
                                                 "type": "object"
@@ -3486,7 +3548,8 @@
                                                             ],
                                                             "type": "object"
                                                         },
-                                                        "type": "array"
+                                                        "type": "array",
+                                                        "x-kubernetes-list-type": "atomic"
                                                     },
                                                     "path": {
                                                         "description": "Path to access on the HTTP server.",
@@ -3566,7 +3629,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -3620,7 +3684,8 @@
                                                     ],
                                                     "type": "object"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "path": {
                                                 "description": "Path to access on the HTTP server.",
@@ -3754,7 +3819,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -3808,7 +3874,8 @@
                                                     ],
                                                     "type": "object"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "path": {
                                                 "description": "Path to access on the HTTP server.",
@@ -3982,14 +4049,16 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "drop": {
                                                 "description": "Removed capabilities",
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -4103,7 +4172,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "type": "object"
@@ -4157,7 +4227,8 @@
                                                     ],
                                                     "type": "object"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             },
                                             "path": {
                                                 "description": "Path to access on the HTTP server.",
@@ -4275,6 +4346,10 @@
                                     "type": "object"
                                 },
                                 "type": "array",
+                                "x-kubernetes-list-map-keys": [
+                                    "devicePath"
+                                ],
+                                "x-kubernetes-list-type": "map",
                                 "x-kubernetes-patch-merge-key": "devicePath",
                                 "x-kubernetes-patch-strategy": "merge"
                             },
@@ -4315,6 +4390,10 @@
                                     "type": "object"
                                 },
                                 "type": "array",
+                                "x-kubernetes-list-map-keys": [
+                                    "mountPath"
+                                ],
+                                "x-kubernetes-list-type": "map",
                                 "x-kubernetes-patch-merge-key": "mountPath",
                                 "x-kubernetes-patch-strategy": "merge"
                             },
@@ -4347,7 +4426,8 @@
                                     "items": {
                                         "type": "string"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 }
                             },
                             "type": "object"
@@ -4401,7 +4481,8 @@
                                         ],
                                         "type": "object"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 },
                                 "path": {
                                     "description": "Path to access on the HTTP server.",
@@ -4518,14 +4599,16 @@
                                     "items": {
                                         "type": "string"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 },
                                 "drop": {
                                     "description": "Removed capabilities",
                                     "items": {
                                         "type": "string"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 }
                             },
                             "type": "object"
@@ -4639,7 +4722,8 @@
                                     "items": {
                                         "type": "string"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 }
                             },
                             "type": "object"
@@ -4693,7 +4777,8 @@
                                         ],
                                         "type": "object"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 },
                                 "path": {
                                     "description": "Path to access on the HTTP server.",
@@ -4848,7 +4933,8 @@
                                     "items": {
                                         "type": "string"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 }
                             },
                             "type": "object"
@@ -4902,7 +4988,8 @@
                                         ],
                                         "type": "object"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 },
                                 "path": {
                                     "description": "Path to access on the HTTP server.",
@@ -5560,7 +5647,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "required": [
@@ -5569,7 +5657,8 @@
                                         ],
                                         "type": "object"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 },
                                 "matchLabels": {
                                     "additionalProperties": {
@@ -5603,7 +5692,8 @@
                                                 "items": {
                                                     "type": "string"
                                                 },
-                                                "type": "array"
+                                                "type": "array",
+                                                "x-kubernetes-list-type": "atomic"
                                             }
                                         },
                                         "required": [
@@ -5612,7 +5702,8 @@
                                         ],
                                         "type": "object"
                                     },
-                                    "type": "array"
+                                    "type": "array",
+                                    "x-kubernetes-list-type": "atomic"
                                 },
                                 "matchLabels": {
                                     "additionalProperties": {
