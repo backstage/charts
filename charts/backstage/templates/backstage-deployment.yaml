@@ -43,6 +43,10 @@ spec:
       securityContext:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 8 }}
       {{- end }}
+      {{- if .Values.backstage.affinity }}
+      affinity:
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.affinity "context" $) | nindent 8 }}
+      {{- end }}
       {{- if .Values.backstage.nodeSelector }}
       nodeSelector:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.nodeSelector "context" $) | nindent 8 }}
