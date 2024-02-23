@@ -23,8 +23,8 @@ spec:
   {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
-      - {{ .Values.ingress.host }}
-      secretName: {{ .Values.ingress.tls.secretName }}
+      - {{ include "common.tplvalues.render" ( dict "value" .Values.ingress.host "context" $ ) }}
+      secretName: {{ include "common.tplvalues.render" ( dict "value" .Values.ingress.tls.secretName "context" $ ) }}
   {{- end }}
   rules:
     - host: {{ include "common.tplvalues.render" ( dict "value" .Values.ingress.host "context" $ ) }}
