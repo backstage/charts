@@ -822,6 +822,31 @@
                             "description": "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows.",
                             "type": "boolean"
                         },
+                        "appArmorProfile": {
+                            "description": "AppArmorProfile defines a pod or container's AppArmor settings.",
+                            "properties": {
+                                "localhostProfile": {
+                                    "description": "localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is \"Localhost\".",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "type indicates which kind of AppArmor profile will be applied. Valid options are:\n  Localhost - a profile pre-loaded on the node.\n  RuntimeDefault - the container runtime's default profile.\n  Unconfined - no AppArmor enforcement.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type"
+                            ],
+                            "type": "object",
+                            "x-kubernetes-unions": [
+                                {
+                                    "discriminator": "type",
+                                    "fields-to-discriminateBy": {
+                                        "localhostProfile": "LocalhostProfile"
+                                    }
+                                }
+                            ]
+                        },
                         "capabilities": {
                             "description": "Adds and removes POSIX capabilities from running containers.",
                             "properties": {
@@ -1804,6 +1829,31 @@
                                     "allowPrivilegeEscalation": {
                                         "description": "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows.",
                                         "type": "boolean"
+                                    },
+                                    "appArmorProfile": {
+                                        "description": "AppArmorProfile defines a pod or container's AppArmor settings.",
+                                        "properties": {
+                                            "localhostProfile": {
+                                                "description": "localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is \"Localhost\".",
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "description": "type indicates which kind of AppArmor profile will be applied. Valid options are:\n  Localhost - a profile pre-loaded on the node.\n  RuntimeDefault - the container runtime's default profile.\n  Unconfined - no AppArmor enforcement.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "type"
+                                        ],
+                                        "type": "object",
+                                        "x-kubernetes-unions": [
+                                            {
+                                                "discriminator": "type",
+                                                "fields-to-discriminateBy": {
+                                                    "localhostProfile": "LocalhostProfile"
+                                                }
+                                            }
+                                        ]
                                     },
                                     "capabilities": {
                                         "description": "Adds and removes POSIX capabilities from running containers.",
@@ -3025,7 +3075,7 @@
                                                         "type": "string"
                                                     },
                                                     "volumeAttributesClassName": {
-                                                        "description": "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.",
+                                                        "description": "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/ (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.",
                                                         "type": "string"
                                                     },
                                                     "volumeMode": {
@@ -4798,6 +4848,31 @@
                                         "description": "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows.",
                                         "type": "boolean"
                                     },
+                                    "appArmorProfile": {
+                                        "description": "AppArmorProfile defines a pod or container's AppArmor settings.",
+                                        "properties": {
+                                            "localhostProfile": {
+                                                "description": "localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is \"Localhost\".",
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "description": "type indicates which kind of AppArmor profile will be applied. Valid options are:\n  Localhost - a profile pre-loaded on the node.\n  RuntimeDefault - the container runtime's default profile.\n  Unconfined - no AppArmor enforcement.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "type"
+                                        ],
+                                        "type": "object",
+                                        "x-kubernetes-unions": [
+                                            {
+                                                "discriminator": "type",
+                                                "fields-to-discriminateBy": {
+                                                    "localhostProfile": "LocalhostProfile"
+                                                }
+                                            }
+                                        ]
+                                    },
                                     "capabilities": {
                                         "description": "Adds and removes POSIX capabilities from running containers.",
                                         "properties": {
@@ -5347,6 +5422,31 @@
                         "allowPrivilegeEscalation": {
                             "description": "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows.",
                             "type": "boolean"
+                        },
+                        "appArmorProfile": {
+                            "description": "AppArmorProfile defines a pod or container's AppArmor settings.",
+                            "properties": {
+                                "localhostProfile": {
+                                    "description": "localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is \"Localhost\".",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "type indicates which kind of AppArmor profile will be applied. Valid options are:\n  Localhost - a profile pre-loaded on the node.\n  RuntimeDefault - the container runtime's default profile.\n  Unconfined - no AppArmor enforcement.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type"
+                            ],
+                            "type": "object",
+                            "x-kubernetes-unions": [
+                                {
+                                    "discriminator": "type",
+                                    "fields-to-discriminateBy": {
+                                        "localhostProfile": "LocalhostProfile"
+                                    }
+                                }
+                            ]
                         },
                         "capabilities": {
                             "description": "Adds and removes POSIX capabilities from running containers.",
