@@ -10,4 +10,5 @@ backstage:
         port: 12345
       auth:
         keys:
-          - secret: N4+P+zJrErWRUGm0ZbVVhX1ZC81aSP81 # is just a random b64 string for test purposes
+            # Is just a random b64 string for test purposes
+          - secret: N4+P+zJrErWRUGm0ZbVVhX1ZC81aSP81 
