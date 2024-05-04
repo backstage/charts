@@ -5,6 +5,7 @@ backstage:
       title: The very best Backstage Helm Chart! :D
       baseUrl: https://somedomain.tl
     backend:
+      baseUrl: https://somedomain.tl
       auth:
         keys:
           # Is just a random b64 string for test purposes
