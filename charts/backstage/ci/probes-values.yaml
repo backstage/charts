@@ -1,9 +1,10 @@
 backstage:
   appConfig:
+    backend:
       auth:
         keys:
-            # Is just a random b64 string for test purposes
-          - secret: N4+P+zJrErWRUGm0ZbVVhX1ZC81aSP81
+          # Is just a random b64 string for test purposes
+        - secret: N4+P+zJrErWRUGm0ZbVVhX1ZC81aSP81
   readinessProbe:
     failureThreshold: 3
     httpGet:
