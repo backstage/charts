@@ -11,4 +11,4 @@ backstage:
       auth:
         keys:
             # Is just a random b64 string for test purposes
-          - secret: N4+P+zJrErWRUGm0ZbVVhX1ZC81aSP81 
+          - secret: N4+P+zJrErWRUGm0ZbVVhX1ZC81aSP81
