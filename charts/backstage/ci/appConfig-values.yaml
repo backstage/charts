@@ -8,3 +8,7 @@ backstage:
       baseUrl: https://somedomain.tl
       listen:
         port: 12345
+      auth:
+        keys:
+          # Is just a random b64 string for test purposes
+          - secret: N4+P+zJrErWRUGm0ZbVVhX1ZC81aSP81
