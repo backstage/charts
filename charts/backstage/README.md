@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 1.9.3](https://img.shields.io/badge/Version-1.9.3-informational?style=flat-square)
+![Version: 1.9.4](https://img.shields.io/badge/Version-1.9.4-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -106,8 +106,8 @@ Kubernetes: `>= 1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | common | 2.x.x |
-| https://charts.bitnami.com/bitnami | postgresql | 12.x.x |
+| oci://registry-1.docker.io/bitnamicharts | common | 2.10.0 |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 12.10.0 |
 
 ## Values
 
