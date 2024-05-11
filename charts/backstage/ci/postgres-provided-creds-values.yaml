@@ -1,0 +1,8 @@
+postgresql:
+  enabled: true
+
+  auth:
+    existingSecret: ""
+    # we provide a password for the subchart to use.
+    # this is just a password for purposes of CI tests
+    password: "mytestpassword"
