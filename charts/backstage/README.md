@@ -162,6 +162,7 @@ Kubernetes: `>= 1.19.0-0`
 | ingress.className | Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx) | string | `""` |
 | ingress.enabled | Enable the creation of the ingress resource | bool | `false` |
 | ingress.host | Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io) | string | `""` |
+| ingress.path | Path to be used to expose the full route to access the backstage application (e.g: IP.nip.io/backstage) | string | `"/"` |
 | ingress.tls | Ingress TLS parameters | object | `{"enabled":false,"secretName":""}` |
 | ingress.tls.enabled | Enable TLS configuration for the host defined at `ingress.host` parameter | bool | `false` |
 | ingress.tls.secretName | The name to which the TLS Secret will be called | string | `""` |
