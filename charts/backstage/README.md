@@ -157,7 +157,7 @@ Kubernetes: `>= 1.19.0-0`
 | global | Global parameters Global Docker image parameters Please, note that this will override the image parameters, including dependencies, configured to use the global value Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass | object | See below |
 | global.imagePullSecrets | Global Docker registry secret names as an array </br> E.g. `imagePullSecrets: [myRegistryKeySecretName]` | list | `[]` |
 | global.imageRegistry | Global Docker image registry | string | `""` |
-| ingress | Ingress parameters | object | `{"annotations":{},"className":"","enabled":false,"host":"","tls":{"enabled":false,"secretName":""}}` |
+| ingress | Ingress parameters | object | `{"annotations":{},"className":"","enabled":false,"host":"","path":"/","tls":{"enabled":false,"secretName":""}}` |
 | ingress.annotations | Additional annotations for the Ingress resource | object | `{}` |
 | ingress.className | Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx) | string | `""` |
 | ingress.enabled | Enable the creation of the ingress resource | bool | `false` |
