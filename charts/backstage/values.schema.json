@@ -6103,7 +6103,7 @@
                 "path": {
                     "default": "/",
                     "examples": [
-                        "10.0.0.1.nip.io/backstage"
+                        "/backstage"
                     ],
                     "title": "Path to be used to expose the full route to access the backstage application.",
                     "type": "string"

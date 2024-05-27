@@ -148,7 +148,7 @@
                     "type": "string",
                     "default": "/",
                     "examples": [
-                        "10.0.0.1.nip.io/backstage"
+                        "/backstage"
                     ]
                 },
                 "tls": {
