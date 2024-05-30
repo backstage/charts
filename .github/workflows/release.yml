@@ -27,10 +27,6 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Add dependencies
-        run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@a917fd15b20e8b64b94d9158ad54cd6345335584 # pin@v1.6.0
         with:

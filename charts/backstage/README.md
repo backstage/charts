@@ -31,7 +31,6 @@ Backstage unifies all your infrastructure tooling, services, and documentation t
 ## TL;DR
 
 ```console
-helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add backstage https://backstage.github.io/charts
 
 helm install my-release backstage/backstage
@@ -106,8 +105,8 @@ Kubernetes: `>= 1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | common | 2.x.x |
-| https://charts.bitnami.com/bitnami | postgresql | 12.x.x |
+| oci://registry-1.docker.io/bitnamicharts | common | 2.10.0 |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 12.10.0 |
 
 ## Values
 

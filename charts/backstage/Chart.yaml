@@ -12,14 +12,14 @@ apiVersion: v2
 description: A Helm chart for deploying a Backstage application
 dependencies:
   - name: common
-    repository: https://charts.bitnami.com/bitnami
+    repository: oci://registry-1.docker.io/bitnamicharts
     tags:
       - bitnami-common
-    version: 2.x.x
+    version: 2.10.0
   - condition: postgresql.enabled
     name: postgresql
-    repository: https://charts.bitnami.com/bitnami
-    version: 12.x.x
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 12.10.0
 home: https://backstage.io
 icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/backstage/icon/color/backstage-icon-color.svg
 keywords:
