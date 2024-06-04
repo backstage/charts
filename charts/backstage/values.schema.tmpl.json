@@ -143,6 +143,14 @@
                         "backstage.10.0.0.1.nip.io"
                     ]
                 },
+                "path": {
+                    "title": "Path to be used to expose the full route to access the backstage application.",
+                    "type": "string",
+                    "default": "/",
+                    "examples": [
+                        "/backstage"
+                    ]
+                },
                 "tls": {
                     "title": "Ingress TLS parameters",
                     "type": "object",
