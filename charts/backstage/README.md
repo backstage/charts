@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 1.9.5](https://img.shields.io/badge/Version-1.9.5-informational?style=flat-square)
+![Version: 1.9.6](https://img.shields.io/badge/Version-1.9.6-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -117,7 +117,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.annotations | Additional custom annotations for the `Deployment` resource | object | `{}` |
 | backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
 | backstage.args | Backstage container command arguments | list | `[]` |
-| backstage.command | Backstage container command | list | `["node","packages/backend"]` |
+| backstage.command | Backstage container command | list | `["node","packages/backend","--config","app-config.yaml"]` |
 | backstage.containerPorts | Container ports on the Deployment | object | `{"backend":7007}` |
 | backstage.containerSecurityContext | Security settings for a Container. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container | object | `{}` |
 | backstage.extraAppConfig | Extra app configuration files to inline into command arguments | list | `[]` |
@@ -152,6 +152,7 @@ Kubernetes: `>= 1.19.0-0`
 | diagnosticMode.args | Args to override all containers in the Deployment | list | `["infinity"]` |
 | diagnosticMode.command | Command to override all containers in the Deployment | list | `["sleep"]` |
 | diagnosticMode.enabled | Enable diagnostic mode (all probes will be disabled and the command will be overridden) | bool | `false` |
+| environment | Deployment environment | string | `"production"` |
 | extraDeploy | Array of extra objects to deploy with the release | list | `[]` |
 | fullnameOverride | String to fully override common.names.fullname | string | `""` |
 | global | Global parameters Global Docker image parameters Please, note that this will override the image parameters, including dependencies, configured to use the global value Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass | object | See below |

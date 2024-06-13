@@ -87,7 +87,11 @@ spec:
           {{- if .Values.diagnosticMode.enabled }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
           {{- else if .Values.backstage.command }}
+          {{- if eq .Values.environment "production" }}
+          command: {{- include "common.tplvalues.render" (dict "value" (concat .Values.backstage.command (list "--config" "app-config.production.yaml")) "context" $) | nindent 12 }}
+          {{- else }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.command "context" $) | nindent 12 }}
+          {{- end }}
           {{- end }}
 
           {{- if .Values.diagnosticMode.enabled }}
