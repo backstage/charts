@@ -87,7 +87,7 @@ spec:
           {{- if .Values.diagnosticMode.enabled }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
           {{- else if .Values.backstage.command }}
-          {{- if eq .Values.environment "production" }}
+          {{- if eq .Values.backstage.environment "production" }}
           command: {{- include "common.tplvalues.render" (dict "value" (concat .Values.backstage.command (list "--config" "app-config.production.yaml")) "context" $) | nindent 12 }}
           {{- else }}
           command: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.command "context" $) | nindent 12 }}
@@ -138,6 +138,8 @@ spec:
           env:
             - name: APP_CONFIG_backend_listen_port
               value: {{ .Values.backstage.containerPorts.backend | quote }}
+            - name: NODE_ENV
+              value: {{ .Values.backstage.environment | quote }}
             {{- if .Values.postgresql.enabled }}
             - name: POSTGRES_HOST
               value: {{ include "backstage.postgresql.host" . }}

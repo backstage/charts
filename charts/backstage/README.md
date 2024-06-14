@@ -120,6 +120,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.command | Backstage container command | list | `["node","packages/backend","--config","app-config.yaml"]` |
 | backstage.containerPorts | Container ports on the Deployment | object | `{"backend":7007}` |
 | backstage.containerSecurityContext | Security settings for a Container. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container | object | `{}` |
+| backstage.environment | Backstage container environment: development, production | string | `"development"` |
 | backstage.extraAppConfig | Extra app configuration files to inline into command arguments | list | `[]` |
 | backstage.extraContainers | Deployment sidecars | list | `[]` |
 | backstage.extraEnvVars | Backstage container environment variables | list | `[]` |
@@ -152,7 +153,6 @@ Kubernetes: `>= 1.19.0-0`
 | diagnosticMode.args | Args to override all containers in the Deployment | list | `["infinity"]` |
 | diagnosticMode.command | Command to override all containers in the Deployment | list | `["sleep"]` |
 | diagnosticMode.enabled | Enable diagnostic mode (all probes will be disabled and the command will be overridden) | bool | `false` |
-| environment | Deployment environment | string | `"production"` |
 | extraDeploy | Array of extra objects to deploy with the release | list | `[]` |
 | fullnameOverride | String to fully override common.names.fullname | string | `""` |
 | global | Global parameters Global Docker image parameters Please, note that this will override the image parameters, including dependencies, configured to use the global value Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass | object | See below |

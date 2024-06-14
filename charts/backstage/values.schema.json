@@ -967,6 +967,11 @@
                     },
                     "type": "object"
                 },
+                "environment": {
+                    "default": "development",
+                    "title": "Deployment environment",
+                    "type": "string"
+                },
                 "extraAppConfig": {
                     "default": [],
                     "items": {

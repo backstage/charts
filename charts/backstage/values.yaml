@@ -38,9 +38,6 @@ commonAnnotations: {}
 # -- Array of extra objects to deploy with the release
 extraDeploy: []
 
-# -- Deployment environment
-environment: production
-
 # -- Enable diagnostic mode in the Deployment
 diagnosticMode:
 
@@ -124,6 +121,9 @@ backstage:
 
   # -- Backstage container command arguments
   args: []
+
+  # -- Backstage container environment: development, production
+  environment: development
 
   # -- Extra app configuration files to inline into command arguments
   extraAppConfig: []
