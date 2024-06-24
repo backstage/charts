@@ -289,6 +289,11 @@
                     },
                     "default": []
                 },
+                "environment": {
+                    "title": "Deployment environment",
+                    "type": "string",
+                    "default": "development"
+                },
                 "extraAppConfig": {
                     "title": "Extra app configuration files to inline into command arguments",
                     "type": "array",
