@@ -127,6 +127,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.extraEnvVarsSecrets | Backstage container environment variables from existing Secrets | list | `[]` |
 | backstage.extraVolumeMounts | Backstage container additional volume mounts | list | `[]` |
 | backstage.extraVolumes | Backstage container additional volumes | list | `[]` |
+| backstage.hostAliases | Adding entries to a Pod's /etc/hosts file provides Pod-level override of hostname resolution when DNS and other options are not applicable <br /> Ref: https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/#adding-additional-entries-with-hostaliases | list | `[]` |
 | backstage.image.pullPolicy | Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent' <br /> Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy | string | `"Always"` |
 | backstage.image.pullSecrets | Optionally specify an array of imagePullSecrets.  Secrets must be manually created in the namespace. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ <br /> E.g: `pullSecrets: [myRegistryKeySecretName]` | list | `[]` |
 | backstage.image.registry | Backstage image registry | string | `"ghcr.io"` |

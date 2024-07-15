@@ -55,6 +55,10 @@ spec:
       tolerations:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.tolerations "context" $) | nindent 8 }}
       {{- end }}
+      {{- if .Values.backstage.hostAliases }}
+      hostAliases:
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.hostAliases "context" $) | nindent 8 }}
+      {{- end }}
       volumes:
         {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
         {{- range .Values.backstage.extraAppConfig }}

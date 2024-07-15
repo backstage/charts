@@ -5967,7 +5967,38 @@
                     },
                     "title": "Node tolerations for server scheduling to nodes with taints",
                     "type": "array"
-                }
+                },
+                "hostAliases": {
+                    "type": "array",
+                    "items": {
+                        "description": "HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod's hosts file.",
+                        "properties": {
+                          "hostnames": {
+                            "description": "Hostnames for the above IP address.",
+                            "items": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "type": [
+                              "array",
+                              "null"
+                            ]
+                          },
+                          "ip": {
+                            "description": "IP address of the host file entry.",
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        },
+                        "type": "object",
+                        "additionalProperties": false,
+                        "$schema": "http://json-schema.org/schema#"
+                    }
+                }          
             },
             "title": "Backstage parameters",
             "type": "object"

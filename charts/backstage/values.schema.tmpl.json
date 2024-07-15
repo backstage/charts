@@ -510,6 +510,15 @@
                     },
                     "default": []
                 },
+                "hostAliases": {
+                    "title": "Adding entries to a Pod's /etc/hosts file provides Pod-level override of hostname resolution when DNS and other options are not applicable",
+                    "description": "Ref: https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/#adding-additional-entries-with-hostaliases",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.HostAlias"
+                    },
+                    "default": []
+                },
                 "podAnnotations": {
                     "title": "Annotations to add to the backend deployment pods",
                     "type": "object",
