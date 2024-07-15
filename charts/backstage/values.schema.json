@@ -3960,6 +3960,33 @@
                     "title": "Backstage container additional volumes",
                     "type": "array"
                 },
+                "hostAliases": {
+                    "default": [],
+                    "description": "Ref: https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/#adding-additional-entries-with-hostaliases",
+                    "items": {
+                        "description": "HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod's hosts file.",
+                        "properties": {
+                            "hostnames": {
+                                "description": "Hostnames for the above IP address.",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
+                            },
+                            "ip": {
+                                "description": "IP address of the host file entry.",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "ip"
+                        ],
+                        "type": "object"
+                    },
+                    "title": "Adding entries to a Pod's /etc/hosts file provides Pod-level override of hostname resolution when DNS and other options are not applicable",
+                    "type": "array"
+                },
                 "image": {
                     "additionalProperties": false,
                     "properties": {
@@ -5967,38 +5994,7 @@
                     },
                     "title": "Node tolerations for server scheduling to nodes with taints",
                     "type": "array"
-                },
-                "hostAliases": {
-                    "type": "array",
-                    "items": {
-                        "description": "HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod's hosts file.",
-                        "properties": {
-                          "hostnames": {
-                            "description": "Hostnames for the above IP address.",
-                            "items": {
-                              "type": [
-                                "string",
-                                "null"
-                              ]
-                            },
-                            "type": [
-                              "array",
-                              "null"
-                            ]
-                          },
-                          "ip": {
-                            "description": "IP address of the host file entry.",
-                            "type": [
-                              "string",
-                              "null"
-                            ]
-                          }
-                        },
-                        "type": "object",
-                        "additionalProperties": false,
-                        "$schema": "http://json-schema.org/schema#"
-                    }
-                }          
+                }
             },
             "title": "Backstage parameters",
             "type": "object"
