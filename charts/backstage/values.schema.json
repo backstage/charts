@@ -3963,6 +3963,12 @@
                 "image": {
                     "additionalProperties": false,
                     "properties": {
+                        "digest": {
+                            "default": "",
+                            "description": "digest takes precedence over image tag",
+                            "title": "Backstage image digest",
+                            "type": "string"
+                        },
                         "pullPolicy": {
                             "default": "Always",
                             "description": "Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy",

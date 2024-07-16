@@ -193,6 +193,12 @@
                     "type": "object",
                     "additionalProperties": false,
                     "properties": {
+                        "digest": {
+                            "default": "",
+                            "description": "digest takes precedence over image tag",
+                            "title": "Backstage image digest",
+                            "type": "string"
+                        },
                         "registry": {
                             "title": "Backstage image registry",
                             "type": "string",
