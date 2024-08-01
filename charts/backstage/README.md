@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 1.9.5](https://img.shields.io/badge/Version-1.9.5-informational?style=flat-square)
+![Version: 1.9.6](https://img.shields.io/badge/Version-1.9.6-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -127,6 +127,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.extraEnvVarsSecrets | Backstage container environment variables from existing Secrets | list | `[]` |
 | backstage.extraVolumeMounts | Backstage container additional volume mounts | list | `[]` |
 | backstage.extraVolumes | Backstage container additional volumes | list | `[]` |
+| backstage.image.digest | Backstage image digest (digest takes precedence over image tag) | string | `""` |
 | backstage.image.pullPolicy | Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent' <br /> Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy | string | `"Always"` |
 | backstage.image.pullSecrets | Optionally specify an array of imagePullSecrets.  Secrets must be manually created in the namespace. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ <br /> E.g: `pullSecrets: [myRegistryKeySecretName]` | list | `[]` |
 | backstage.image.registry | Backstage image registry | string | `"ghcr.io"` |

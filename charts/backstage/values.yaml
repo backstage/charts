@@ -101,6 +101,9 @@ backstage:
     # -- Backstage image tag (immutable tags are recommended)
     tag: latest
 
+    # -- Backstage image digest (digest takes precedence over image tag)
+    digest: ""
+
     # -- Specify a imagePullPolicy.
     # Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     # <br /> Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
