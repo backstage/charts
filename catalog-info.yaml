@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: charts
+  annotations:
+    github.com/project-slug: 'backstage/charts'
+spec:
+  type: website
+  lifecycle: production
+  owner: infinite-bucks
