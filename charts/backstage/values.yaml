@@ -189,14 +189,18 @@ backstage:
   # readinessProbe:
   #   failureThreshold: 3
   #   httpGet:
-  #     path: /healthcheck
+  #     path: /.backstage/health/v1/readiness
   #     port: 7007
   #     scheme: HTTP
   #   initialDelaySeconds: 30
   #   periodSeconds: 10
   #   successThreshold: 2
   #   timeoutSeconds: 2
-  readinessProbe: {}
+  readinessProbe:
+    httpGet:
+      path: /.backstage/health/v1/readiness
+      port: 7007
+      scheme: HTTP
 
   # -- Liveness Probe
   # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
@@ -205,14 +209,18 @@ backstage:
   # livenessProbe:
   #   failureThreshold: 3
   #   httpGet:
-  #     path: /healthcheck
+  #     path: /.backstage/health/v1/liveness
   #     port: 7007
   #     scheme: HTTP
   #   initialDelaySeconds: 60
   #   periodSeconds: 10
   #   successThreshold: 1
   #   timeoutSeconds: 2
-  livenessProbe: {}
+  livenessProbe:
+    httpGet:
+      path: /.backstage/health/v1/liveness
+      port: 7007
+      scheme: HTTP
 
     # -- Startup Probe
   # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
@@ -221,14 +229,18 @@ backstage:
   # startupProbe:
   #   failureThreshold: 3
   #   httpGet:
-  #     path: /healthcheck
+  #     path: /.backstage/health/v1/liveness
   #     port: 7007
   #     scheme: HTTP
   #   initialDelaySeconds: 60
   #   periodSeconds: 10
   #   successThreshold: 1
   #   timeoutSeconds: 2
-  startupProbe: {}
+  startupProbe:
+    httpGet:
+      path: /.backstage/health/v1/liveness
+      port: 7007
+      scheme: HTTP
 
   # -- Security settings for a Pod.
   #  The security settings that you specify for a Pod apply to all Containers in the Pod.

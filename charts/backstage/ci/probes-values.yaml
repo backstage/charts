@@ -15,7 +15,7 @@ backstage:
   readinessProbe:
     failureThreshold: 3
     httpGet:
-      path: /healthcheck
+      path: /.backstage/health/v1/readiness
       port: 7007
       scheme: HTTP
     initialDelaySeconds: 30
@@ -25,7 +25,7 @@ backstage:
   livenessProbe:
     failureThreshold: 3
     httpGet:
-      path: /healthcheck
+      path: /.backstage/health/v1/liveness
       port: 7007
       scheme: HTTP
     initialDelaySeconds: 60
@@ -35,7 +35,7 @@ backstage:
   startupProbe:
     failureThreshold: 3
     httpGet:
-      path: /healthcheck
+      path: /.backstage/health/v1/liveness
       port: 7007
       scheme: HTTP
     initialDelaySeconds: 60
