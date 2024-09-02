@@ -67,6 +67,15 @@ ingress:
   # -- Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io)
   host: ""
 
+  # -- List of additional hostnames to be covered with this ingress record (e.g. a CNAME)
+  # <!-- E.g.
+  # extraHosts:
+  #   - name: backstage.env.example.com
+  #     path: / (Optional)
+  #     pathType: Prefix (Optional)
+  #     port: 7007 (Optional) -->
+  extraHosts: []
+
   # -- Path to be used to expose the full route to access the backstage application (e.g: IP.nip.io/backstage)
   path: "/"
 
@@ -78,6 +87,15 @@ ingress:
 
     # -- The name to which the TLS Secret will be called
     secretName: ""
+
+  # -- The TLS configuration for additional hostnames to be covered with this ingress record.
+  # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+  # <!-- E.g.
+  # extraTls:
+  #   - hosts:
+  #     - backstage.env.example.com
+  #     secretName: backstage-env -->
+  extraTls: []
 
 # -- Backstage parameters
 # @default -- See below
