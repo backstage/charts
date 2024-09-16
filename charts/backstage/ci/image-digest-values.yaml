@@ -2,4 +2,4 @@ backstage:
   image:
     registry: ghcr.io
     repository: backstage/backstage
-    digest: "sha256:a384ce618232b5d9908df083e43c294119f4efdc66890d2a8e3bcba9ccd955e9"
+    digest: "sha256:f9ffa809e2c3f351699129d57edd6e64ca9ea5a4d4dd6339fed1ec80a30bc042"
