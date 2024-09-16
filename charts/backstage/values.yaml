@@ -183,8 +183,7 @@ backstage:
   resources: {}
 
   # -- Readiness Probe
-  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
-  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
   # <!-- E.g.
   # readinessProbe:
   #   failureThreshold: 3
@@ -203,8 +202,7 @@ backstage:
       scheme: HTTP
 
   # -- Liveness Probe
-  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
-  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
   # <!-- E.g.
   # livenessProbe:
   #   failureThreshold: 3
@@ -222,9 +220,8 @@ backstage:
       port: 7007
       scheme: HTTP
 
-    # -- Startup Probe
-  # Backstage doesn't provide any health endpoints by default. A simple one can be added like this: https://backstage.io/docs/plugins/observability/#health-checks
-  # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+  # -- Startup Probe
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
   # <!-- E.g.
   # startupProbe:
   #   failureThreshold: 3
