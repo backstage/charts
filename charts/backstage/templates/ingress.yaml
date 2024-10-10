@@ -20,11 +20,16 @@ spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className | quote }}
   {{- end }}
-  {{- if .Values.ingress.tls.enabled }}
+  {{- if or .Values.ingress.tls.enabled .Values.ingress.extraTls }}
   tls:
+    {{- if .Values.ingress.tls.enabled }}
     - hosts:
       - {{ include "common.tplvalues.render" ( dict "value" .Values.ingress.host "context" $ ) }}
       secretName: {{ include "common.tplvalues.render" ( dict "value" .Values.ingress.tls.secretName "context" $ ) }}
+    {{- end }}
+    {{- if .Values.ingress.extraTls }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.ingress.extraTls "context" $ ) | nindent 4 }}
+    {{- end }}
   {{- end }}
   rules:
     - host: {{ include "common.tplvalues.render" ( dict "value" .Values.ingress.host "context" $ ) }}
@@ -37,4 +42,16 @@ spec:
                 name: {{ include "common.names.fullname" . }}
                 port:
                   number: {{ .Values.service.ports.backend }}
+    {{- range .Values.ingress.extraHosts }}
+    - host: {{ .name | quote }}
+      http:
+        paths:
+          - path: {{ default $.Values.ingress.path .path }}
+            pathType: {{ default "Prefix" .pathType }}
+            backend:
+              service:
+                name: {{ include "common.names.fullname" $ }}
+                port:
+                  number: {{ default $.Values.service.ports.backend .port }}
+    {{- end }}
 {{- end }}
