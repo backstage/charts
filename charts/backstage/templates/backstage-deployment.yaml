@@ -47,6 +47,10 @@ spec:
       affinity:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.affinity "context" $) | nindent 8 }}
       {{- end }}
+      {{- if .Values.backstage.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.topologySpreadConstraints "context" $) | nindent 8 }}
+      {{- end }}
       {{- if .Values.backstage.nodeSelector }}
       nodeSelector:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.nodeSelector "context" $) | nindent 8 }}
