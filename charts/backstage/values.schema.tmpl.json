@@ -455,12 +455,18 @@
                     "title": "Readiness probe",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
                     "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
-                    "default": {},
+                    "default": {
+                        "httpGet": {
+                                "path": "/.backstage/health/v1/readiness",
+                                "port": 7007,
+                                "scheme": "HTTP"
+                            }
+                    },
                     "examples": [
                         {
                             "failureThreshold": 3,
                             "httpGet": {
-                                "path": "/healthcheck",
+                                "path": "/.backstage/health/v1/readiness",
                                 "port": 7007,
                                 "scheme": "HTTP"
                             },
@@ -475,12 +481,18 @@
                     "title": "Liveness probe",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
                     "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
-                    "default": {},
+                    "default": {
+                        "httpGet": {
+                            "path": "/.backstage/health/v1/liveness",
+                            "port": 7007,
+                            "scheme": "HTTP"
+                        }
+                    },
                     "examples": [
                         {
                             "failureThreshold": 3,
                             "httpGet": {
-                                "path": "/healthcheck",
+                                "path": "/.backstage/health/v1/liveness",
                                 "port": 7007,
                                 "scheme": "HTTP"
                             },
@@ -495,12 +507,18 @@
                     "title": "Startup probe",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
                     "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
-                    "default": {},
+                    "default": {
+                        "httpGet": {
+                            "path": "/.backstage/health/v1/liveness",
+                            "port": 7007,
+                            "scheme": "HTTP"
+                        }
+                    },
                     "examples": [
                         {
                             "failureThreshold": 3,
                             "httpGet": {
-                                "path": "/healthcheck",
+                                "path": "/.backstage/health/v1/liveness",
                                 "port": 7007,
                                 "scheme": "HTTP"
                             },
