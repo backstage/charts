@@ -318,6 +318,15 @@
                     "title": "Affinity for pod assignment",
                     "type": "object"
                 },
+                "topologySpreadConstraints": {
+                    "default": [],
+                    "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#pod-topology-spread-constraints",
+                    "items": {
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
+                    },
+                    "title": "Topology Spread Constraint for pod assignment",
+                    "type": "array"
+                },
                 "args": {
                     "title": "Backstage container command arguments",
                     "type": "array",

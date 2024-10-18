@@ -1,0 +1,10 @@
+backstage:
+  topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/component: backstage
+    matchLabelKeys:
+      - pod-template-hash
