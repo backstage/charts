@@ -864,6 +864,15 @@
                             "description": "ote that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the Prometheus metrics tutorial. https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md",
                             "type": "string",
                             "default": "/metrics"
+                        },
+                        "port": {
+                            "default": "http-backend",
+                            "description": "The port where the metrics are exposed. If using OpenTelemetry as [documented here](https://backstage.io/docs/tutorials/setup-opentelemetry/), then the port needs to be explicitely specificed. OpenTelemetry's default port is 9464.",
+                            "title": "ServiceMonitor endpoint port",
+                            "anyOf": [
+                                { "type": "string" },
+                                { "type": "integer" }
+                            ]
                         }
                     }
                 }
