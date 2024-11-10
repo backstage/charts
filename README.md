@@ -14,7 +14,7 @@ This chart focuses on providing users the same experience and functionality no m
 We welcome other, more specialized, charts to use this cannonical chart as a direct dependency, expanding the feature set further, beyond this scope.
 
 A list of derived charts:
-- OpenShift specialized chart: [Janus Backstage Helm chart](https://github.com/janus-idp/helm-backstage/tree/main/charts/backstage)
+- OpenShift specialized chart: [Red Hat Developer Hub Helm chart](https://github.com/redhat-developer/rhdh-chart/tree/main/charts/backstage)
 
 ## Usage
 
