@@ -278,6 +278,10 @@ backstage:
   #    value: "value"
   #    effect: "NoSchedule|PreferNoSchedule|NoExecute"
 
+  # -- Host Aliases for the pod
+  # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+  hostAliases: []
+
   # -- Annotations to add to the backend deployment pods
   podAnnotations: {}
 

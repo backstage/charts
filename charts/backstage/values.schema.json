@@ -1430,6 +1430,7 @@
                                         "type": "integer"
                                     },
                                     "grpc": {
+                                        "description": "GRPCAction specifies an action involving a GRPC service.",
                                         "properties": {
                                             "port": {
                                                 "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -1620,6 +1621,7 @@
                                         "type": "integer"
                                     },
                                     "grpc": {
+                                        "description": "GRPCAction specifies an action involving a GRPC service.",
                                         "properties": {
                                             "port": {
                                                 "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -2002,6 +2004,7 @@
                                         "type": "integer"
                                     },
                                     "grpc": {
+                                        "description": "GRPCAction specifies an action involving a GRPC service.",
                                         "properties": {
                                             "port": {
                                                 "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -2979,6 +2982,7 @@
                                                         "x-kubernetes-map-type": "atomic"
                                                     },
                                                     "dataSourceRef": {
+                                                        "description": "TypedObjectReference contains enough information to let you locate the typed referenced object",
                                                         "properties": {
                                                             "apiGroup": {
                                                                 "description": "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required.",
@@ -3978,6 +3982,33 @@
                     "title": "Backstage container additional volumes",
                     "type": "array"
                 },
+                "hostAliases": {
+                    "default": [],
+                    "description": "Ref: https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/#adding-additional-entries-with-hostaliases",
+                    "items": {
+                        "description": "HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod's hosts file.",
+                        "properties": {
+                            "hostnames": {
+                                "description": "Hostnames for the above IP address.",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array",
+                                "x-kubernetes-list-type": "atomic"
+                            },
+                            "ip": {
+                                "description": "IP address of the host file entry.",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "ip"
+                        ],
+                        "type": "object"
+                    },
+                    "title": "Adding entries to a Pod's /etc/hosts file provides Pod-level override of hostname resolution when DNS and other options are not applicable",
+                    "type": "array"
+                },
                 "image": {
                     "additionalProperties": false,
                     "properties": {
@@ -4480,6 +4511,7 @@
                                         "type": "integer"
                                     },
                                     "grpc": {
+                                        "description": "GRPCAction specifies an action involving a GRPC service.",
                                         "properties": {
                                             "port": {
                                                 "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -4670,6 +4702,7 @@
                                         "type": "integer"
                                     },
                                     "grpc": {
+                                        "description": "GRPCAction specifies an action involving a GRPC service.",
                                         "properties": {
                                             "port": {
                                                 "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -5052,6 +5085,7 @@
                                         "type": "integer"
                                     },
                                     "grpc": {
+                                        "description": "GRPCAction specifies an action involving a GRPC service.",
                                         "properties": {
                                             "port": {
                                                 "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -5310,6 +5344,7 @@
                             "type": "integer"
                         },
                         "grpc": {
+                            "description": "GRPCAction specifies an action involving a GRPC service.",
                             "properties": {
                                 "port": {
                                     "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -5631,6 +5666,7 @@
                             "type": "integer"
                         },
                         "grpc": {
+                            "description": "GRPCAction specifies an action involving a GRPC service.",
                             "properties": {
                                 "port": {
                                     "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
@@ -5846,6 +5882,7 @@
                             "type": "integer"
                         },
                         "grpc": {
+                            "description": "GRPCAction specifies an action involving a GRPC service.",
                             "properties": {
                                 "port": {
                                     "description": "Port number of the gRPC service. Number must be in the range 1 to 65535.",
