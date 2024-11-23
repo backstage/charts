@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: jsonschema-dereference
         name: jsonschema-dereference
-        entry: python .pre-commit/jsonschema-dereference.py
+        entry: python .pre-commit/jsonschema_dereference.py
         additional_dependencies: [jsonref]
         language: python
         types_or: [yaml, json]
