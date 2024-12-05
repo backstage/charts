@@ -404,6 +404,14 @@
                         ]
                     ]
                 },
+                "extraPorts": {
+                    "title": "Extra ports to expose in the Backstage container",
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.ContainerPort"
+                    },
+                    "default": []
+                },
                 "extraVolumeMounts": {
                     "title": "Backstage container additional volume mounts",
                     "type": "array",
@@ -457,10 +465,10 @@
                     "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
                     "default": {
                         "httpGet": {
-                                "path": "/.backstage/health/v1/readiness",
-                                "port": 7007,
-                                "scheme": "HTTP"
-                            }
+                            "path": "/.backstage/health/v1/readiness",
+                            "port": 7007,
+                            "scheme": "HTTP"
+                        }
                     },
                     "examples": [
                         {
@@ -879,8 +887,12 @@
                             "description": "The port where the metrics are exposed. If using OpenTelemetry as [documented here](https://backstage.io/docs/tutorials/setup-opentelemetry/), then the port needs to be explicitely specificed. OpenTelemetry's default port is 9464.",
                             "title": "ServiceMonitor endpoint port",
                             "anyOf": [
-                                { "type": "string" },
-                                { "type": "integer" }
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
                             ]
                         }
                     }
