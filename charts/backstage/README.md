@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square)
+![Version: 2.3.0](https://img.shields.io/badge/Version-2.3.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -125,6 +125,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.extraEnvVars | Backstage container environment variables | list | `[]` |
 | backstage.extraEnvVarsCM | Backstage container environment variables from existing ConfigMaps | list | `[]` |
 | backstage.extraEnvVarsSecrets | Backstage container environment variables from existing Secrets | list | `[]` |
+| backstage.extraPorts | Backstage container additional ports | list | `[]` |
 | backstage.extraVolumeMounts | Backstage container additional volume mounts | list | `[]` |
 | backstage.extraVolumes | Backstage container additional volumes | list | `[]` |
 | backstage.hostAliases | Host Aliases for the pod <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/ | list | `[]` |

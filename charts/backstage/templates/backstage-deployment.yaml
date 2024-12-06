@@ -162,6 +162,9 @@ spec:
             - name: backend
               containerPort: {{ .Values.backstage.containerPorts.backend }}
               protocol: TCP
+            {{- if .Values.backstage.extraPorts }}
+            {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraPorts "context" $) | nindent 12 }}
+            {{- end }}
           {{- if (or .Values.backstage.extraAppConfig .Values.backstage.appConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
           volumeMounts:
             {{- range .Values.backstage.extraAppConfig }}
