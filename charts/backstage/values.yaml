@@ -158,6 +158,9 @@ backstage:
   # -- Backstage container environment variables from existing Secrets
   extraEnvVarsSecrets: []
 
+  # -- Backstage container additional ports
+  extraPorts: []
+
   # -- Backstage container additional volume mounts
   extraVolumeMounts: []
 
