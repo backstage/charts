@@ -57,7 +57,7 @@ jobs:
         run: ct lint --config ct.yaml
 
       - name: Create KIND Cluster
-        uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde # pin@v1.10.0
+        uses: helm/kind-action@ae94020eaf628e9b9b9f341a10cc0cdcf5c018fb # pin@v1.11.0
 
       - name: Install Ingress Controller
         run: "helm install ingress-nginx/ingress-nginx --generate-name --set controller.service.type='NodePort' --set controller.admissionWebhooks.enabled=false"
