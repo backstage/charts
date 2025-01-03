@@ -29,7 +29,7 @@ spec:
     matchLabels: {{ include "common.labels.standard" . | nindent 6 }}
       app.kubernetes.io/component: backstage
   endpoints:
-  - port: {{ .Values.metrics.serviceMonitor.port }}
+  - port: {{ .Values.metrics.serviceMonitor.port | quote }}
     path: {{ .Values.metrics.serviceMonitor.path }}
     {{- with .Values.metrics.serviceMonitor.interval }}
     interval: {{ . }}
