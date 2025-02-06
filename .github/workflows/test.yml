@@ -2,8 +2,6 @@ name: Lint Charts
 
 on:
   pull_request:
-    paths:
-      - "charts/**"
 
 jobs:
   check-readme:
