@@ -1,0 +1,4 @@
+service:
+  ipFamilyPolicy: PreferDualStack
+  ipFamilies:
+    - IPv4
