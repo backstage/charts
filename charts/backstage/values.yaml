@@ -352,6 +352,16 @@ service:
   # -- Extra ports to expose in the Backstage service (normally used with the `sidecar` value)
   extraPorts: []
 
+  # -- IP Family Policy
+  #
+  # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack
+  ipFamilyPolicy: ""
+
+  # -- IP Families
+  #
+  # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack
+  ipFamilies: []
+
 ## @section NetworkPolicy parameters
 ##
 networkPolicy:
