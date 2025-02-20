@@ -7051,6 +7051,31 @@
                     "title": "Extra ports to expose in the Backstage service",
                     "type": "array"
                 },
+                "ipFamilies": {
+                    "default": [],
+                    "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services",
+                    "items": {
+                        "enum": [
+                            "IPv4",
+                            "IPv6"
+                        ],
+                        "type": "string"
+                    },
+                    "title": "Backstage service IP families",
+                    "type": "array"
+                },
+                "ipFamilyPolicy": {
+                    "default": "",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services",
+                    "enum": [
+                        "",
+                        "SingleStack",
+                        "PreferDualStack",
+                        "RequireDualStack"
+                    ],
+                    "title": "Backstage service IP family policy",
+                    "type": "string"
+                },
                 "loadBalancerIP": {
                     "default": "",
                     "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer",
