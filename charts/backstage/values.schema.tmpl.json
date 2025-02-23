@@ -730,6 +730,28 @@
                         "type": "object"
                     },
                     "default": []
+                },
+                "ipFamilyPolicy": {
+                    "title": "Backstage service IP family policy",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services",
+                    "type": "string",
+                    "default": "",
+                    "enum": [
+                        "",
+                        "SingleStack",
+                        "PreferDualStack",
+                        "RequireDualStack"
+                    ]
+                },
+                "ipFamilies": {
+                    "title": "Backstage service IP families",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["IPv4", "IPv6"]
+                    },
+                    "default": []
                 }
             }
         },
