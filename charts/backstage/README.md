@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.3.1](https://img.shields.io/badge/Version-2.3.1-informational?style=flat-square)
+![Version: 2.5.0](https://img.shields.io/badge/Version-2.5.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -51,7 +51,7 @@ This chart bootstraps a [Backstage](https://backstage.io/docs/deployment/docker)
 
 This chart focuses on providing users the same experience and functionality no matter what flavor of Kubernetes they use. This chart will support only patterns that are either customary for all Kubernetes flavors, are commonly used in the Bitnami charts ecosystem, and recognized as Backstage official patterns.
 
-We welcome other, more specialized, charts to use this cannonical chart as a direct dependency, expanding the feature set further, beyond this scope.
+We welcome other, more specialized, charts to use this canonical chart as a direct dependency, expanding the feature set further, beyond this scope.
 
 A list of derived charts:
 - OpenShift specialized chart: [Janus Backstage Helm chart](https://github.com/janus-idp/helm-backstage/tree/main/charts/backstage)
@@ -204,6 +204,8 @@ Kubernetes: `>= 1.19.0-0`
 | service.clusterIP | Backstage service Cluster IP  <br /> E.g `clusterIP: None` | string | `""` |
 | service.externalTrafficPolicy | Backstage service external traffic policy  Ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip | string | `"Cluster"` |
 | service.extraPorts | Extra ports to expose in the Backstage service (normally used with the `sidecar` value) | list | `[]` |
+| service.ipFamilies | IP Families  <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack | list | `[]` |
+| service.ipFamilyPolicy | IP Family Policy  <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack | string | `""` |
 | service.loadBalancerIP | Backstage service Load Balancer IP  <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer | string | `""` |
 | service.loadBalancerSourceRanges | Load Balancer sources  <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer <br /> E.g `loadBalancerSourceRanges: [10.10.10.0/24]` | list | `[]` |
 | service.nodePorts | Node port for the Backstage client connections Choose port between `30000-32767` | object | `{"backend":""}` |
