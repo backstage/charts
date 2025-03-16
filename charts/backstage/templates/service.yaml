@@ -34,6 +34,13 @@ spec:
   {{- if .Values.service.sessionAffinity }}
   sessionAffinity: {{ .Values.service.sessionAffinity }}
   {{- end }}
+  {{- if .Values.service.ipFamilyPolicy }}
+  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+  {{- end }}
+  {{- with .Values.service.ipFamilies }}
+  ipFamilies:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
   ports:
     - name: {{ .Values.service.ports.name }}
       port: {{ .Values.service.ports.backend }}

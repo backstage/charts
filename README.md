@@ -11,7 +11,7 @@ Backstage unifies all your infrastructure tooling, services, and documentation t
 
 This chart focuses on providing users the same experience and functionality no matter what flavor of Kubernetes they use. This chart will support only patterns that are either customary for all Kubernetes flavors, are commonly used in the Bitnami charts ecosystem, and recognized as Backstage official patterns.
 
-We welcome other, more specialized, charts to use this cannonical chart as a direct dependency, expanding the feature set further, beyond this scope.
+We welcome other, more specialized, charts to use this canonical chart as a direct dependency, expanding the feature set further, beyond this scope.
 
 A list of derived charts:
 - OpenShift specialized chart: [Red Hat Developer Hub Helm chart](https://github.com/redhat-developer/rhdh-chart/tree/main/charts/backstage)
