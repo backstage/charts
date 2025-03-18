@@ -275,6 +275,35 @@
                         }
                     }
                 },
+                "pdb": {
+                    "title": "PDB parameters",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "create": {
+                            "description": "Create a PDB",
+                            "title": "Backstage PDB",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "minAvailable": {
+                            "title": "Backstage PDB minAvailable",
+                            "type": [
+                                "string",
+                                "integer"
+                            ],
+                            "default": ""
+                        },
+                        "maxUnavailable": {
+                            "title": "Backstage PDB maxUnavailable",
+                            "type": [
+                                "string",
+                                "integer"
+                            ],
+                            "default": ""
+                        }
+                    }
+                },
                 "containerPorts": {
                     "title": "Container ports on the Deployment",
                     "type": "object",

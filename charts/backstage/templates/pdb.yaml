@@ -1,0 +1,29 @@
+{{- if .Values.backstage.pdb.create }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{ include "common.labels.standard" . | nindent 4 }}
+    app.kubernetes.io/component: backstage
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- if .Values.commonAnnotations }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.backstage.annotations }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.annotations "context" $) | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.backstage.pdb.minAvailable }}
+  minAvailable: {{ .Values.backstage.pdb.minAvailable }}
+  {{- end  }}
+  {{- if or .Values.backstage.pdb.maxUnavailable ( not .Values.backstage.pdb.minAvailable ) }}
+  maxUnavailable: {{ .Values.backstage.pdb.maxUnavailable | default 1 }}
+  {{- end  }}
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: backstage
+{{- end }}
