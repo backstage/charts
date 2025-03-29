@@ -1,0 +1,9 @@
+metrics:
+  serviceMonitor:
+    enabled: true
+    annotations:
+      test: test
+    labels:
+      test: test
+    path: /metrics
+    port: http-backend
