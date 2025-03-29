@@ -180,7 +180,7 @@ Kubernetes: `>= 1.19.0-0`
 | metrics.serviceMonitor.interval | ServiceMonitor scrape interval | string | `nil` |
 | metrics.serviceMonitor.labels | Additional ServiceMonitor labels | object | `{}` |
 | metrics.serviceMonitor.path | ServiceMonitor endpoint path <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md). | string | `"/metrics"` |
-| metrics.serviceMonitor.port | ServiceMonitor endpoint port <br /> The port where the metrics are exposed. If using OpenTelemetry as [documented here](https://backstage.io/docs/tutorials/setup-opentelemetry/), then the port needs to be explicitely specificed. OpenTelemetry's default port is 9464. | string | `"http-backend"` |
+| metrics.serviceMonitor.port | ServiceMonitor endpoint port <br /> The port where the metrics are exposed. If using OpenTelemetry as [documented here](https://backstage.io/docs/tutorials/setup-opentelemetry/), then the port needs to be explicitly specified. OpenTelemetry's default port is 9464. | string | `"http-backend"` |
 | nameOverride | String to partially override common.names.fullname | string | `""` |
 | networkPolicy.egressRules.customRules | Additional custom egress rules | list | `[]` |
 | networkPolicy.egressRules.denyConnectionsToExternal | Deny external connections. Should not be enabled when working with an external database. | bool | `false` |
