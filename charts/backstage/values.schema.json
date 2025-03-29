@@ -5511,6 +5511,35 @@
                     "title": "Node labels for pod assignment",
                     "type": "object"
                 },
+                "pdb": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "create": {
+                            "default": false,
+                            "description": "Create a PDB",
+                            "title": "Backstage PDB",
+                            "type": "boolean"
+                        },
+                        "maxUnavailable": {
+                            "default": "",
+                            "title": "Backstage PDB maxUnavailable",
+                            "type": [
+                                "string",
+                                "integer"
+                            ]
+                        },
+                        "minAvailable": {
+                            "default": "",
+                            "title": "Backstage PDB minAvailable",
+                            "type": [
+                                "string",
+                                "integer"
+                            ]
+                        }
+                    },
+                    "title": "PDB parameters",
+                    "type": "object"
+                },
                 "podAnnotations": {
                     "additionalProperties": {
                         "type": "string"
