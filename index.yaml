@@ -12,6 +12,47 @@ entries:
         - name: Default Image Source
           url: https://github.com/backstage/backstage
     apiVersion: v2
+    created: "2025-03-31T00:09:12.650504787Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.10.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.10.0
+    description: A Helm chart for deploying a Backstage application
+    digest: f5be7eb85cf486e7761e0bd4ce612fd4fc6b2dbbca4dd15ceaa5c375ec978b86
+    home: https://backstage.io
+    icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/backstage/icon/color/backstage-icon-color.svg
+    keywords:
+    - backstage
+    - idp
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Backstage
+      url: https://backstage.io
+    name: backstage
+    sources:
+    - https://github.com/backstage/charts
+    - https://github.com/backstage/backstage
+    type: application
+    urls:
+    - https://github.com/backstage/charts/releases/download/backstage-2.4.1/backstage-2.4.1.tgz
+    version: 2.4.1
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: support
+          url: https://github.com/backstage/charts/issues
+        - name: Chart Source
+          url: https://github.com/backstage/charts
+        - name: Default Image Source
+          url: https://github.com/backstage/backstage
+    apiVersion: v2
     created: "2025-02-23T14:35:18.033312484Z"
     dependencies:
     - name: common
@@ -2108,4 +2149,4 @@ entries:
     urls:
     - https://github.com/backstage/charts/releases/download/backstage-0.5.0/backstage-0.5.0.tgz
     version: 0.5.0
-generated: "2025-02-23T14:35:18.033541761Z"
+generated: "2025-03-31T00:09:12.650664335Z"
