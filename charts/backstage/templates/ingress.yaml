@@ -36,7 +36,7 @@ spec:
       http:
         paths:
           - path: {{ .Values.ingress.path }}
-            pathType: Prefix
+            pathType: {{ default "Prefix" .Values.ingress.pathType }}
             backend:
               service:
                 name: {{ include "common.names.fullname" . }}
