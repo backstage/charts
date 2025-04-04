@@ -79,6 +79,14 @@ ingress:
   # -- Path to be used to expose the full route to access the backstage application (e.g: IP.nip.io/backstage)
   path: "/"
 
+  # pathType defines how the ingress path should be matched against incoming requests.
+  # Options:
+  # - Prefix: Matches requests whose path begins with the specified prefix (e.g., '/app' matches '/app', '/app/resource', etc.)
+  # - Exact: Matches only the exact path specified (e.g., '/app' matches only '/app' and not '/app/resource')
+  # - ImplementationSpecific: Matching behavior is determined by the ingress controller implementation
+
+  # pathType: Prefix
+  
   # -- Ingress TLS parameters
   tls:
 
