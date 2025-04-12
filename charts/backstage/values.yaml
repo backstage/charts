@@ -133,6 +133,13 @@ backstage:
     # <br /> E.g: `pullSecrets: [myRegistryKeySecretName]`
     pullSecrets: []
 
+  # -- Pod Disruption Budget configuration
+  # ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+  pdb:
+    create: false
+    minAvailable: ""
+    maxUnavailable: ""
+
   # -- Container ports on the Deployment
   containerPorts:
     backend: 7007
