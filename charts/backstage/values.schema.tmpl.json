@@ -275,6 +275,38 @@
                         }
                     }
                 },
+                "autoscaling": {
+                    "title": "Autoscaling parameters",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "description": "Enable autoscaling",
+                            "title": "Backstage Autoscaling",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "minReplicas": {
+                            "title": "Minimum number of Backstage pod replicas that the autoscaler is allowed to scale down to",
+                            "type": "integer",
+                            "default": 1
+                        },
+                        "maxReplicas": {
+                            "title": "Maximum number of Backstage pod replicas that the autoscaler is allowed to scale up to",
+                            "type": "integer",
+                            "default": 100
+                        },
+                        "targetCPUUtilizationPercentage": {
+                            "title": "Percentage of CPU that each Backstage pod should be using on average before the autoscaler decides to scale",
+                            "type": "integer",
+                            "default": 80
+                        },
+                        "targetMemoryUtilizationPercentage": {
+                            "title": "Percentage of memory that each Backstage pod should be using on average before the autoscaler decides to scale",
+                            "type": "integer"
+                        }
+                    }
+                },
                 "pdb": {
                     "title": "PDB parameters",
                     "type": "object",

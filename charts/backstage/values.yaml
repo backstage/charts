@@ -140,6 +140,15 @@ backstage:
     minAvailable: ""
     maxUnavailable: ""
 
+  # -- Autoscaling configuration.
+  # <br /> Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
   # -- Container ports on the Deployment
   containerPorts:
     backend: 7007
