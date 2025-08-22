@@ -196,7 +196,7 @@
                     "title": "The TLS configuration for additional hostnames to be covered with this ingress record.",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.networking.v1.IngressTLS"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.networking.v1.IngressTLS"
                     },
                     "default": []
                 }
@@ -364,15 +364,15 @@
                     "description": "Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity",
                     "properties": {
                         "nodeAffinity": {
-                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.NodeAffinity",
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.NodeAffinity",
                             "description": "Describes node affinity scheduling rules for the pod."
                         },
                         "podAffinity": {
-                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.PodAffinity",
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.PodAffinity",
                             "description": "Describes pod affinity scheduling rules (e.g. co-locate this pod in the same node, zone, etc. as some other pod(s))."
                         },
                         "podAntiAffinity": {
-                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.PodAntiAffinity",
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.PodAntiAffinity",
                             "description": "Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod in the same node, zone, etc. as some other pod(s))."
                         }
                     },
@@ -383,7 +383,7 @@
                     "default": [],
                     "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#pod-topology-spread-constraints",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
                     },
                     "title": "Topology Spread Constraint for pod assignment",
                     "type": "array"
@@ -417,7 +417,7 @@
                     "title": "Deployment sidecars.",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Container"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Container"
                     },
                     "default": []
                 },
@@ -425,7 +425,7 @@
                     "title": "Backstage container environment variables",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.EnvVar"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.EnvVar"
                     },
                     "default": [],
                     "examples": [
@@ -469,7 +469,7 @@
                     "title": "Extra ports to expose in the Backstage container",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.ContainerPort"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.ContainerPort"
                     },
                     "default": []
                 },
@@ -477,7 +477,7 @@
                     "title": "Backstage container additional volume mounts",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.VolumeMount"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.VolumeMount"
                     },
                     "default": []
                 },
@@ -485,7 +485,7 @@
                     "title": "Backstage container additional volumes",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Volume"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Volume"
                     },
                     "default": []
                 },
@@ -493,7 +493,7 @@
                     "title": "Backstage container init containers",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Container"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Container"
                     },
                     "default": []
                 },
@@ -505,7 +505,7 @@
                 "resources": {
                     "title": "Resource requests/limits",
                     "description": "Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements",
+                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements",
                     "default": {},
                     "examples": [
                         {
@@ -523,7 +523,7 @@
                 "readinessProbe": {
                     "title": "Readiness probe",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
                     "default": {
                         "httpGet": {
                             "path": "/.backstage/health/v1/readiness",
@@ -549,7 +549,7 @@
                 "livenessProbe": {
                     "title": "Liveness probe",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
                     "default": {
                         "httpGet": {
                             "path": "/.backstage/health/v1/liveness",
@@ -575,7 +575,7 @@
                 "startupProbe": {
                     "title": "Startup probe",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
+                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Probe",
                     "default": {
                         "httpGet": {
                             "path": "/.backstage/health/v1/liveness",
@@ -601,13 +601,13 @@
                 "podSecurityContext": {
                     "title": "Security settings for a Pod.",
                     "description": "The security settings that you specify for a Pod apply to all Containers in the Pod. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext",
+                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext",
                     "default": {}
                 },
                 "containerSecurityContext": {
                     "title": "Security settings for a Container.",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container",
-                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext",
+                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext",
                     "default": {}
                 },
                 "appConfig": {
@@ -639,7 +639,7 @@
                     "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.Toleration"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Toleration"
                     },
                     "default": []
                 },
@@ -648,7 +648,7 @@
                     "description": "Ref: https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/#adding-additional-entries-with-hostaliases",
                     "type": "array",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.api.core.v1.HostAlias"
+                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.HostAlias"
                     },
                     "default": []
                 },
@@ -835,19 +835,19 @@
                             "title": "",
                             "type": "array",
                             "items": {
-                                "$ref": "https://kubernetesjsonschema.dev/v1.8.7/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyIngressRule"
+                                "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyIngressRule"
                             }
                         },
                         "namespaceSelector": {
                             "title": "Namespace Selector.",
                             "description": "Selects Namespaces using cluster scoped-labels.",
-                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
                             "default": {}
                         },
                         "podSelector": {
                             "title": "Pod Selector.",
                             "description": "Selects selects Pods in this namespace.",
-                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector",
                             "default": {}
                         }
                     }
@@ -861,7 +861,7 @@
                             "title": "",
                             "type": "array",
                             "items": {
-                                "$ref": "https://kubernetesjsonschema.dev/v1.8.7/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyEgressRule"
+                                "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicyEgressRule"
                             }
                         },
                         "denyConnectionsToExternal": {
