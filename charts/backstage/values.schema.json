@@ -476,7 +476,7 @@
                             "description": "Pod anti affinity is a group of inter pod anti affinity scheduling rules.",
                             "properties": {
                                 "preferredDuringSchedulingIgnoredDuringExecution": {
-                                    "description": "The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and subtracting \"weight\" from the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred.",
+                                    "description": "The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding \"weight\" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred.",
                                     "items": {
                                         "description": "The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)",
                                         "properties": {
@@ -1043,7 +1043,7 @@
                                     "description": "EnvVar represents an environment variable present in a Container.",
                                     "properties": {
                                         "name": {
-                                            "description": "Name of the environment variable. May consist of any printable ASCII characters except '='.",
+                                            "description": "Name of the environment variable. Must be a C_IDENTIFIER.",
                                             "type": "string"
                                         },
                                         "value": {
@@ -1161,7 +1161,7 @@
                                 "x-kubernetes-patch-strategy": "merge"
                             },
                             "envFrom": {
-                                "description": "List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
+                                "description": "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
                                 "items": {
                                     "description": "EnvFromSource represents the source of a set of ConfigMaps or Secrets",
                                     "properties": {
@@ -1180,7 +1180,7 @@
                                             "type": "object"
                                         },
                                         "prefix": {
-                                            "description": "Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='.",
+                                            "description": "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER.",
                                             "type": "string"
                                         },
                                         "secretRef": {
@@ -2285,7 +2285,7 @@
                         "description": "EnvVar represents an environment variable present in a Container.",
                         "properties": {
                             "name": {
-                                "description": "Name of the environment variable. May consist of any printable ASCII characters except '='.",
+                                "description": "Name of the environment variable. Must be a C_IDENTIFIER.",
                                 "type": "string"
                             },
                             "value": {
@@ -3325,7 +3325,7 @@
                                 "description": "Represents a Glusterfs mount that lasts the lifetime of a pod. Glusterfs volumes do not support ownership management or SELinux relabeling.",
                                 "properties": {
                                     "endpoints": {
-                                        "description": "endpoints is the endpoint name that details Glusterfs topology.",
+                                        "description": "endpoints is the endpoint name that details Glusterfs topology. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod",
                                         "type": "string"
                                     },
                                     "path": {
@@ -4164,7 +4164,7 @@
                                     "description": "EnvVar represents an environment variable present in a Container.",
                                     "properties": {
                                         "name": {
-                                            "description": "Name of the environment variable. May consist of any printable ASCII characters except '='.",
+                                            "description": "Name of the environment variable. Must be a C_IDENTIFIER.",
                                             "type": "string"
                                         },
                                         "value": {
@@ -4282,7 +4282,7 @@
                                 "x-kubernetes-patch-strategy": "merge"
                             },
                             "envFrom": {
-                                "description": "List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
+                                "description": "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
                                 "items": {
                                     "description": "EnvFromSource represents the source of a set of ConfigMaps or Secrets",
                                     "properties": {
@@ -4301,7 +4301,7 @@
                                             "type": "object"
                                         },
                                         "prefix": {
-                                            "description": "Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='.",
+                                            "description": "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER.",
                                             "type": "string"
                                         },
                                         "secretRef": {
@@ -6532,10 +6532,15 @@
                                 "description": "NetworkPolicyEgressRule describes a particular set of traffic that is allowed out of pods matched by a NetworkPolicySpec's podSelector. The traffic must match both ports and to. This type is beta-level in 1.8",
                                 "properties": {
                                     "ports": {
-                                        "description": "List of destination ports for outgoing traffic. Each item in this list is combined using a logical OR. If this field is empty or missing, this rule matches all ports (traffic not restricted by port). If this field is present and contains at least one item, then this rule allows traffic only if the traffic matches at least one port in the list.",
+                                        "description": "ports is a list of destination ports for outgoing traffic. Each item in this list is combined using a logical OR. If this field is empty or missing, this rule matches all ports (traffic not restricted by port). If this field is present and contains at least one item, then this rule allows traffic only if the traffic matches at least one port in the list.",
                                         "items": {
                                             "description": "NetworkPolicyPort describes a port to allow traffic on",
                                             "properties": {
+                                                "endPort": {
+                                                    "description": "endPort indicates that the range of ports from port to endPort if set, inclusive, should be allowed by the policy. This field cannot be defined if the port field is not defined or if the port field is defined as a named (string) port. The endPort must be equal or greater than port.",
+                                                    "format": "int32",
+                                                    "type": "integer"
+                                                },
                                                 "port": {
                                                     "oneOf": [
                                                         {
@@ -6547,36 +6552,40 @@
                                                     ]
                                                 },
                                                 "protocol": {
-                                                    "description": "The protocol (TCP or UDP) which traffic must match. If not specified, this field defaults to TCP.",
+                                                    "description": "protocol represents the protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.",
                                                     "type": "string"
                                                 }
-                                            }
+                                            },
+                                            "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "to": {
-                                        "description": "List of destinations for outgoing traffic of pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all destinations (traffic not restricted by destination). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the to list.",
+                                        "description": "to is a list of destinations for outgoing traffic of pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all destinations (traffic not restricted by destination). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the to list.",
                                         "items": {
-                                            "description": "NetworkPolicyPeer describes a peer to allow traffic from. Exactly one of its fields must be specified.",
+                                            "description": "NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed",
                                             "properties": {
                                                 "ipBlock": {
-                                                    "description": "IPBlock describes a particular CIDR (Ex. \"192.168.1.1/24\") that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The except entry describes CIDRs that should not be included within this rule.",
+                                                    "description": "IPBlock describes a particular CIDR (Ex. \"192.168.1.0/24\",\"2001:db8::/64\") that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The except entry describes CIDRs that should not be included within this rule.",
                                                     "properties": {
                                                         "cidr": {
-                                                            "description": "CIDR is a string representing the IP Block Valid examples are \"192.168.1.1/24\"",
+                                                            "description": "cidr is a string representing the IPBlock Valid examples are \"192.168.1.0/24\" or \"2001:db8::/64\"",
                                                             "type": "string"
                                                         },
                                                         "except": {
-                                                            "description": "Except is a slice of CIDRs that should not be included within an IP Block Valid examples are \"192.168.1.1/24\" Except values will be rejected if they are outside the CIDR range",
+                                                            "description": "except is a slice of CIDRs that should not be included within an IPBlock Valid examples are \"192.168.1.0/24\" or \"2001:db8::/64\" Except values will be rejected if they are outside the cidr range",
                                                             "items": {
                                                                 "type": "string"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         }
                                                     },
                                                     "required": [
                                                         "cidr"
-                                                    ]
+                                                    ],
+                                                    "type": "object"
                                                 },
                                                 "namespaceSelector": {
                                                     "description": "A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.",
@@ -6588,9 +6597,7 @@
                                                                 "properties": {
                                                                     "key": {
                                                                         "description": "key is the label key that the selector applies to.",
-                                                                        "type": "string",
-                                                                        "x-kubernetes-patch-merge-key": "key",
-                                                                        "x-kubernetes-patch-strategy": "merge"
+                                                                        "type": "string"
                                                                     },
                                                                     "operator": {
                                                                         "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -6601,15 +6608,18 @@
                                                                         "items": {
                                                                             "type": "string"
                                                                         },
-                                                                        "type": "array"
+                                                                        "type": "array",
+                                                                        "x-kubernetes-list-type": "atomic"
                                                                     }
                                                                 },
                                                                 "required": [
                                                                     "key",
                                                                     "operator"
-                                                                ]
+                                                                ],
+                                                                "type": "object"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         },
                                                         "matchLabels": {
                                                             "additionalProperties": {
@@ -6618,7 +6628,9 @@
                                                             "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
                                                             "type": "object"
                                                         }
-                                                    }
+                                                    },
+                                                    "type": "object",
+                                                    "x-kubernetes-map-type": "atomic"
                                                 },
                                                 "podSelector": {
                                                     "description": "A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.",
@@ -6630,9 +6642,7 @@
                                                                 "properties": {
                                                                     "key": {
                                                                         "description": "key is the label key that the selector applies to.",
-                                                                        "type": "string",
-                                                                        "x-kubernetes-patch-merge-key": "key",
-                                                                        "x-kubernetes-patch-strategy": "merge"
+                                                                        "type": "string"
                                                                     },
                                                                     "operator": {
                                                                         "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -6643,15 +6653,18 @@
                                                                         "items": {
                                                                             "type": "string"
                                                                         },
-                                                                        "type": "array"
+                                                                        "type": "array",
+                                                                        "x-kubernetes-list-type": "atomic"
                                                                     }
                                                                 },
                                                                 "required": [
                                                                     "key",
                                                                     "operator"
-                                                                ]
+                                                                ],
+                                                                "type": "object"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         },
                                                         "matchLabels": {
                                                             "additionalProperties": {
@@ -6660,13 +6673,18 @@
                                                             "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
                                                             "type": "object"
                                                         }
-                                                    }
+                                                    },
+                                                    "type": "object",
+                                                    "x-kubernetes-map-type": "atomic"
                                                 }
-                                            }
+                                            },
+                                            "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     }
-                                }
+                                },
+                                "type": "object"
                             },
                             "title": "",
                             "type": "array"
@@ -6693,28 +6711,30 @@
                                 "description": "NetworkPolicyIngressRule describes a particular set of traffic that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The traffic must match both ports and from.",
                                 "properties": {
                                     "from": {
-                                        "description": "List of sources which should be able to access the pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least on item, this rule allows traffic only if the traffic matches at least one item in the from list.",
+                                        "description": "from is a list of sources which should be able to access the pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.",
                                         "items": {
-                                            "description": "NetworkPolicyPeer describes a peer to allow traffic from. Exactly one of its fields must be specified.",
+                                            "description": "NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed",
                                             "properties": {
                                                 "ipBlock": {
-                                                    "description": "IPBlock describes a particular CIDR (Ex. \"192.168.1.1/24\") that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The except entry describes CIDRs that should not be included within this rule.",
+                                                    "description": "IPBlock describes a particular CIDR (Ex. \"192.168.1.0/24\",\"2001:db8::/64\") that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The except entry describes CIDRs that should not be included within this rule.",
                                                     "properties": {
                                                         "cidr": {
-                                                            "description": "CIDR is a string representing the IP Block Valid examples are \"192.168.1.1/24\"",
+                                                            "description": "cidr is a string representing the IPBlock Valid examples are \"192.168.1.0/24\" or \"2001:db8::/64\"",
                                                             "type": "string"
                                                         },
                                                         "except": {
-                                                            "description": "Except is a slice of CIDRs that should not be included within an IP Block Valid examples are \"192.168.1.1/24\" Except values will be rejected if they are outside the CIDR range",
+                                                            "description": "except is a slice of CIDRs that should not be included within an IPBlock Valid examples are \"192.168.1.0/24\" or \"2001:db8::/64\" Except values will be rejected if they are outside the cidr range",
                                                             "items": {
                                                                 "type": "string"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         }
                                                     },
                                                     "required": [
                                                         "cidr"
-                                                    ]
+                                                    ],
+                                                    "type": "object"
                                                 },
                                                 "namespaceSelector": {
                                                     "description": "A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.",
@@ -6726,9 +6746,7 @@
                                                                 "properties": {
                                                                     "key": {
                                                                         "description": "key is the label key that the selector applies to.",
-                                                                        "type": "string",
-                                                                        "x-kubernetes-patch-merge-key": "key",
-                                                                        "x-kubernetes-patch-strategy": "merge"
+                                                                        "type": "string"
                                                                     },
                                                                     "operator": {
                                                                         "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -6739,15 +6757,18 @@
                                                                         "items": {
                                                                             "type": "string"
                                                                         },
-                                                                        "type": "array"
+                                                                        "type": "array",
+                                                                        "x-kubernetes-list-type": "atomic"
                                                                     }
                                                                 },
                                                                 "required": [
                                                                     "key",
                                                                     "operator"
-                                                                ]
+                                                                ],
+                                                                "type": "object"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         },
                                                         "matchLabels": {
                                                             "additionalProperties": {
@@ -6756,7 +6777,9 @@
                                                             "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
                                                             "type": "object"
                                                         }
-                                                    }
+                                                    },
+                                                    "type": "object",
+                                                    "x-kubernetes-map-type": "atomic"
                                                 },
                                                 "podSelector": {
                                                     "description": "A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.",
@@ -6768,9 +6791,7 @@
                                                                 "properties": {
                                                                     "key": {
                                                                         "description": "key is the label key that the selector applies to.",
-                                                                        "type": "string",
-                                                                        "x-kubernetes-patch-merge-key": "key",
-                                                                        "x-kubernetes-patch-strategy": "merge"
+                                                                        "type": "string"
                                                                     },
                                                                     "operator": {
                                                                         "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
@@ -6781,15 +6802,18 @@
                                                                         "items": {
                                                                             "type": "string"
                                                                         },
-                                                                        "type": "array"
+                                                                        "type": "array",
+                                                                        "x-kubernetes-list-type": "atomic"
                                                                     }
                                                                 },
                                                                 "required": [
                                                                     "key",
                                                                     "operator"
-                                                                ]
+                                                                ],
+                                                                "type": "object"
                                                             },
-                                                            "type": "array"
+                                                            "type": "array",
+                                                            "x-kubernetes-list-type": "atomic"
                                                         },
                                                         "matchLabels": {
                                                             "additionalProperties": {
@@ -6798,17 +6822,26 @@
                                                             "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
                                                             "type": "object"
                                                         }
-                                                    }
+                                                    },
+                                                    "type": "object",
+                                                    "x-kubernetes-map-type": "atomic"
                                                 }
-                                            }
+                                            },
+                                            "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     },
                                     "ports": {
-                                        "description": "List of ports which should be made accessible on the pods selected for this rule. Each item in this list is combined using a logical OR. If this field is empty or missing, this rule matches all ports (traffic not restricted by port). If this field is present and contains at least one item, then this rule allows traffic only if the traffic matches at least one port in the list.",
+                                        "description": "ports is a list of ports which should be made accessible on the pods selected for this rule. Each item in this list is combined using a logical OR. If this field is empty or missing, this rule matches all ports (traffic not restricted by port). If this field is present and contains at least one item, then this rule allows traffic only if the traffic matches at least one port in the list.",
                                         "items": {
                                             "description": "NetworkPolicyPort describes a port to allow traffic on",
                                             "properties": {
+                                                "endPort": {
+                                                    "description": "endPort indicates that the range of ports from port to endPort if set, inclusive, should be allowed by the policy. This field cannot be defined if the port field is not defined or if the port field is defined as a named (string) port. The endPort must be equal or greater than port.",
+                                                    "format": "int32",
+                                                    "type": "integer"
+                                                },
                                                 "port": {
                                                     "oneOf": [
                                                         {
@@ -6820,14 +6853,17 @@
                                                     ]
                                                 },
                                                 "protocol": {
-                                                    "description": "The protocol (TCP or UDP) which traffic must match. If not specified, this field defaults to TCP.",
+                                                    "description": "protocol represents the protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.",
                                                     "type": "string"
                                                 }
-                                            }
+                                            },
+                                            "type": "object"
                                         },
-                                        "type": "array"
+                                        "type": "array",
+                                        "x-kubernetes-list-type": "atomic"
                                     }
-                                }
+                                },
+                                "type": "object"
                             },
                             "title": "",
                             "type": "array"
