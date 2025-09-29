@@ -423,6 +423,11 @@ postgresql:
   # -- Switch to enable or disable the PostgreSQL helm chart
   enabled: false
 
+  # -- Change default PostgreSQL image location (workaround for https://github.com/bitnami/charts/issues/35164)
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/postgresql
+
   # -- The authentication details of the Postgres database
   auth:
 
