@@ -423,18 +423,37 @@
                 },
                 "extraEnvVars": {
                     "title": "Backstage container environment variables",
-                    "type": "array",
-                    "items": {
-                        "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.EnvVar"
-                    },
-                    "default": [],
-                    "examples": [
-                        [
-                            {
-                                "name": "APP_CONFIG_backend_cache_store",
-                                "value": "memory"
-                            }
-                        ]
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.EnvVar"
+                            },
+                            "default": [],
+                            "examples": [
+                                [
+                                    {
+                                        "name": "APP_CONFIG_backend_cache_store",
+                                        "value": "memory"
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object",
+                                "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.EnvVar"
+                            },
+                            "examples": [
+                                {
+                                    "APP_CONFIG_backend_cache_store": {
+                                        "name": "APP_CONFIG_backend_cache_store",
+                                        "value": "memory"
+                                    }
+                                }
+                            ]
+                        }
                     ]
                 },
                 "extraEnvVarsCM": {

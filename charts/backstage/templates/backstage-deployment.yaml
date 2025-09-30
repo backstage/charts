@@ -158,7 +158,15 @@ spec:
                   key: {{ include "backstage.postgresql.databaseSecretKey" . }}
             {{- end }}
             {{- if .Values.backstage.extraEnvVars }}
+            {{- if (kindIs "map" .Values.backstage.extraEnvVars) }}
+            {{- /* If extraEnvVars is a dict, Helm will merge it automatically by key */ -}}
+            {{- range $_, $value := .Values.backstage.extraEnvVars }}
+            - {{- include "common.tplvalues.render" ( dict "value" $value "context" $) | nindent 14 }}
+            {{- end }}
+            {{- else if (kindIs "slice" .Values.backstage.extraEnvVars) }}
+            {{- /* If extraEnvVars is a list, keep current behavior (no merging) */ -}}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
             {{- end }}
           ports:
             - name: backend
