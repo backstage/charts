@@ -258,7 +258,8 @@
                             "default": "Always",
                             "enum": [
                                 "Always",
-                                "IfNotPresent"
+                                "IfNotPresent",
+                                ""
                             ]
                         },
                         "pullSecrets": {
