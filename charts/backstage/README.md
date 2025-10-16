@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.6.1](https://img.shields.io/badge/Version-2.6.1-informational?style=flat-square)
+![Version: 2.6.2](https://img.shields.io/badge/Version-2.6.2-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -201,6 +201,7 @@ Kubernetes: `>= 1.19.0-0`
 | postgresql.auth.secretKeys.userPasswordKey | The key in which Postgres will look for, for the user password, in the existing Secret | string | `"user-password"` |
 | postgresql.auth.username | Name for a custom user to create | string | `"bn_backstage"` |
 | postgresql.enabled | Switch to enable or disable the PostgreSQL helm chart | bool | `false` |
+| postgresql.image | Change default PostgreSQL image location (workaround for https://github.com/bitnami/charts/issues/35164) | object | `{"registry":"docker.io","repository":"bitnamilegacy/postgresql"}` |
 | service | Service parameters | object | See below |
 | service.annotations | Additional custom annotations for Backstage service | object | `{}` |
 | service.clusterIP | Backstage service Cluster IP  <br /> E.g `clusterIP: None` | string | `""` |
