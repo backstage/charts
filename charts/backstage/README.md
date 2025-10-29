@@ -201,6 +201,7 @@ Kubernetes: `>= 1.19.0-0`
 | postgresql.auth.secretKeys.userPasswordKey | The key in which Postgres will look for, for the user password, in the existing Secret | string | `"user-password"` |
 | postgresql.auth.username | Name for a custom user to create | string | `"bn_backstage"` |
 | postgresql.enabled | Switch to enable or disable the PostgreSQL helm chart | bool | `false` |
+| postgresql.image | Change default PostgreSQL image location (workaround for https://github.com/bitnami/charts/issues/35164) | object | `{"registry":"docker.io","repository":"bitnamilegacy/postgresql"}` |
 | service | Service parameters | object | See below |
 | service.annotations | Additional custom annotations for Backstage service | object | `{}` |
 | service.clusterIP | Backstage service Cluster IP  <br /> E.g `clusterIP: None` | string | `""` |
