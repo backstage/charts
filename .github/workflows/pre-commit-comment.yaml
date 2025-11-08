@@ -35,12 +35,46 @@ jobs:
             echo "HAS_DIFF=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Delete previous pre-commit failure comments
-        if: steps.extract.outputs.HAS_DIFF == 'true'
+      - name: Get PR number from workflow run
+        id: pr-number
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
-            const prNumber = ${{ steps.extract.outputs.PR_NUMBER }};
+            // Try to get PR number from artifact first, otherwise from the workflow run
+            let prNumber = ${{ steps.extract.outputs.PR_NUMBER || 'null' }};
+            
+            if (!prNumber) {
+              // Get PR number from the workflow run event
+              const headRepo = context.payload.workflow_run.head_repository.owner.login;
+              const headBranch = context.payload.workflow_run.head_branch;
+              
+              console.log(`Looking for PR with head: ${headRepo}:${headBranch}`);
+              
+              const { data: pullRequests } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                head: `${headRepo}:${headBranch}`,
+              });
+              
+              if (pullRequests.length > 0) {
+                prNumber = pullRequests[0].number;
+                console.log(`Found PR #${prNumber} for branch ${headBranch}`);
+              } else {
+                console.log('No open PR found for this workflow run');
+                console.log('This might be a push to a non-PR branch, skipping comment workflow');
+                return;
+              }
+            }
+            
+            core.setOutput('number', prNumber);
+
+      - name: Delete previous pre-commit failure comments
+        if: steps.pr-number.outputs.number
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const prNumber = ${{ steps.pr-number.outputs.number }};
             
             // Get all comments on the PR
             const { data: comments } = await github.rest.issues.listComments({
@@ -81,7 +115,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const prNumber = ${{ steps.extract.outputs.PR_NUMBER }};
+            const prNumber = ${{ steps.pr-number.outputs.number }};
             const diff = fs.readFileSync('diff.txt', 'utf8');
             
             const body = `## ⚠️ Pre-commit Hook Failures
