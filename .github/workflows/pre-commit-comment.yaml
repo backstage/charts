@@ -1,0 +1,143 @@
+name: Pre-commit Comment
+
+on:
+  workflow_run:
+    workflows: ["Pre-commit"]
+    types:
+      - completed
+
+jobs:
+  comment:
+    name: Comment on PR
+    runs-on: ubuntu-latest
+    # Only run if the pre-commit workflow completed (not necessarily succeeded)
+    if: github.event.workflow_run.event == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Download artifact
+        id: download
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        continue-on-error: true
+        with:
+          name: pre-commit-diff
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Check artifact and extract PR number
+        id: extract
+        if: steps.download.outcome == 'success'
+        run: |
+          if [ -f pr-number.txt ]; then
+            echo "PR_NUMBER=$(cat pr-number.txt)" >> $GITHUB_OUTPUT
+            echo "HAS_DIFF=true" >> $GITHUB_OUTPUT
+          else
+            echo "HAS_DIFF=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get PR number from workflow run
+        id: pr-number
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            // Try to get PR number from artifact first, otherwise from the workflow run
+            let prNumber = ${{ steps.extract.outputs.PR_NUMBER || 'null' }};
+            
+            if (!prNumber) {
+              // Get PR number from the workflow run event
+              const headRepo = context.payload.workflow_run.head_repository.owner.login;
+              const headBranch = context.payload.workflow_run.head_branch;
+              
+              console.log(`Looking for PR with head: ${headRepo}:${headBranch}`);
+              
+              const { data: pullRequests } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                head: `${headRepo}:${headBranch}`,
+              });
+              
+              if (pullRequests.length > 0) {
+                prNumber = pullRequests[0].number;
+                console.log(`Found PR #${prNumber} for branch ${headBranch}`);
+              } else {
+                console.log('No open PR found for this workflow run');
+                console.log('This might be a push to a non-PR branch, skipping comment workflow');
+                return;
+              }
+            }
+            
+            core.setOutput('number', prNumber);
+
+      - name: Delete previous pre-commit failure comments
+        if: steps.pr-number.outputs.number
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const prNumber = ${{ steps.pr-number.outputs.number }};
+            
+            // Get all comments on the PR
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            
+            console.log(`Found ${comments.length} total comments on PR #${prNumber}`);
+            
+            // Filter comments created by github-actions bot that contain our marker
+            const botComments = comments.filter(comment => {
+              const isBot = comment.user.login === 'github-actions[bot]';
+              const hasMarker = comment.body && comment.body.includes('⚠️ Pre-commit Hook Failures');
+              if (isBot && hasMarker) {
+                console.log(`Found matching comment ${comment.id} to delete`);
+              }
+              return isBot && hasMarker;
+            });
+            
+            console.log(`Found ${botComments.length} pre-commit failure comment(s) to delete`);
+            
+            // Delete each matching comment
+            for (const comment of botComments) {
+              console.log(`Deleting comment ${comment.id}`);
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: comment.id,
+              });
+            }
+            
+            console.log(`Successfully deleted ${botComments.length} previous pre-commit failure comment(s).`);
+
+      - name: Post comment
+        if: steps.extract.outputs.HAS_DIFF == 'true'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const fs = require('fs');
+            const prNumber = ${{ steps.pr-number.outputs.number }};
+            const diff = fs.readFileSync('diff.txt', 'utf8');
+            
+            const body = `## ⚠️ Pre-commit Hook Failures
+            
+            <details>
+            <summary>View diff</summary>
+            
+            \`\`\`diff
+            ${diff}
+            \`\`\`
+            
+            </details>
+            
+            Please apply the above diff in your PR branch (or run \`pre-commit run --all-files\` locally) and push the changes.
+            
+            For more information on pre-commit, see the [pre-commit documentation](https://pre-commit.com/#install).`;
+            
+            await github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+            
+            console.log('Successfully posted PR comment with diff.');
