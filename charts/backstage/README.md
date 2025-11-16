@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.6.3](https://img.shields.io/badge/Version-2.6.3-informational?style=flat-square)
+![Version: 2.6.4](https://img.shields.io/badge/Version-2.6.4-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -118,7 +118,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.appConfig | Generates ConfigMap and configures it in the Backstage pods | object | `{}` |
 | backstage.args | Backstage container command arguments | list | `[]` |
 | backstage.autoscaling | Autoscaling configuration. <br /> Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` |
-| backstage.command | Backstage container command | list | `["node","packages/backend"]` |
+| backstage.command | Backstage container command | list | `["node","packages/backend","--config","{{ .Values.backstage.installDir }}/app-config.yaml"]` |
 | backstage.containerPorts | Container ports on the Deployment | object | `{"backend":7007}` |
 | backstage.containerSecurityContext | Security settings for a Container. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container | object | `{}` |
 | backstage.extraAppConfig | Extra app configuration files to inline into command arguments | list | `[]` |

@@ -154,7 +154,7 @@ backstage:
     backend: 7007
 
   # -- Backstage container command
-  command: ["node", "packages/backend"]
+  command: ["node", "packages/backend", "--config", "{{ .Values.backstage.installDir }}/app-config.yaml"]
 
   # -- Backstage container command arguments
   args: []
