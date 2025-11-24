@@ -32,33 +32,5 @@ jobs:
 
       - name: Run pre-commit
         uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # pin@v3.0.1
-        continue-on-error: true  # Don't fail immediately; we'll handle it below
         with:
           extra_args: --verbose --all-files --show-diff-on-failure
-
-      - name: Check for changes after pre-commit
-        id: diff-checker
-        run: |
-          echo "CHANGED=$(if git diff --quiet; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
-
-      - name: Save diff and PR metadata
-        if: ${{ steps.diff-checker.outputs.CHANGED == 'true' }}
-        run: |
-          mkdir -p ./pr-comment
-          git diff > ./pr-comment/diff.txt
-          echo "${{ github.event.number }}" > ./pr-comment/pr-number.txt
-          echo "Pre-commit hooks made changes. See diff artifact."
-
-      - name: Upload diff artifact
-        if: ${{ steps.diff-checker.outputs.CHANGED == 'true' }}
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v4
-        with:
-          name: pre-commit-diff
-          path: pr-comment/
-          retention-days: 1
-
-      - name: Fail if changes were made
-        if: ${{ steps.diff-checker.outputs.CHANGED == 'true' }}
-        run: |
-          echo "::error::Pre-commit hooks made changes. Please review the diff in the PR comment and apply the fixes."
-          exit 1
