@@ -254,7 +254,7 @@ backstage:
   #   timeoutSeconds: 2
   startupProbe:
     httpGet:
-      path: /.backstage/health/v1/liveness
+      path: /.backstage/health/v1/readiness
       port: 7007
       scheme: HTTP
 
