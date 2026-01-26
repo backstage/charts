@@ -140,7 +140,7 @@ httpRoute:
   #           value: /api
   #     backendRefs:
   #       - name: backstage-api
-  #         port: 8080 -->
+  #         port: 7007 -->
   extraRules: []
 
 # -- Backstage parameters

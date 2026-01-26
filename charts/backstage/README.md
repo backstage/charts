@@ -166,7 +166,7 @@ Kubernetes: `>= 1.19.0-0`
 | httpRoute | HTTPRoute parameters, the successor to Ingress for routing HTTP traffic (Gateway API) | object | See below |
 | httpRoute.annotations | Additional annotations for the HTTPRoute resource | object | `{}` |
 | httpRoute.enabled | Enable the creation of the HTTPRoute resource | bool | `false` |
-| httpRoute.extraRules | Additional routing rules <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.HTTPRouteRule <!-- E.g. extraRules:   - matches:       - path:           type: PathPrefix           value: /api     backendRefs:       - name: backstage-api         port: 8080 --> | list | `[]` |
+| httpRoute.extraRules | Additional routing rules <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.HTTPRouteRule <!-- E.g. extraRules:   - matches:       - path:           type: PathPrefix           value: /api     backendRefs:       - name: backstage-api         port: 7007 --> | list | `[]` |
 | httpRoute.hostnames | Hostnames to be used for the HTTPRoute <!-- E.g. hostnames:   - backstage.example.com --> | list | `[]` |
 | httpRoute.parentRefs | Gateway reference configuration <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.ParentReference | object | `{"group":"gateway.networking.k8s.io","kind":"Gateway","name":"","namespace":"","sectionName":""}` |
 | httpRoute.parentRefs.group | API group of the Gateway (default: "gateway.networking.k8s.io") | string | `"gateway.networking.k8s.io"` |
