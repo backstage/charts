@@ -6340,6 +6340,76 @@
             "title": "Global parameters.",
             "type": "object"
         },
+        "httpRoute": {
+            "additionalProperties": false,
+            "properties": {
+                "annotations": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {},
+                    "title": "Additional annotations for the HTTPRoute resource",
+                    "type": "object"
+                },
+                "enabled": {
+                    "default": false,
+                    "title": "Enable the creation of the HTTPRoute resource",
+                    "type": "boolean"
+                },
+                "extraRules": {
+                    "default": [],
+                    "title": "Additional routing rules",
+                    "type": "array"
+                },
+                "hostnames": {
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    },
+                    "title": "Hostnames to be used for the HTTPRoute",
+                    "type": "array"
+                },
+                "parentRefs": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "group": {
+                            "default": "gateway.networking.k8s.io",
+                            "title": "API group of the Gateway",
+                            "type": "string"
+                        },
+                        "kind": {
+                            "default": "Gateway",
+                            "title": "Kind of the Gateway",
+                            "type": "string"
+                        },
+                        "name": {
+                            "default": "",
+                            "title": "Name of the Gateway to attach the HTTPRoute to",
+                            "type": "string"
+                        },
+                        "namespace": {
+                            "default": "",
+                            "title": "Namespace of the Gateway",
+                            "type": "string"
+                        },
+                        "sectionName": {
+                            "default": "",
+                            "title": "SectionName is the name of a section within the target Gateway",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Gateway reference configuration",
+                    "type": "object"
+                },
+                "path": {
+                    "default": "/",
+                    "title": "Path to be used for the HTTPRoute",
+                    "type": "string"
+                }
+            },
+            "title": "HTTPRoute parameters (Gateway API)",
+            "type": "object"
+        },
         "ingress": {
             "additionalProperties": false,
             "properties": {
