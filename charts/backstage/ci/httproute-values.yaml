@@ -1,0 +1,6 @@
+httpRoute:
+  enabled: true
+  parentRefs:
+    name: my-gateway
+  hostnames:
+    - backstage.example.com
