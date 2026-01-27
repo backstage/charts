@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.6.3](https://img.shields.io/badge/Version-2.6.3-informational?style=flat-square)
+![Version: 2.7.0](https://img.shields.io/badge/Version-2.7.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -163,6 +163,18 @@ Kubernetes: `>= 1.19.0-0`
 | global | Global parameters Global Docker image parameters Please, note that this will override the image parameters, including dependencies, configured to use the global value Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass | object | See below |
 | global.imagePullSecrets | Global Docker registry secret names as an array </br> E.g. `imagePullSecrets: [myRegistryKeySecretName]` | list | `[]` |
 | global.imageRegistry | Global Docker image registry | string | `""` |
+| httpRoute | HTTPRoute parameters, the successor to Ingress for routing HTTP traffic (Gateway API) | object | See below |
+| httpRoute.annotations | Additional annotations for the HTTPRoute resource | object | `{}` |
+| httpRoute.enabled | Enable the creation of the HTTPRoute resource | bool | `false` |
+| httpRoute.extraRules | Additional routing rules <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.HTTPRouteRule <!-- E.g. extraRules:   - matches:       - path:           type: PathPrefix           value: /api     backendRefs:       - name: backstage-api         port: 7007 --> | list | `[]` |
+| httpRoute.hostnames | Hostnames to be used for the HTTPRoute <!-- E.g. hostnames:   - backstage.example.com --> | list | `[]` |
+| httpRoute.parentRefs | Gateway reference configuration <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.ParentReference | object | `{"group":"gateway.networking.k8s.io","kind":"Gateway","name":"","namespace":"","sectionName":""}` |
+| httpRoute.parentRefs.group | API group of the Gateway (default: "gateway.networking.k8s.io") | string | `"gateway.networking.k8s.io"` |
+| httpRoute.parentRefs.kind | Kind of the Gateway (default: "Gateway") | string | `"Gateway"` |
+| httpRoute.parentRefs.name | Name of the Gateway to attach the HTTPRoute to | string | `""` |
+| httpRoute.parentRefs.namespace | Namespace of the Gateway (optional, defaults to same namespace as HTTPRoute) | string | `""` |
+| httpRoute.parentRefs.sectionName | SectionName is the name of a section within the target Gateway (optional) | string | `""` |
+| httpRoute.path | Path to be used for the HTTPRoute (default: "/") | string | `"/"` |
 | ingress | Ingress parameters | object | `{"annotations":{},"className":"","enabled":false,"extraHosts":[],"extraTls":[],"host":"","path":"/","tls":{"enabled":false,"secretName":""}}` |
 | ingress.annotations | Additional annotations for the Ingress resource | object | `{}` |
 | ingress.className | Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx) | string | `""` |

@@ -97,6 +97,52 @@ ingress:
   #     secretName: backstage-env -->
   extraTls: []
 
+# -- HTTPRoute parameters, the successor to Ingress for routing HTTP traffic (Gateway API)
+# @default -- See below
+httpRoute:
+
+  # -- Enable the creation of the HTTPRoute resource
+  enabled: false
+
+  # -- Additional annotations for the HTTPRoute resource
+  annotations: {}
+
+  # -- Gateway reference configuration
+  # <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.ParentReference
+  parentRefs:
+    # -- API group of the Gateway (default: "gateway.networking.k8s.io")
+    group: "gateway.networking.k8s.io"
+    # -- Kind of the Gateway (default: "Gateway")
+    kind: "Gateway"
+    # -- Name of the Gateway to attach the HTTPRoute to
+    name: ""
+    # -- Namespace of the Gateway (optional, defaults to same namespace as HTTPRoute)
+    namespace: ""
+    # -- SectionName is the name of a section within the target Gateway (optional)
+    sectionName: ""
+
+  # -- Hostnames to be used for the HTTPRoute
+  # <!-- E.g.
+  # hostnames:
+  #   - backstage.example.com -->
+  hostnames: []
+
+  # -- Path to be used for the HTTPRoute (default: "/")
+  path: "/"
+
+  # -- Additional routing rules
+  # <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.HTTPRouteRule
+  # <!-- E.g.
+  # extraRules:
+  #   - matches:
+  #       - path:
+  #           type: PathPrefix
+  #           value: /api
+  #     backendRefs:
+  #       - name: backstage-api
+  #         port: 7007 -->
+  extraRules: []
+
 # -- Backstage parameters
 # @default -- See below
 backstage:

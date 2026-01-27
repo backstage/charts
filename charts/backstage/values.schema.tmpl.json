@@ -202,6 +202,76 @@
                 }
             }
         },
+        "httpRoute": {
+            "title": "HTTPRoute parameters (Gateway API)",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "title": "Enable the creation of the HTTPRoute resource",
+                    "type": "boolean",
+                    "default": false
+                },
+                "annotations": {
+                    "title": "Additional annotations for the HTTPRoute resource",
+                    "type": "object",
+                    "default": {},
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "parentRefs": {
+                    "title": "Gateway reference configuration",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "group": {
+                            "title": "API group of the Gateway",
+                            "type": "string",
+                            "default": "gateway.networking.k8s.io"
+                        },
+                        "kind": {
+                            "title": "Kind of the Gateway",
+                            "type": "string",
+                            "default": "Gateway"
+                        },
+                        "name": {
+                            "title": "Name of the Gateway to attach the HTTPRoute to",
+                            "type": "string",
+                            "default": ""
+                        },
+                        "namespace": {
+                            "title": "Namespace of the Gateway",
+                            "type": "string",
+                            "default": ""
+                        },
+                        "sectionName": {
+                            "title": "SectionName is the name of a section within the target Gateway",
+                            "type": "string",
+                            "default": ""
+                        }
+                    }
+                },
+                "hostnames": {
+                    "title": "Hostnames to be used for the HTTPRoute",
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "path": {
+                    "title": "Path to be used for the HTTPRoute",
+                    "type": "string",
+                    "default": "/"
+                },
+                "extraRules": {
+                    "title": "Additional routing rules",
+                    "type": "array",
+                    "default": []
+                }
+            }
+        },
         "backstage": {
             "title": "Backstage parameters",
             "type": "object",
