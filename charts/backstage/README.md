@@ -168,12 +168,7 @@ Kubernetes: `>= 1.19.0-0`
 | httpRoute.enabled | Enable the creation of the HTTPRoute resource | bool | `false` |
 | httpRoute.extraRules | Additional routing rules <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.HTTPRouteRule <!-- E.g. extraRules:   - matches:       - path:           type: PathPrefix           value: /api     backendRefs:       - name: backstage-api         port: 7007 --> | list | `[]` |
 | httpRoute.hostnames | Hostnames to be used for the HTTPRoute <!-- E.g. hostnames:   - backstage.example.com --> | list | `[]` |
-| httpRoute.parentRefs | Gateway reference configuration <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.ParentReference | object | `{"group":"gateway.networking.k8s.io","kind":"Gateway","name":"","namespace":"","sectionName":""}` |
-| httpRoute.parentRefs.group | API group of the Gateway (default: "gateway.networking.k8s.io") | string | `"gateway.networking.k8s.io"` |
-| httpRoute.parentRefs.kind | Kind of the Gateway (default: "Gateway") | string | `"Gateway"` |
-| httpRoute.parentRefs.name | Name of the Gateway to attach the HTTPRoute to | string | `""` |
-| httpRoute.parentRefs.namespace | Namespace of the Gateway (optional, defaults to same namespace as HTTPRoute) | string | `""` |
-| httpRoute.parentRefs.sectionName | SectionName is the name of a section within the target Gateway (optional) | string | `""` |
+| httpRoute.parentRefs | Gateway reference configuration (list of parent Gateway references) <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.ParentReference <!-- E.g. parentRefs:   - name: my-gateway     namespace: gateway-ns --> | list | `[]` |
 | httpRoute.path | Path to be used for the HTTPRoute (default: "/") | string | `"/"` |
 | ingress | Ingress parameters | object | `{"annotations":{},"className":"","enabled":false,"extraHosts":[],"extraTls":[],"host":"","path":"/","tls":{"enabled":false,"secretName":""}}` |
 | ingress.annotations | Additional annotations for the Ingress resource | object | `{}` |
