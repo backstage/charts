@@ -6370,36 +6370,39 @@
                     "type": "array"
                 },
                 "parentRefs": {
-                    "additionalProperties": false,
-                    "properties": {
-                        "group": {
-                            "default": "gateway.networking.k8s.io",
-                            "title": "API group of the Gateway",
-                            "type": "string"
+                    "default": [],
+                    "items": {
+                        "properties": {
+                            "group": {
+                                "default": "gateway.networking.k8s.io",
+                                "title": "API group of the Gateway",
+                                "type": "string"
+                            },
+                            "kind": {
+                                "default": "Gateway",
+                                "title": "Kind of the Gateway",
+                                "type": "string"
+                            },
+                            "name": {
+                                "default": "",
+                                "title": "Name of the Gateway",
+                                "type": "string"
+                            },
+                            "namespace": {
+                                "default": "",
+                                "title": "Namespace of the Gateway",
+                                "type": "string"
+                            },
+                            "sectionName": {
+                                "default": "",
+                                "title": "SectionName within the target Gateway",
+                                "type": "string"
+                            }
                         },
-                        "kind": {
-                            "default": "Gateway",
-                            "title": "Kind of the Gateway",
-                            "type": "string"
-                        },
-                        "name": {
-                            "default": "",
-                            "title": "Name of the Gateway to attach the HTTPRoute to",
-                            "type": "string"
-                        },
-                        "namespace": {
-                            "default": "",
-                            "title": "Namespace of the Gateway",
-                            "type": "string"
-                        },
-                        "sectionName": {
-                            "default": "",
-                            "title": "SectionName is the name of a section within the target Gateway",
-                            "type": "string"
-                        }
+                        "type": "object"
                     },
                     "title": "Gateway reference configuration",
-                    "type": "object"
+                    "type": "array"
                 },
                 "path": {
                     "default": "/",

@@ -107,19 +107,13 @@ httpRoute:
   # -- Additional annotations for the HTTPRoute resource
   annotations: {}
 
-  # -- Gateway reference configuration
+  # -- Gateway reference configuration (list of parent Gateway references)
   # <br /> Ref: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.ParentReference
-  parentRefs:
-    # -- API group of the Gateway (default: "gateway.networking.k8s.io")
-    group: "gateway.networking.k8s.io"
-    # -- Kind of the Gateway (default: "Gateway")
-    kind: "Gateway"
-    # -- Name of the Gateway to attach the HTTPRoute to
-    name: ""
-    # -- Namespace of the Gateway (optional, defaults to same namespace as HTTPRoute)
-    namespace: ""
-    # -- SectionName is the name of a section within the target Gateway (optional)
-    sectionName: ""
+  # <!-- E.g.
+  # parentRefs:
+  #   - name: my-gateway
+  #     namespace: gateway-ns -->
+  parentRefs: []
 
   # -- Hostnames to be used for the HTTPRoute
   # <!-- E.g.

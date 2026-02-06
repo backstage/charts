@@ -1,4 +1,7 @@
 {{- if .Values.httpRoute.enabled }}
+{{- if not .Values.httpRoute.parentRefs }}
+{{- fail "httpRoute.parentRefs is required when httpRoute.enabled is true. Please specify at least one Gateway reference." }}
+{{- end }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -20,15 +23,17 @@ metadata:
   {{- end }}
 spec:
   parentRefs:
-    - group: {{ .Values.httpRoute.parentRefs.group | default "gateway.networking.k8s.io" }}
-      kind: {{ .Values.httpRoute.parentRefs.kind | default "Gateway" }}
-      name: {{ include "common.tplvalues.render" ( dict "value" .Values.httpRoute.parentRefs.name "context" $ ) }}
-      {{- if .Values.httpRoute.parentRefs.namespace }}
-      namespace: {{ include "common.tplvalues.render" ( dict "value" .Values.httpRoute.parentRefs.namespace "context" $ ) }}
+    {{- range .Values.httpRoute.parentRefs }}
+    - group: {{ .group | default "gateway.networking.k8s.io" }}
+      kind: {{ .kind | default "Gateway" }}
+      name: {{ include "common.tplvalues.render" ( dict "value" .name "context" $ ) }}
+      {{- if .namespace }}
+      namespace: {{ include "common.tplvalues.render" ( dict "value" .namespace "context" $ ) }}
       {{- end }}
-      {{- if .Values.httpRoute.parentRefs.sectionName }}
-      sectionName: {{ include "common.tplvalues.render" ( dict "value" .Values.httpRoute.parentRefs.sectionName "context" $ ) }}
+      {{- if .sectionName }}
+      sectionName: {{ include "common.tplvalues.render" ( dict "value" .sectionName "context" $ ) }}
       {{- end }}
+    {{- end }}
   {{- if .Values.httpRoute.hostnames }}
   hostnames:
     {{- range .Values.httpRoute.hostnames }}
