@@ -219,6 +219,24 @@
                     "minimum": 0,
                     "default": 10
                 },
+                "strategy": {
+                    "title": "Deployment update strategy",
+                    "description": "Kubernetes Deployment strategy (RollingUpdate or Recreate). Leave empty to use the Kubernetes default (RollingUpdate with maxSurge 25% and maxUnavailable 25%).",
+                    "type": "object",
+                    "default": {},
+                    "examples": [
+                        {
+                            "type": "Recreate"
+                        },
+                        {
+                            "type": "RollingUpdate",
+                            "rollingUpdate": {
+                                "maxSurge": 0,
+                                "maxUnavailable": 1
+                            }
+                        }
+                    ]
+                },
                 "image": {
                     "title": "Image parameters",
                     "type": "object",

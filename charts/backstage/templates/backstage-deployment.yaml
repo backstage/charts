@@ -24,6 +24,9 @@ spec:
   replicas: {{ .Values.backstage.replicas }}
   {{- end }}
   revisionHistoryLimit: {{ .Values.backstage.revisionHistoryLimit }}
+  {{- if .Values.backstage.strategy }}
+  strategy: {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.strategy "context" $) | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
       app.kubernetes.io/component: backstage

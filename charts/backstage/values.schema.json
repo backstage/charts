@@ -6111,6 +6111,24 @@
                     },
                     "type": "object"
                 },
+                "strategy": {
+                    "default": {},
+                    "description": "Kubernetes Deployment strategy (RollingUpdate or Recreate). Leave empty to use the Kubernetes default (RollingUpdate with maxSurge 25% and maxUnavailable 25%).",
+                    "examples": [
+                        {
+                            "type": "Recreate"
+                        },
+                        {
+                            "rollingUpdate": {
+                                "maxSurge": 0,
+                                "maxUnavailable": 1
+                            },
+                            "type": "RollingUpdate"
+                        }
+                    ],
+                    "title": "Deployment update strategy",
+                    "type": "object"
+                },
                 "tolerations": {
                     "default": [],
                     "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",

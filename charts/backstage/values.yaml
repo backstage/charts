@@ -108,6 +108,17 @@ backstage:
   # May be set to 0 in case of GitOps deployment approach.
   revisionHistoryLimit: 10
 
+  # -- Deployment [update strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy).
+  # When unset, Kubernetes applies its default (RollingUpdate with maxSurge 25% and maxUnavailable 25%).
+  # Set to `Recreate` (or `RollingUpdate` with `maxSurge: 0`) to guarantee a single Backstage pod runs at a time, which is recommended when plugin database migrations run on startup to avoid concurrent migration attempts.
+  # <!-- E.g.
+  # strategy:
+  #   type: RollingUpdate
+  #   rollingUpdate:
+  #     maxSurge: 0
+  #     maxUnavailable: 1 -->
+  strategy: {}
+
   image:
 
     # -- Backstage image registry
