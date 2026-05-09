@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.7.0](https://img.shields.io/badge/Version-2.7.0-informational?style=flat-square)
+![Version: 2.8.0](https://img.shields.io/badge/Version-2.8.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -164,6 +164,13 @@ Kubernetes: `>= 1.19.0-0`
 | global | Global parameters Global Docker image parameters Please, note that this will override the image parameters, including dependencies, configured to use the global value Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass | object | See below |
 | global.imagePullSecrets | Global Docker registry secret names as an array </br> E.g. `imagePullSecrets: [myRegistryKeySecretName]` | list | `[]` |
 | global.imageRegistry | Global Docker image registry | string | `""` |
+| httpRoute | HTTPRoute parameters | object | `{"annotations":{},"enabled":false,"hostnames":[],"labels":{},"parentRefs":[],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` |
+| httpRoute.annotations | Additional annotations for the HTTPRoute resource | object | `{}` |
+| httpRoute.enabled | Enable the creation of the HTTPRoute resource | bool | `false` |
+| httpRoute.hostnames | List of hostnames matching HTTP header | list | `[]` |
+| httpRoute.labels | Additional labels for the HTTPRoute resource | object | `{}` |
+| httpRoute.parentRefs | List of Gateways this HTTPRoute is attached to | list | `[]` |
+| httpRoute.rules | List of rules and filters applied to the HTTPRoute | list | `[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]` |
 | ingress | Ingress parameters | object | `{"annotations":{},"className":"","enabled":false,"extraHosts":[],"extraTls":[],"host":"","path":"/","tls":{"enabled":false,"secretName":""}}` |
 | ingress.annotations | Additional annotations for the Ingress resource | object | `{}` |
 | ingress.className | Name of the IngressClass cluster resource which defines which controller will implement the resource (e.g nginx) | string | `""` |

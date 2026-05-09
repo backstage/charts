@@ -6358,6 +6358,223 @@
             "title": "Global parameters.",
             "type": "object"
         },
+        "httpRoute": {
+            "additionalProperties": false,
+            "properties": {
+                "annotations": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {},
+                    "title": "Additional annotations for the HTTPRoute resource",
+                    "type": "object"
+                },
+                "enabled": {
+                    "default": false,
+                    "title": "Enable the creation of the HTTPRoute resource",
+                    "type": "boolean"
+                },
+                "hostnames": {
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    },
+                    "title": "List of hostnames matching HTTP header",
+                    "type": "array"
+                },
+                "labels": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {},
+                    "title": "Additional labels for the HTTPRoute resource",
+                    "type": "object"
+                },
+                "parentRefs": {
+                    "default": [],
+                    "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "group": {
+                                "title": "Group is the group of the referent.",
+                                "type": "string"
+                            },
+                            "kind": {
+                                "title": "Kind is kind of the referent.",
+                                "type": "string"
+                            },
+                            "name": {
+                                "title": "Name is the name of the referent.",
+                                "type": "string"
+                            },
+                            "namespace": {
+                                "title": "Namespace is the namespace of the referent.",
+                                "type": "string"
+                            },
+                            "port": {
+                                "title": "Port is the network port this Route targets.",
+                                "type": "integer"
+                            },
+                            "sectionName": {
+                                "title": "SectionName is the name of a section within the target resource.",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "name"
+                        ],
+                        "type": "object"
+                    },
+                    "title": "List of Gateways this HTTPRoute is attached to",
+                    "type": "array"
+                },
+                "rules": {
+                    "default": [],
+                    "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "backendRefs": {
+                                "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "group": {
+                                            "type": "string"
+                                        },
+                                        "kind": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "namespace": {
+                                            "type": "string"
+                                        },
+                                        "port": {
+                                            "type": "integer"
+                                        },
+                                        "weight": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "filters": {
+                                "items": {
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "matches": {
+                                "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "headers": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "enum": [
+                                                            "Exact",
+                                                            "RegularExpression"
+                                                        ],
+                                                        "type": "string"
+                                                    },
+                                                    "value": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "method": {
+                                            "enum": [
+                                                "GET",
+                                                "HEAD",
+                                                "POST",
+                                                "PUT",
+                                                "DELETE",
+                                                "CONNECT",
+                                                "OPTIONS",
+                                                "TRACE",
+                                                "PATCH"
+                                            ],
+                                            "type": "string"
+                                        },
+                                        "path": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "type": {
+                                                    "enum": [
+                                                        "Exact",
+                                                        "PathPrefix",
+                                                        "RegularExpression"
+                                                    ],
+                                                    "title": "HTTPPathMatchType specifies the semantics of how HTTP paths should be compared.",
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "title": "Value of the HTTP path to match against.",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "title": "Path specifies a HTTP request path matcher.",
+                                            "type": "object"
+                                        },
+                                        "queryParams": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "enum": [
+                                                            "Exact",
+                                                            "RegularExpression"
+                                                        ],
+                                                        "type": "string"
+                                                    },
+                                                    "value": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "name": {
+                                "title": "Name is the name of the rule.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "title": "List of rules and filters applied to the HTTPRoute",
+                    "type": "array"
+                }
+            },
+            "title": "HTTPRoute parameters",
+            "type": "object"
+        },
         "ingress": {
             "additionalProperties": false,
             "properties": {

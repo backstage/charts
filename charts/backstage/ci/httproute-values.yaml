@@ -1,0 +1,7 @@
+httpRoute:
+  enabled: true
+  parentRefs:
+    - name: default
+      namespace: proxy
+  hostnames:
+    - backstage.example.com
