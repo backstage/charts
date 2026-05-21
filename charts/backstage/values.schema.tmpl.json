@@ -315,6 +315,21 @@
                                     "type": "object"
                                 },
                                 "type": "array"
+                            },
+                            "timeouts": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "backendRequest": {
+                                        "title": "BackendRequest specifies a timeout for an individual request from the gateway to a backend.",
+                                        "type": "string"
+                                    },
+                                    "request": {
+                                        "title": "Request specifies the maximum duration for a gateway to respond to an HTTP request.",
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "Timeouts defines the timeouts that can be configured for an HTTP request.",
+                                "type": "object"
                             }
                         },
                         "type": "object"
