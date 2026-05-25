@@ -1,0 +1,14 @@
+httpRoute:
+  enabled: true
+  parentRefs:
+    - name: default
+      namespace: proxy
+  hostnames:
+    - backstage.example.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      timeouts:
+        request: 10s
