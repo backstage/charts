@@ -1,0 +1,76 @@
+# Pins the ServiceMonitor behaviour: off by default, and when enabled it has to
+# render as a valid Prometheus Operator resource whose selector matches the
+# backstage Service and whose endpoint points at the configured port/path.
+suite: servicemonitor
+templates:
+  - servicemonitor.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: does not render when metrics.serviceMonitor is disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders a ServiceMonitor when enabled
+    values:
+      - ../ci/service-monitor.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ServiceMonitor
+      - equal:
+          path: apiVersion
+          value: monitoring.coreos.com/v1
+      - equal:
+          path: metadata.name
+          value: backstage
+
+  - it: targets the configured endpoint port and path
+    values:
+      - ../ci/service-monitor.yaml
+    asserts:
+      - equal:
+          path: spec.endpoints[0].port
+          value: http-backend
+      - equal:
+          path: spec.endpoints[0].path
+          value: /metrics
+      - notExists:
+          path: spec.endpoints[0].interval
+
+  - it: selects the backstage component within the release namespace
+    values:
+      - ../ci/service-monitor.yaml
+    asserts:
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/component"]
+          value: backstage
+      - equal:
+          path: spec.namespaceSelector.matchNames[0]
+          value: backstage-system
+
+  - it: carries the standard component label plus user-supplied labels and annotations
+    values:
+      - ../ci/service-monitor.yaml
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/component"]
+          value: backstage
+      - equal:
+          path: metadata.labels.test
+          value: test
+      - equal:
+          path: metadata.annotations.test
+          value: test
+
+  - it: emits the scrape interval only when configured
+    set:
+      metrics.serviceMonitor.enabled: true
+      metrics.serviceMonitor.interval: 30s
+    asserts:
+      - equal:
+          path: spec.endpoints[0].interval
+          value: 30s

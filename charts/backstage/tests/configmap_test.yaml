@@ -1,0 +1,46 @@
+# Pins the behaviour of the app-config ConfigMap: it must only exist when the
+# user supplies backstage.appConfig, and when it does the rendered config has to
+# land verbatim under the app-config.yaml data key (this is what the deployment
+# mounts and passes to --config).
+suite: app-config configmap
+templates:
+  - app-config-configmap.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: does not render when backstage.appConfig is empty
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders a single ConfigMap when backstage.appConfig is set
+    values:
+      - ../ci/appConfig-values.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: backstage-app-config
+      - equal:
+          path: metadata.namespace
+          value: backstage-system
+
+  - it: embeds the supplied config under the app-config.yaml key
+    values:
+      - ../ci/appConfig-values.yaml
+    asserts:
+      - isNotEmpty:
+          path: data["app-config.yaml"]
+      - matchRegex:
+          path: data["app-config.yaml"]
+          pattern: "title: The very best Backstage Helm Chart"
+      - matchRegex:
+          path: data["app-config.yaml"]
+          pattern: "baseUrl: https://somedomain.tl"
+      - matchRegex:
+          path: data["app-config.yaml"]
+          pattern: "port: 12345"
