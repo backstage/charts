@@ -44,6 +44,9 @@ spec:
         {{- end }}
     spec:
       serviceAccountName: {{ include "backstage.serviceAccountName" . }}
+      {{- if .Values.backstage.priorityClassName }}
+      priorityClassName: {{ .Values.backstage.priorityClassName | quote }}
+      {{- end }}
       {{- if .Values.backstage.podSecurityContext }}
       securityContext:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.podSecurityContext "context" $) | nindent 8 }}

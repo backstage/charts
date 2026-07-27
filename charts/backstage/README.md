@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.8.2](https://img.shields.io/badge/Version-2.8.2-informational?style=flat-square)
+![Version: 2.9.0](https://img.shields.io/badge/Version-2.9.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -144,6 +144,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.podAnnotations | Annotations to add to the backend deployment pods | object | `{}` |
 | backstage.podLabels | Labels to add to the backend deployment pods | object | `{}` |
 | backstage.podSecurityContext | Security settings for a Pod.  The security settings that you specify for a Pod apply to all Containers in the Pod. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod | object | `{}` |
+| backstage.priorityClassName | Priority class name for pod scheduling <br /> Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/ | string | `""` |
 | backstage.readinessProbe | Readiness Probe Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes <!-- E.g. readinessProbe:   failureThreshold: 3   httpGet:     path: /.backstage/health/v1/readiness     port: 7007     scheme: HTTP   initialDelaySeconds: 30   periodSeconds: 10   successThreshold: 2   timeoutSeconds: 2 | object | `{"httpGet":{"path":"/.backstage/health/v1/readiness","port":7007,"scheme":"HTTP"}}` |
 | backstage.replicas | Number of deployment replicas | int | `1` |
 | backstage.resources | Resource requests/limits <br /> Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container <!-- E.g. resources:   limits:     memory: 1Gi     cpu: 1000m   requests:     memory: 250Mi     cpu: 100m --> | object | `{}` |

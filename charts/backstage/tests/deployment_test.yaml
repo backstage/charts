@@ -1,0 +1,21 @@
+# Pins the priority class behaviour: it is omitted by default and, when set,
+# maps to the Backstage pod specification.
+suite: backstage deployment
+templates:
+  - backstage-deployment.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: omits the priority class name by default
+    asserts:
+      - notExists:
+          path: spec.template.spec.priorityClassName
+
+  - it: configures the priority class name when set
+    values:
+      - ../ci/priorityClassName-values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.priorityClassName
+          value: backstage-chart-test

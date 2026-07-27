@@ -5750,6 +5750,12 @@
                     },
                     "type": "object"
                 },
+                "priorityClassName": {
+                    "default": "",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/",
+                    "title": "Priority class name for pod scheduling",
+                    "type": "string"
+                },
                 "readinessProbe": {
                     "description": "Probe describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic.",
                     "properties": {
