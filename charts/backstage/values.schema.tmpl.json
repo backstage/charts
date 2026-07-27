@@ -856,6 +856,12 @@
                     "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext",
                     "default": {}
                 },
+                "priorityClassName": {
+                    "title": "Priority class name for pod scheduling",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/",
+                    "type": "string",
+                    "default": ""
+                },
                 "containerSecurityContext": {
                     "title": "Security settings for a Container.",
                     "description": "Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container",

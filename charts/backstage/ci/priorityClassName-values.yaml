@@ -1,0 +1,11 @@
+backstage:
+  priorityClassName: backstage-chart-test
+
+extraDeploy:
+  - apiVersion: scheduling.k8s.io/v1
+    kind: PriorityClass
+    metadata:
+      name: backstage-chart-test
+    value: 1000
+    globalDefault: false
+    description: Priority class used to test the Backstage chart
