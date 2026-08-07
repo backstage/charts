@@ -1,5 +1,5 @@
-# Pins the priority class behaviour: it is omitted by default and, when set,
-# maps to the Backstage pod specification.
+# Pins the optional pod settings: each is omitted by default and, when set, maps to the
+# Backstage pod specification or container.
 suite: backstage deployment
 templates:
   - backstage-deployment.yaml
@@ -19,3 +19,34 @@ tests:
       - equal:
           path: spec.template.spec.priorityClassName
           value: backstage-chart-test
+
+  - it: renders neither lifecycle hooks nor a termination grace period by default
+    asserts:
+      - notExists:
+          path: spec.template.spec.terminationGracePeriodSeconds
+      - notExists:
+          path: spec.template.spec.containers[0].lifecycle
+
+  - it: renders the preStop hook on the backstage container
+    values:
+      - ../ci/lifecycle-values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].lifecycle.preStop.exec.command
+          value: ["/bin/sh", "-c", "sleep 10"]
+
+  - it: renders the termination grace period on the pod spec
+    values:
+      - ../ci/lifecycle-values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 60
+
+  - it: renders a termination grace period of zero
+    set:
+      backstage.terminationGracePeriodSeconds: 0
+    asserts:
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 0

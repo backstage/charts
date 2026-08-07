@@ -294,6 +294,15 @@ backstage:
       port: 7007
       scheme: HTTP
 
+  # -- Lifecycle hooks for the Backstage container
+  # <br /> Ref: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/
+  # <!-- E.g.
+  # lifecycleHooks:
+  #   preStop:
+  #     exec:
+  #       command: ["/bin/sh", "-c", "sleep 10"] -->
+  lifecycleHooks: {}
+
   # -- Security settings for a Pod.
   #  The security settings that you specify for a Pod apply to all Containers in the Pod.
   # <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
@@ -340,6 +349,12 @@ backstage:
   # -- Host Aliases for the pod
   # <br /> Ref: https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
   hostAliases: []
+
+  # -- Duration in seconds the pod needs to terminate gracefully before being force killed
+  # <br /> Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination
+  # <!-- E.g.
+  # terminationGracePeriodSeconds: 60 -->
+  terminationGracePeriodSeconds: null
 
   # -- Annotations to add to the backend deployment pods
   podAnnotations: {}

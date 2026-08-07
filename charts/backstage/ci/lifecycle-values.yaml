@@ -1,0 +1,6 @@
+backstage:
+  lifecycleHooks:
+    preStop:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 10"]
+  terminationGracePeriodSeconds: 60
