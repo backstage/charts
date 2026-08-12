@@ -850,6 +850,25 @@
                         }
                     ]
                 },
+                "lifecycleHooks": {
+                    "title": "Lifecycle hooks for the Backstage container",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/",
+                    "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.Lifecycle",
+                    "default": {},
+                    "examples": [
+                        {
+                            "preStop": {
+                                "exec": {
+                                    "command": [
+                                        "/bin/sh",
+                                        "-c",
+                                        "sleep 10"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
                 "podSecurityContext": {
                     "title": "Security settings for a Pod.",
                     "description": "The security settings that you specify for a Pod apply to all Containers in the Pod. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod",
@@ -909,6 +928,19 @@
                         "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.33.4/_definitions.json#/definitions/io.k8s.api.core.v1.HostAlias"
                     },
                     "default": []
+                },
+                "terminationGracePeriodSeconds": {
+                    "title": "Duration in seconds the pod needs to terminate gracefully before being force killed",
+                    "description": "Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination",
+                    "type": [
+                        "integer",
+                        "null"
+                    ],
+                    "minimum": 0,
+                    "default": null,
+                    "examples": [
+                        60
+                    ]
                 },
                 "podAnnotations": {
                     "title": "Annotations to add to the backend deployment pods",

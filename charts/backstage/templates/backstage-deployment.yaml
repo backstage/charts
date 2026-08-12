@@ -71,6 +71,9 @@ spec:
       hostAliases:
         {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.hostAliases "context" $) | nindent 8 }}
       {{- end }}
+      {{- if not (kindIs "invalid" .Values.backstage.terminationGracePeriodSeconds) }}
+      terminationGracePeriodSeconds: {{ .Values.backstage.terminationGracePeriodSeconds }}
+      {{- end }}
       volumes:
         {{- if (or .Values.backstage.extraAppConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
         {{- range .Values.backstage.extraAppConfig }}
@@ -135,6 +138,9 @@ spec:
           {{- end }}
           {{- if .Values.backstage.startupProbe }}
           startupProbe: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.startupProbe "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.backstage.lifecycleHooks }}
+          lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.backstage.lifecycleHooks "context" $) | nindent 12 }}
           {{- end }}
           {{- if (or .Values.backstage.extraEnvVarsCM .Values.backstage.extraEnvVarsSecrets) }}
           envFrom:
