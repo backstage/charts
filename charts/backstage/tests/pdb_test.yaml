@@ -1,0 +1,58 @@
+suite: backstage pod disruption budget
+templates:
+  - pdb.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: does not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders with one unavailable pod by default when enabled
+    set:
+      backstage.pdb.create: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - equal:
+          path: spec.maxUnavailable
+          value: 1
+      - notExists:
+          path: spec.minAvailable
+
+  - it: renders minAvailable without maxUnavailable
+    set:
+      backstage.pdb.create: true
+      backstage.pdb.minAvailable: 2
+    asserts:
+      - equal:
+          path: spec.minAvailable
+          value: 2
+      - notExists:
+          path: spec.maxUnavailable
+
+  - it: renders maxUnavailable without minAvailable
+    set:
+      backstage.pdb.create: true
+      backstage.pdb.maxUnavailable: 25%
+    asserts:
+      - equal:
+          path: spec.maxUnavailable
+          value: 25%
+      - notExists:
+          path: spec.minAvailable
+
+  - it: uses the same selector as the Deployment
+    set:
+      backstage.pdb.create: true
+    asserts:
+      - equal:
+          path: spec.selector.matchLabels
+          value:
+            app.kubernetes.io/name: backstage
+            app.kubernetes.io/instance: backstage
+            app.kubernetes.io/component: backstage

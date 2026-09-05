@@ -1,0 +1,79 @@
+suite: backstage ingress
+templates:
+  - ingress.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: does not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders when enabled
+    values:
+      - ../ci/ingress-values.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: apiVersion
+          value: networking.k8s.io/v1
+
+  - it: renders the host path class and TLS settings
+    values:
+      - ../ci/ingress-values.yaml
+    set:
+      ingress.className: nginx
+      ingress.path: /backstage
+    asserts:
+      - equal:
+          path: spec.ingressClassName
+          value: nginx
+      - equal:
+          path: spec.rules[0].host
+          value: backstage.example.com
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /backstage
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: Prefix
+      - equal:
+          path: spec.tls[0]
+          value:
+            hosts:
+              - backstage.example.com
+            secretName: backstage-tls
+
+  - it: renders additional hosts and TLS entries
+    values:
+      - ../ci/ingress-extraHosts-values.yaml
+    asserts:
+      - equal:
+          path: spec.rules[1].host
+          value: backstage.dev.example.com
+      - equal:
+          path: spec.rules[1].http.paths[0].path
+          value: /
+      - equal:
+          path: spec.rules[1].http.paths[0].pathType
+          value: Prefix
+      - equal:
+          path: spec.tls[1]
+          value:
+            hosts:
+              - backstage.dev.example.com
+            secretName: backstage-dev-tls
+
+  - it: passes annotations through to the Ingress
+    set:
+      ingress.enabled: true
+      ingress.annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 10m
+    asserts:
+      - equal:
+          path: metadata.annotations["nginx.ingress.kubernetes.io/proxy-body-size"]
+          value: 10m

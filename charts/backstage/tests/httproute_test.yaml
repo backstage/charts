@@ -1,0 +1,51 @@
+suite: backstage HTTPRoute
+templates:
+  - httproute.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: does not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders a v1 HTTPRoute when enabled
+    values:
+      - ../ci/httproute-values.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: apiVersion
+          value: gateway.networking.k8s.io/v1
+
+  - it: renders parent references hostnames and rules
+    values:
+      - ../ci/httproute-values.yaml
+    asserts:
+      - equal:
+          path: spec.parentRefs
+          value:
+            - name: default
+              namespace: proxy
+      - equal:
+          path: spec.hostnames
+          value:
+            - backstage.example.com
+      - equal:
+          path: spec.rules[0].matches[0].path
+          value:
+            type: PathPrefix
+            value: /
+      - equal:
+          path: spec.rules[0].timeouts.request
+          value: 10s
+      - equal:
+          path: spec.rules[0].backendRefs[0]
+          value:
+            name: backstage
+            port: 7007
+            weight: 1
