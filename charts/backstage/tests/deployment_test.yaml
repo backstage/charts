@@ -371,6 +371,32 @@ tests:
               - name: metrics
                 containerPort: 9090
 
+  - it: references the generated ServiceAccount name
+    set:
+      serviceAccount.create: true
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: backstage
+
+  - it: gives the configured ServiceAccount name precedence
+    set:
+      serviceAccount.create: true
+      serviceAccount.name: backstage-runtime
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: backstage-runtime
+
+  - it: references an existing ServiceAccount when creation is disabled
+    set:
+      serviceAccount.create: false
+      serviceAccount.name: backstage-existing
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: backstage-existing
+
   - it: omits the priority class name by default
     asserts:
       - notExists:
