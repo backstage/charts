@@ -1,0 +1,96 @@
+suite: backstage service
+templates:
+  - service.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: renders a default ClusterIP Service with the backend port
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: backstage
+      - equal:
+          path: metadata.namespace
+          value: backstage-system
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - equal:
+          path: spec.ports[0].name
+          value: http-backend
+      - equal:
+          path: spec.ports[0].port
+          value: 7007
+      - equal:
+          path: spec.ports[0].targetPort
+          value: backend
+
+  - it: renders a NodePort Service with the configured node port
+    set:
+      service.type: NodePort
+      service.nodePorts.backend: 31007
+      service.externalTrafficPolicy: Local
+    asserts:
+      - equal:
+          path: spec.type
+          value: NodePort
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 31007
+      - equal:
+          path: spec.externalTrafficPolicy
+          value: Local
+
+  - it: renders the configured dual-stack IP families and policy
+    values:
+      - ../ci/service-dualstack-ip-family-values.yaml
+    asserts:
+      - equal:
+          path: spec.ipFamilyPolicy
+          value: PreferDualStack
+      - equal:
+          path: spec.ipFamilies
+          value:
+            - IPv4
+
+  - it: limits a LoadBalancer Service to the configured source ranges
+    set:
+      service.type: LoadBalancer
+      service.loadBalancerSourceRanges:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - equal:
+          path: spec.loadBalancerSourceRanges
+          value:
+            - 10.0.0.0/8
+            - 192.168.0.0/16
+
+  - it: renders extra ports and annotations
+    set:
+      service.annotations:
+        example.com/owner: platform
+      service.extraPorts:
+        - name: metrics
+          port: 9464
+          targetPort: metrics
+          protocol: TCP
+    asserts:
+      - equal:
+          path: metadata.annotations["example.com/owner"]
+          value: platform
+      - contains:
+          path: spec.ports
+          content:
+            name: metrics
+            port: 9464
+            targetPort: metrics
+            protocol: TCP

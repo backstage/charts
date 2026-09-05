@@ -1,0 +1,39 @@
+suite: backstage extra deployment objects
+templates:
+  - extra-list.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: renders arbitrary manifests
+    values:
+      - ../ci/extraDeploy-values.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: foo
+      - equal:
+          path: data.bar
+          value: baz
+
+  - it: evaluates templated strings in arbitrary manifests
+    set:
+      clusterDomain: internal.example
+      extraDeploy:
+        - apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: '{{ .Release.Name }}-extra'
+          data:
+            clusterDomain: '{{ .Values.clusterDomain }}'
+    asserts:
+      - equal:
+          path: metadata.name
+          value: backstage-extra
+      - equal:
+          path: data.clusterDomain
+          value: internal.example

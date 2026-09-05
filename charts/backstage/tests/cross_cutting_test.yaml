@@ -1,0 +1,108 @@
+suite: backstage cross-cutting settings
+templates:
+  - app-config-configmap.yaml
+  - backstage-deployment.yaml
+  - hpa.yaml
+  - httproute.yaml
+  - ingress.yaml
+  - networkpolicy-egress.yaml
+  - networkpolicy.yaml
+  - pdb.yaml
+  - service.yaml
+  - serviceaccount.yaml
+  - servicemonitor.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+set:
+  backstage.appConfig:
+    app:
+      title: Backstage
+  backstage.autoscaling.enabled: true
+  backstage.pdb.create: true
+  httpRoute.enabled: true
+  ingress.enabled: true
+  metrics.serviceMonitor.enabled: true
+  networkPolicy.enabled: true
+  networkPolicy.ingressRules.namespaceSelector:
+    team: platform
+  networkPolicy.egressRules.denyConnectionsToExternal: true
+  serviceAccount.create: true
+tests:
+  - it: applies nameOverride when fullnameOverride is absent
+    set:
+      nameOverride: platform
+    asserts:
+      - equal:
+          path: metadata.name
+          value: backstage-platform
+        template: backstage-deployment.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-platform
+        template: service.yaml
+
+  - it: gives fullnameOverride precedence across resources
+    set:
+      nameOverride: platform
+      fullnameOverride: backstage-custom
+    asserts:
+      - equal:
+          path: metadata.name
+          value: backstage-custom-app-config
+        template: app-config-configmap.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: backstage-deployment.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: hpa.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: httproute.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: ingress.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom-egress
+        template: networkpolicy-egress.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: networkpolicy.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: pdb.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: service.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: serviceaccount.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-custom
+        template: servicemonitor.yaml
+
+  - it: propagates rendered common metadata to every resource
+    set:
+      clusterDomain: internal.example
+      commonLabels:
+        cluster-domain: '{{ .Values.clusterDomain }}'
+      commonAnnotations:
+        example.com/cluster-domain: '{{ .Values.clusterDomain }}'
+    asserts:
+      - equal:
+          path: metadata.labels.cluster-domain
+          value: internal.example
+      - equal:
+          path: metadata.annotations["example.com/cluster-domain"]
+          value: internal.example
