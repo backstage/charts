@@ -7559,6 +7559,23 @@
                     },
                     "type": "object"
                 },
+                "primary": {
+                    "form": true,
+                    "properties": {
+                        "replicaCount": {
+                            "description": "Allowed values: `0` or `1`",
+                            "enum": [
+                                0,
+                                1
+                            ],
+                            "form": true,
+                            "title": "Number of PostgreSQL Primary replicas",
+                            "type": "integer"
+                        }
+                    },
+                    "title": "Primary database configuration",
+                    "type": "object"
+                },
                 "replication": {
                     "form": true,
                     "properties": {
