@@ -4,6 +4,15 @@ kind: ConfigMap
 metadata:
   name: {{ include "common.names.fullname" . }}-app-config
   namespace: {{ .Release.Namespace | quote }}
+  labels: {{ include "common.labels.standard" . | nindent 4 }}
+    app.kubernetes.io/component: backstage
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.commonLabels "context" $) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "common.tplvalues.render" (dict "value" .Values.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
 data:
   app-config.yaml: |
     {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | nindent 4 }}

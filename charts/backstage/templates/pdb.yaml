@@ -1,4 +1,7 @@
 {{- if .Values.backstage.pdb.create }}
+{{- if and .Values.backstage.pdb.minAvailable .Values.backstage.pdb.maxUnavailable }}
+{{- fail "backstage.pdb.minAvailable and backstage.pdb.maxUnavailable are mutually exclusive" }}
+{{- end }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

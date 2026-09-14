@@ -47,9 +47,9 @@ Return the Postgres Database Secret Name
 */}}
 {{- define "backstage.postgresql.databaseSecretName" -}}
 {{- if ((((.Values).global).postgresql).auth).existingSecret }}
-    {{- tpl .Values.global.postgresql.auth.existingSecret $ -}}
+    {{- tpl .Values.global.postgresql.auth.existingSecret $ | required "global.postgresql.auth.existingSecret must render to a non-empty secret name" -}}
 {{- else if .Values.postgresql.auth.existingSecret }}
-    {{- tpl .Values.postgresql.auth.existingSecret $ -}}
+    {{- tpl .Values.postgresql.auth.existingSecret $ | required "postgresql.auth.existingSecret must render to a non-empty secret name" -}}
 {{- else -}}
     {{- default (include "backstage.postgresql.fullname" .) (tpl .Values.postgresql.auth.existingSecret $) -}}
 {{- end -}}
