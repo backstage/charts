@@ -5787,6 +5787,24 @@
                 },
                 "pdb": {
                     "additionalProperties": false,
+                    "not": {
+                        "properties": {
+                            "maxUnavailable": {
+                                "not": {
+                                    "const": ""
+                                }
+                            },
+                            "minAvailable": {
+                                "not": {
+                                    "const": ""
+                                }
+                            }
+                        },
+                        "required": [
+                            "minAvailable",
+                            "maxUnavailable"
+                        ]
+                    },
                     "properties": {
                         "create": {
                             "default": false,
