@@ -1,0 +1,32 @@
+suite: backstage value validation
+templates:
+  - backstage-deployment.yaml
+  - pdb.yaml
+  - service.yaml
+tests:
+  - it: rejects both PDB availability settings together
+    template: pdb.yaml
+    set:
+      backstage.pdb.create: true
+      backstage.pdb.minAvailable: 1
+      backstage.pdb.maxUnavailable: 1
+    asserts:
+      - failedTemplate:
+          errorMessage: backstage.pdb.minAvailable and backstage.pdb.maxUnavailable are mutually exclusive
+
+  - it: rejects an unsupported Service type
+    template: service.yaml
+    set:
+      service.type: Invalid
+    asserts:
+      - failedTemplate:
+          errorPattern: service.type.*must be one of
+
+  - it: rejects a provided PostgreSQL secret expression without a name
+    template: backstage-deployment.yaml
+    set:
+      postgresql.enabled: true
+      postgresql.auth.existingSecret: '{{ "" }}'
+    asserts:
+      - failedTemplate:
+          errorPattern: postgresql.auth.existingSecret must render to a non-empty secret name

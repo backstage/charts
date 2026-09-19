@@ -1,0 +1,64 @@
+suite: backstage ingress network policy
+templates:
+  - networkpolicy.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: does not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: does not render without ingress rules
+    set:
+      networkPolicy.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders namespace and pod selector ingress rules
+    set:
+      networkPolicy.enabled: true
+      networkPolicy.ingressRules.namespaceSelector:
+        kubernetes.io/metadata.name: ingress-system
+      networkPolicy.ingressRules.podSelector:
+        app.kubernetes.io/name: ingress-controller
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: NetworkPolicy
+      - equal:
+          path: spec.ingress[0]
+          value:
+            from:
+              - namespaceSelector:
+                  matchLabels:
+                    kubernetes.io/metadata.name: ingress-system
+              - podSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: ingress-controller
+            ports:
+              - port: 7007
+
+  - it: renders custom ingress rules
+    set:
+      networkPolicy.enabled: true
+      networkPolicy.ingressRules.customRules:
+        - from:
+            - ipBlock:
+                cidr: 10.0.0.0/8
+          ports:
+            - port: 7007
+              protocol: TCP
+    asserts:
+      - contains:
+          path: spec.ingress
+          content:
+            from:
+              - ipBlock:
+                  cidr: 10.0.0.0/8
+            ports:
+              - port: 7007
+                protocol: TCP

@@ -1,5 +1,3 @@
-# Pins the optional pod settings: each is omitted by default and, when set, maps to the
-# Backstage pod specification or container.
 suite: backstage deployment
 templates:
   - backstage-deployment.yaml
@@ -7,6 +5,398 @@ release:
   name: backstage
   namespace: backstage-system
 tests:
+  - it: renders one Deployment with the expected identity
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: backstage
+      - equal:
+          path: metadata.namespace
+          value: backstage-system
+      - equal:
+          path: metadata.labels["app.kubernetes.io/name"]
+          value: backstage
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: backstage
+      - equal:
+          path: metadata.labels["app.kubernetes.io/component"]
+          value: backstage
+
+  - it: uses selector labels that are present on the pod
+    asserts:
+      - equal:
+          path: spec.selector.matchLabels
+          value:
+            app.kubernetes.io/name: backstage
+            app.kubernetes.io/instance: backstage
+            app.kubernetes.io/component: backstage
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/name"]
+          value: backstage
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/instance"]
+          value: backstage
+      - equal:
+          path: spec.template.metadata.labels["app.kubernetes.io/component"]
+          value: backstage
+
+  - it: renders the configured image registry and repository
+    set:
+      backstage.image.registry: registry.example.com
+      backstage.image.repository: platform/backstage
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: "^registry\\.example\\.com/platform/backstage:"
+
+  - it: lets the global registry override the image registry
+    set:
+      global.imageRegistry: global.example.com
+      backstage.image.registry: registry.example.com
+      backstage.image.repository: platform/backstage
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: "^global\\.example\\.com/platform/backstage:"
+
+  - it: pins the image by digest instead of tag
+    values:
+      - ../ci/image-digest-values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/backstage/backstage@sha256:f9ffa809e2c3f351699129d57edd6e64ca9ea5a4d4dd6339fed1ec80a30bc042
+
+  - it: renders a static replica count by default
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1
+
+  - it: omits the static replica count when autoscaling is enabled
+    values:
+      - ../ci/autoscaling-values.yaml
+    asserts:
+      - notExists:
+          path: spec.replicas
+
+  - it: omits the update strategy by default
+    asserts:
+      - notExists:
+          path: spec.strategy
+
+  - it: renders the configured update strategy
+    values:
+      - ../ci/strategy-values.yaml
+    asserts:
+      - equal:
+          path: spec.strategy
+          value:
+            type: RollingUpdate
+            rollingUpdate:
+              maxSurge: 0
+              maxUnavailable: 1
+
+  - it: renders the configured readiness liveness and startup probes
+    values:
+      - ../ci/probes-values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe
+          value:
+            failureThreshold: 3
+            httpGet:
+              path: /.backstage/health/v1/readiness
+              port: 7007
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 2
+            timeoutSeconds: 2
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe
+          value:
+            failureThreshold: 3
+            httpGet:
+              path: /.backstage/health/v1/liveness
+              port: 7007
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe
+          value:
+            failureThreshold: 3
+            httpGet:
+              path: /.backstage/health/v1/liveness
+              port: 7007
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+
+  - it: omits readiness liveness and startup probes when disabled
+    set:
+      backstage.readinessProbe: null
+      backstage.livenessProbe: null
+      backstage.startupProbe: null
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].readinessProbe
+      - notExists:
+          path: spec.template.spec.containers[0].livenessProbe
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: mounts generated app config and passes it to Backstage
+    values:
+      - ../ci/appConfig-values.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: backstage-app-config
+            configMap:
+              name: backstage-app-config
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: backstage-app-config
+            mountPath: /app/app-config-from-configmap.yaml
+            subPath: app-config.yaml
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --config
+            - /app/app-config-from-configmap.yaml
+
+  - it: wires credentials generated by the PostgreSQL subchart
+    values:
+      - ../ci/postgres-generated-creds-values.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: POSTGRES_HOST
+            value: backstage-postgresql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: POSTGRES_USER
+            value: bn_backstage
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: backstage-postgresql
+                key: password
+
+  - it: wires credentials from a provided PostgreSQL secret
+    set:
+      postgresql.enabled: true
+      postgresql.auth.existingSecret: backstage-database-credentials
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: backstage-database-credentials
+                key: user-password
+
+  - it: renders extra environment variables
+    set:
+      backstage.extraEnvVars:
+        - name: LOG_LEVEL
+          value: debug
+        - name: API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: backstage-api
+              key: token
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: LOG_LEVEL
+            value: debug
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: backstage-api
+                key: token
+
+  - it: renders matching extra volumes and volume mounts
+    values:
+      - ../ci/extraVolumes-values.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: test
+            emptyDir:
+              sizeLimit: 5Mi
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: test
+            mountPath: /somepath
+            readOnly: true
+
+  - it: renders topology spread constraints
+    values:
+      - ../ci/topologySpreadConstraints-values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints
+          value:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: backstage
+              matchLabelKeys:
+                - pod-template-hash
+
+  - it: renders node selector affinity and tolerations
+    set:
+      backstage.nodeSelector:
+        kubernetes.io/os: linux
+      backstage.affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-pool
+                    operator: In
+                    values:
+                      - backstage
+      backstage.tolerations:
+        - key: dedicated
+          operator: Equal
+          value: backstage
+          effect: NoSchedule
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            kubernetes.io/os: linux
+      - equal:
+          path: spec.template.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0]
+          value:
+            key: node-pool
+            operator: In
+            values:
+              - backstage
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+            - key: dedicated
+              operator: Equal
+              value: backstage
+              effect: NoSchedule
+
+  - it: renders pod and container security contexts
+    set:
+      backstage.podSecurityContext:
+        runAsNonRoot: true
+        fsGroup: 2000
+      backstage.containerSecurityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext
+          value:
+            runAsNonRoot: true
+            fsGroup: 2000
+      - equal:
+          path: spec.template.spec.containers[0].securityContext
+          value:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+  - it: renders init containers and extra containers
+    set:
+      backstage.initContainers:
+        - name: wait-for-service
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - echo ready
+      backstage.extraContainers:
+        - name: metrics-sidecar
+          image: example.com/metrics:1.0
+          ports:
+            - name: metrics
+              containerPort: 9090
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0]
+          value:
+            name: wait-for-service
+            image: busybox:1.36
+            command:
+              - sh
+              - -c
+              - echo ready
+      - equal:
+          path: spec.template.spec.containers[1]
+          value:
+            name: metrics-sidecar
+            image: example.com/metrics:1.0
+            ports:
+              - name: metrics
+                containerPort: 9090
+
+  - it: references the generated ServiceAccount name
+    set:
+      serviceAccount.create: true
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: backstage
+
+  - it: gives the configured ServiceAccount name precedence
+    set:
+      serviceAccount.create: true
+      serviceAccount.name: backstage-runtime
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: backstage-runtime
+
+  - it: references an existing ServiceAccount when creation is disabled
+    set:
+      serviceAccount.create: false
+      serviceAccount.name: backstage-existing
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: backstage-existing
+
   - it: omits the priority class name by default
     asserts:
       - notExists:
