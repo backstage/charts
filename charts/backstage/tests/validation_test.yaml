@@ -12,7 +12,7 @@ tests:
       backstage.pdb.maxUnavailable: 1
     asserts:
       - failedTemplate:
-          errorMessage: backstage.pdb.minAvailable and backstage.pdb.maxUnavailable are mutually exclusive
+          errorPattern: "'not' failed"
 
   - it: rejects an unsupported Service type
     template: service.yaml

@@ -586,6 +586,24 @@
                             ],
                             "default": ""
                         }
+                    },
+                    "not": {
+                        "properties": {
+                            "minAvailable": {
+                                "not": {
+                                    "const": ""
+                                }
+                            },
+                            "maxUnavailable": {
+                                "not": {
+                                    "const": ""
+                                }
+                            }
+                        },
+                        "required": [
+                            "minAvailable",
+                            "maxUnavailable"
+                        ]
                     }
                 },
                 "containerPorts": {
