@@ -7839,6 +7839,73 @@
             },
             "title": "Service Account Configuration",
             "type": "object"
+        },
+        "techdocs": {
+            "additionalProperties": false,
+            "properties": {
+                "kubernetesRunner": {
+                    "additionalProperties": false,
+                    "description": "Requires a Backstage image that supports `techdocs.generator.runIn: kubernetes`, and either `serviceAccount.create` or `serviceAccount.name`.",
+                    "properties": {
+                        "enabled": {
+                            "default": false,
+                            "title": "Enable the Kubernetes Job runner for TechDocs builds",
+                            "type": "boolean"
+                        },
+                        "persistence": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "accessModes": {
+                                    "default": [
+                                        "ReadWriteMany"
+                                    ],
+                                    "description": "`ReadWriteOnce` only works when build Jobs run on the same node as Backstage, such as with node-local storage like local-path.",
+                                    "items": {
+                                        "enum": [
+                                            "ReadWriteMany",
+                                            "ReadWriteOnce"
+                                        ],
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "title": "Access modes of the created PersistentVolumeClaim",
+                                    "type": "array",
+                                    "uniqueItems": true
+                                },
+                                "existingClaim": {
+                                    "default": "",
+                                    "title": "Name of an existing PersistentVolumeClaim to use instead of creating one",
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "default": "10Gi",
+                                    "title": "Size of the created PersistentVolumeClaim",
+                                    "type": "string"
+                                },
+                                "storageClass": {
+                                    "default": "",
+                                    "description": "It must support the configured access modes",
+                                    "title": "StorageClass of the created PersistentVolumeClaim",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Shared volume for TechDocs build input and output",
+                            "type": "object"
+                        },
+                        "workRoot": {
+                            "default": "/var/backstage/work",
+                            "description": "Also used as `backend.workingDirectory`",
+                            "pattern": "^/",
+                            "title": "Path where the shared volume is mounted in the Backstage container",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Run TechDocs builds as Kubernetes Jobs that share a volume with Backstage",
+                    "type": "object"
+                }
+            },
+            "title": "TechDocs parameters",
+            "type": "object"
         }
     },
     "title": "Backstage chart schema",

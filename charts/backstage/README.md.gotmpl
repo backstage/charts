@@ -197,6 +197,36 @@ In addition to following the [previous step "Pass extra configuration files"](#p
 
 The chart will mount the content of the ConfigMap as a new `app-config-from-configmap.yaml` file and automatically pass the extra configuration to your instance.
 
+### Run TechDocs builds as Kubernetes Jobs
+
+By default, TechDocs builds documentation inside the Backstage container, or in Docker. With `techdocs.kubernetesRunner.enabled`, each build runs as a Kubernetes Job in the release namespace instead.
+
+Backstage and the build Jobs share a volume, so Backstage can hand the documentation source to the Job and read the generated site back. You need:
+
+- A Backstage image that supports `techdocs.generator.runIn: kubernetes`.
+- A StorageClass that Backstage and the build Jobs can mount at the same time (see below).
+- A ServiceAccount for Backstage, created by the chart or named with `serviceAccount.name`.
+
+The volume's access mode decides where build Jobs can run:
+
+- `ReadWriteMany` (the default), such as Amazon EFS, Google Filestore, Azure Files or NFS: build Jobs can run on any node.
+- `ReadWriteOnce` with node-local storage, such as local-path in kind, k3s or minikube: the volume is pinned to one node, so Kubernetes schedules build Jobs next to Backstage automatically.
+- `ReadWriteOnce` with network block storage, such as Amazon EBS or Google Persistent Disk, is not supported. Build Jobs scheduled on another node fail to attach the volume.
+
+```diff
++ serviceAccount:
++   create: true
++ techdocs:
++   kubernetesRunner:
++     enabled: true
++     persistence:
++       storageClass: efs-sc
+```
+
+The chart creates the PersistentVolumeClaim (unless you set `techdocs.kubernetesRunner.persistence.existingClaim`), mounts it at `techdocs.kubernetesRunner.workRoot`, and grants the ServiceAccount a Role that allows it to manage Jobs and read their logs. It also sets `backend.workingDirectory` and `techdocs.generator` through `APP_CONFIG_*` environment variables, which take precedence over the same keys in `backstage.appConfig`.
+
+> :warning: If `networkPolicy.egressRules` restricts egress from Backstage, allow traffic to the Kubernetes API server.
+
 ### Configuring Chart PostgreSQL
 
 With the Backstage Helm Chart, it offers - as a subchart - a Bitnami PostgreSQL database. This can be enabled by switching `postgresql.enabled` to true (it is `false` by default). If switched on, the Helm Chart, on deployment, will automatically deploy a PostgreSQL instance and configure it with the credentials you specify. There are multiple ways of doing this that will be detailed below.

@@ -1225,6 +1225,73 @@
                 }
             }
         },
+        "techdocs": {
+            "title": "TechDocs parameters",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "kubernetesRunner": {
+                    "title": "Run TechDocs builds as Kubernetes Jobs that share a volume with Backstage",
+                    "description": "Requires a Backstage image that supports `techdocs.generator.runIn: kubernetes`, and either `serviceAccount.create` or `serviceAccount.name`.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "enabled": {
+                            "title": "Enable the Kubernetes Job runner for TechDocs builds",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "workRoot": {
+                            "title": "Path where the shared volume is mounted in the Backstage container",
+                            "description": "Also used as `backend.workingDirectory`",
+                            "type": "string",
+                            "pattern": "^/",
+                            "default": "/var/backstage/work"
+                        },
+                        "persistence": {
+                            "title": "Shared volume for TechDocs build input and output",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "existingClaim": {
+                                    "title": "Name of an existing PersistentVolumeClaim to use instead of creating one",
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "accessModes": {
+                                    "title": "Access modes of the created PersistentVolumeClaim",
+                                    "description": "`ReadWriteOnce` only works when build Jobs run on the same node as Backstage, such as with node-local storage like local-path.",
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ReadWriteMany",
+                                            "ReadWriteOnce"
+                                        ]
+                                    },
+                                    "default": [
+                                        "ReadWriteMany"
+                                    ]
+                                },
+                                "storageClass": {
+                                    "title": "StorageClass of the created PersistentVolumeClaim",
+                                    "description": "It must support the configured access modes",
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "size": {
+                                    "title": "Size of the created PersistentVolumeClaim",
+                                    "type": "string",
+                                    "default": "10Gi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "metrics": {
             "title": "Metrics configuration",
             "description": "Allows configuring your backstage instance as a scrape target for Prometheus. Ref: https://github.com/prometheus/prometheus",
