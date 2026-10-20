@@ -100,7 +100,53 @@ tests:
               value: backstage-techdocs-work
             - name: APP_CONFIG_techdocs_generator_kubernetes_workRoot
               value: /var/backstage/work
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+              value: preferred
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
         template: backstage-deployment.yaml
+
+  - it: passes required node affinity to the runner
+    set:
+      serviceAccount.create: true
+      techdocs.kubernetesRunner.enabled: true
+      techdocs.kubernetesRunner.nodeAffinity: required
+    template: backstage-deployment.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+            value: required
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+
+  - it: omits the node name when node affinity is disabled
+    set:
+      serviceAccount.create: true
+      techdocs.kubernetesRunner.enabled: true
+      techdocs.kubernetesRunner.nodeAffinity: none
+    template: backstage-deployment.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+            value: none
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
 
   - it: renders a ReadWriteOnce claim for node-local storage
     values:

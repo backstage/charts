@@ -543,6 +543,10 @@ techdocs:
     # -- Path where the shared volume is mounted in the Backstage container. Also used as `backend.workingDirectory`
     workRoot: /var/backstage/work
 
+    # -- How strongly build Jobs are scheduled onto the node Backstage runs on: `preferred`, `required` or `none`
+    # <br /> Use `required` for `ReadWriteOnce` volumes on network block storage. Node-local storage such as local-path always keeps build Jobs on the volume's node.
+    nodeAffinity: preferred
+
     # -- Shared volume for TechDocs build input and output
     persistence:
 

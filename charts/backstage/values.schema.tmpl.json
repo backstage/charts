@@ -1248,6 +1248,17 @@
                             "pattern": "^/",
                             "default": "/var/backstage/work"
                         },
+                        "nodeAffinity": {
+                            "title": "How strongly build Jobs are scheduled onto the node Backstage runs on",
+                            "description": "Use `required` for `ReadWriteOnce` volumes on network block storage. Node-local storage such as local-path always keeps build Jobs on the volume's node.",
+                            "type": "string",
+                            "enum": [
+                                "preferred",
+                                "required",
+                                "none"
+                            ],
+                            "default": "preferred"
+                        },
                         "persistence": {
                             "title": "Shared volume for TechDocs build input and output",
                             "type": "object",

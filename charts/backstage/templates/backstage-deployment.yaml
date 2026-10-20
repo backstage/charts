@@ -185,6 +185,14 @@ spec:
               value: {{ include "backstage.techdocs.claimName" . | quote }}
             - name: APP_CONFIG_techdocs_generator_kubernetes_workRoot
               value: {{ .Values.techdocs.kubernetesRunner.workRoot | quote }}
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+              value: {{ .Values.techdocs.kubernetesRunner.nodeAffinity | quote }}
+            {{- if ne .Values.techdocs.kubernetesRunner.nodeAffinity "none" }}
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            {{- end }}
             {{- end }}
             {{- if .Values.backstage.extraEnvVars }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}

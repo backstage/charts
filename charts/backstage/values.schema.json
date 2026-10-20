@@ -7852,6 +7852,17 @@
                             "title": "Enable the Kubernetes Job runner for TechDocs builds",
                             "type": "boolean"
                         },
+                        "nodeAffinity": {
+                            "default": "preferred",
+                            "description": "Use `required` for `ReadWriteOnce` volumes on network block storage. Node-local storage such as local-path always keeps build Jobs on the volume's node.",
+                            "enum": [
+                                "preferred",
+                                "required",
+                                "none"
+                            ],
+                            "title": "How strongly build Jobs are scheduled onto the node Backstage runs on",
+                            "type": "string"
+                        },
                         "persistence": {
                             "additionalProperties": false,
                             "properties": {

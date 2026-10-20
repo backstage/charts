@@ -210,8 +210,14 @@ Backstage and the build Jobs share a volume, so Backstage can hand the documenta
 The volume's access mode decides where build Jobs can run:
 
 - `ReadWriteMany` (the default), such as Amazon EFS, Google Filestore, Azure Files or NFS: build Jobs can run on any node.
-- `ReadWriteOnce` with node-local storage, such as local-path in kind, k3s or minikube: the volume is pinned to one node, so Kubernetes schedules build Jobs next to Backstage automatically.
-- `ReadWriteOnce` with network block storage, such as Amazon EBS or Google Persistent Disk, is not supported. Build Jobs scheduled on another node fail to attach the volume.
+- `ReadWriteOnce` with node-local storage, such as local-path in kind, k3s or minikube: the volume is pinned to one node, so Kubernetes schedules Backstage and build Jobs there automatically.
+- `ReadWriteOnce` with network block storage, such as Amazon EBS or Google Persistent Disk: set `techdocs.kubernetesRunner.nodeAffinity: required` and run a single Backstage replica. The volume can only be attached to one node at a time.
+
+`techdocs.kubernetesRunner.nodeAffinity` controls whether build Jobs run on the same node as the Backstage pod that started them:
+
+- `preferred` (the default): schedule on the same node when it has room, otherwise anywhere.
+- `required`: only schedule on the same node.
+- `none`: let Kubernetes choose, so builds don't compete with Backstage for node resources. Node-local storage still keeps build Jobs on the volume's node.
 
 ```diff
 + serviceAccount:

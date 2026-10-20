@@ -234,9 +234,10 @@ Kubernetes: `>= 1.19.0-0`
 | serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
 | serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
 | serviceAccount.name | Name of the ServiceAccount to use If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
-| techdocs | TechDocs parameters | object | `{"kubernetesRunner":{"enabled":false,"persistence":{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""},"workRoot":"/var/backstage/work"}}` |
-| techdocs.kubernetesRunner | Run TechDocs builds as Kubernetes Jobs that share a volume with Backstage <br /> Requires a Backstage image that supports `techdocs.generator.runIn: kubernetes`, and either `serviceAccount.create` or `serviceAccount.name`. | object | `{"enabled":false,"persistence":{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""},"workRoot":"/var/backstage/work"}` |
+| techdocs | TechDocs parameters | object | `{"kubernetesRunner":{"enabled":false,"nodeAffinity":"preferred","persistence":{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""},"workRoot":"/var/backstage/work"}}` |
+| techdocs.kubernetesRunner | Run TechDocs builds as Kubernetes Jobs that share a volume with Backstage <br /> Requires a Backstage image that supports `techdocs.generator.runIn: kubernetes`, and either `serviceAccount.create` or `serviceAccount.name`. | object | `{"enabled":false,"nodeAffinity":"preferred","persistence":{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""},"workRoot":"/var/backstage/work"}` |
 | techdocs.kubernetesRunner.enabled | Enable the Kubernetes Job runner for TechDocs builds | bool | `false` |
+| techdocs.kubernetesRunner.nodeAffinity | How strongly build Jobs are scheduled onto the node Backstage runs on: `preferred`, `required` or `none` <br /> Use `required` for `ReadWriteOnce` volumes on network block storage. Node-local storage such as local-path always keeps build Jobs on the volume's node. | string | `"preferred"` |
 | techdocs.kubernetesRunner.persistence | Shared volume for TechDocs build input and output | object | `{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""}` |
 | techdocs.kubernetesRunner.persistence.accessModes | Access modes of the created PersistentVolumeClaim <br /> `ReadWriteOnce` only works when build Jobs run on the same node as Backstage, such as with node-local storage like local-path. | list | `["ReadWriteMany"]` |
 | techdocs.kubernetesRunner.persistence.existingClaim | Name of an existing PersistentVolumeClaim to use instead of creating one | string | `""` |
@@ -357,8 +358,14 @@ Backstage and the build Jobs share a volume, so Backstage can hand the documenta
 The volume's access mode decides where build Jobs can run:
 
 - `ReadWriteMany` (the default), such as Amazon EFS, Google Filestore, Azure Files or NFS: build Jobs can run on any node.
-- `ReadWriteOnce` with node-local storage, such as local-path in kind, k3s or minikube: the volume is pinned to one node, so Kubernetes schedules build Jobs next to Backstage automatically.
-- `ReadWriteOnce` with network block storage, such as Amazon EBS or Google Persistent Disk, is not supported. Build Jobs scheduled on another node fail to attach the volume.
+- `ReadWriteOnce` with node-local storage, such as local-path in kind, k3s or minikube: the volume is pinned to one node, so Kubernetes schedules Backstage and build Jobs there automatically.
+- `ReadWriteOnce` with network block storage, such as Amazon EBS or Google Persistent Disk: set `techdocs.kubernetesRunner.nodeAffinity: required` and run a single Backstage replica. The volume can only be attached to one node at a time.
+
+`techdocs.kubernetesRunner.nodeAffinity` controls whether build Jobs run on the same node as the Backstage pod that started them:
+
+- `preferred` (the default): schedule on the same node when it has room, otherwise anywhere.
+- `required`: only schedule on the same node.
+- `none`: let Kubernetes choose, so builds don't compete with Backstage for node resources. Node-local storage still keeps build Jobs on the volume's node.
 
 ```diff
 + serviceAccount:
