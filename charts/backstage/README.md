@@ -367,6 +367,14 @@ The volume's access mode decides where build Jobs can run:
 - `required`: only schedule on the same node.
 - `none`: let Kubernetes choose, so builds don't compete with Backstage for node resources. Node-local storage still keeps build Jobs on the volume's node.
 
+Backstage must be able to create directories on the volume. Block storage volumes start out owned by `root`, so set `backstage.podSecurityContext.fsGroup` to the group of the Backstage user, which is `1000` for images based on the official Node.js image. NFS servers ignore `fsGroup`, so the export itself must be writable by that user, which `root_squash` exports often aren't.
+
+```diff
+  backstage:
++   podSecurityContext:
++     fsGroup: 1000
+```
+
 ```diff
 + serviceAccount:
 +   create: true
@@ -377,7 +385,7 @@ The volume's access mode decides where build Jobs can run:
 +       storageClass: efs-sc
 ```
 
-The chart creates the PersistentVolumeClaim (unless you set `techdocs.kubernetesRunner.persistence.existingClaim`), mounts it at `techdocs.kubernetesRunner.workRoot`, and grants the ServiceAccount a Role that allows it to manage Jobs and read their logs. It also sets `backend.workingDirectory`, `techdocs.generator.runIn` and the namespace, volume and scheduling keys under `techdocs.generator.kubernetes` through `APP_CONFIG_*` environment variables, which take precedence over the same keys in `backstage.appConfig`.
+The chart creates the PersistentVolumeClaim (unless you set `techdocs.kubernetesRunner.persistence.existingClaim`), mounts it at `techdocs.kubernetesRunner.workRoot`, and grants the ServiceAccount a Role that allows it to manage Jobs and read their logs. Kubernetes RBAC can't limit the Role to TechDocs Jobs, so Backstage can create and delete any Job in the release namespace. It also sets `backend.workingDirectory`, `techdocs.generator.runIn` and the namespace, volume and scheduling keys under `techdocs.generator.kubernetes` through `APP_CONFIG_*` environment variables, which take precedence over the same keys in `backstage.appConfig`.
 
 Set the other runner options, such as build resources, timeouts and pull secrets for the build image, in `backstage.appConfig`. They are merged with the keys the chart sets:
 
@@ -400,6 +408,8 @@ Set the other runner options, such as build resources, timeouts and pull secrets
 ```
 
 > :warning: If `networkPolicy.egressRules` restricts egress from Backstage, allow traffic to the Kubernetes API server.
+
+> :warning: Build pods meet the `restricted` Pod Security Standard only when Backstage doesn't run as `root`. Otherwise, a release namespace that enforces it rejects them.
 
 ### Configuring Chart PostgreSQL
 
