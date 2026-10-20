@@ -377,7 +377,27 @@ The volume's access mode decides where build Jobs can run:
 +       storageClass: efs-sc
 ```
 
-The chart creates the PersistentVolumeClaim (unless you set `techdocs.kubernetesRunner.persistence.existingClaim`), mounts it at `techdocs.kubernetesRunner.workRoot`, and grants the ServiceAccount a Role that allows it to manage Jobs and read their logs. It also sets `backend.workingDirectory` and `techdocs.generator` through `APP_CONFIG_*` environment variables, which take precedence over the same keys in `backstage.appConfig`.
+The chart creates the PersistentVolumeClaim (unless you set `techdocs.kubernetesRunner.persistence.existingClaim`), mounts it at `techdocs.kubernetesRunner.workRoot`, and grants the ServiceAccount a Role that allows it to manage Jobs and read their logs. It also sets `backend.workingDirectory`, `techdocs.generator.runIn` and the namespace, volume and scheduling keys under `techdocs.generator.kubernetes` through `APP_CONFIG_*` environment variables, which take precedence over the same keys in `backstage.appConfig`.
+
+Set the other runner options, such as build resources, timeouts and pull secrets for the build image, in `backstage.appConfig`. They are merged with the keys the chart sets:
+
+```diff
+  backstage:
++   appConfig:
++     techdocs:
++       generator:
++         kubernetes:
++           activeDeadlineSeconds: 1200
++           ttlSecondsAfterFinished: 60
++           imagePullSecrets:
++             - registry-creds
++           resources:
++             requests:
++               cpu: 250m
++               memory: 512Mi
++             limits:
++               memory: 1Gi
+```
 
 > :warning: If `networkPolicy.egressRules` restricts egress from Backstage, allow traffic to the Kubernetes API server.
 
