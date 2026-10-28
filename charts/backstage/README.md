@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.10.2](https://img.shields.io/badge/Version-2.10.2-informational?style=flat-square)
+![Version: 2.11.0](https://img.shields.io/badge/Version-2.11.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -234,6 +234,16 @@ Kubernetes: `>= 1.19.0-0`
 | serviceAccount.create | Enable the creation of a ServiceAccount for Backstage pods | bool | `false` |
 | serviceAccount.labels | Additional custom labels to the service ServiceAccount. | object | `{}` |
 | serviceAccount.name | Name of the ServiceAccount to use If not set and `serviceAccount.create` is true, a name is generated | string | `""` |
+| techdocs | TechDocs parameters | object | `{"kubernetesRunner":{"enabled":false,"nodeAffinity":"preferred","persistence":{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""},"workRoot":"/var/backstage/work"}}` |
+| techdocs.kubernetesRunner | Run TechDocs builds as Kubernetes Jobs that share a volume with Backstage <br /> Requires a Backstage image that supports `techdocs.generator.runIn: kubernetes`, and either `serviceAccount.create` or `serviceAccount.name`. | object | `{"enabled":false,"nodeAffinity":"preferred","persistence":{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""},"workRoot":"/var/backstage/work"}` |
+| techdocs.kubernetesRunner.enabled | Enable the Kubernetes Job runner for TechDocs builds | bool | `false` |
+| techdocs.kubernetesRunner.nodeAffinity | How strongly build Jobs are scheduled onto the node Backstage runs on: `preferred`, `required` or `none` <br /> Use `required` for `ReadWriteOnce` volumes on network block storage. Node-local storage such as local-path always keeps build Jobs on the volume's node. | string | `"preferred"` |
+| techdocs.kubernetesRunner.persistence | Shared volume for TechDocs build input and output | object | `{"accessModes":["ReadWriteMany"],"existingClaim":"","size":"10Gi","storageClass":""}` |
+| techdocs.kubernetesRunner.persistence.accessModes | Access modes of the created PersistentVolumeClaim <br /> `ReadWriteOnce` only works when build Jobs run on the same node as Backstage, such as with node-local storage like local-path. | list | `["ReadWriteMany"]` |
+| techdocs.kubernetesRunner.persistence.existingClaim | Name of an existing PersistentVolumeClaim to use instead of creating one | string | `""` |
+| techdocs.kubernetesRunner.persistence.size | Size of the created PersistentVolumeClaim | string | `"10Gi"` |
+| techdocs.kubernetesRunner.persistence.storageClass | StorageClass of the created PersistentVolumeClaim. It must support the configured access modes | string | `""` |
+| techdocs.kubernetesRunner.workRoot | Path where the shared volume is mounted in the Backstage container. Also used as `backend.workingDirectory` | string | `"/var/backstage/work"` |
 
 ## Configure your Backstage instance
 
@@ -334,6 +344,72 @@ In addition to following the [previous step "Pass extra configuration files"](#p
 ```
 
 The chart will mount the content of the ConfigMap as a new `app-config-from-configmap.yaml` file and automatically pass the extra configuration to your instance.
+
+### Run TechDocs builds as Kubernetes Jobs
+
+By default, TechDocs builds documentation inside the Backstage container, or in Docker. With `techdocs.kubernetesRunner.enabled`, each build runs as a Kubernetes Job in the release namespace instead.
+
+Backstage and the build Jobs share a volume, so Backstage can hand the documentation source to the Job and read the generated site back. You need:
+
+- A Backstage image that supports `techdocs.generator.runIn: kubernetes`.
+- A StorageClass that Backstage and the build Jobs can mount at the same time (see below).
+- A ServiceAccount for Backstage, created by the chart or named with `serviceAccount.name`.
+
+The volume's access mode decides where build Jobs can run:
+
+- `ReadWriteMany` (the default), such as Amazon EFS, Google Filestore, Azure Files or NFS: build Jobs can run on any node.
+- `ReadWriteOnce` with node-local storage, such as local-path in kind, k3s or minikube: the volume is pinned to one node, so Kubernetes schedules Backstage and build Jobs there automatically.
+- `ReadWriteOnce` with network block storage, such as Amazon EBS or Google Persistent Disk: set `techdocs.kubernetesRunner.nodeAffinity: required` and run a single Backstage replica. The volume can only be attached to one node at a time.
+
+`techdocs.kubernetesRunner.nodeAffinity` controls whether build Jobs run on the same node as the Backstage pod that started them:
+
+- `preferred` (the default): schedule on the same node when it has room, otherwise anywhere.
+- `required`: only schedule on the same node.
+- `none`: let Kubernetes choose, so builds don't compete with Backstage for node resources. Node-local storage still keeps build Jobs on the volume's node.
+
+Backstage must be able to create directories on the volume. Block storage volumes start out owned by `root`, so set `backstage.podSecurityContext.fsGroup` to the group of the Backstage user, which is `1000` for images based on the official Node.js image. NFS servers ignore `fsGroup`, so the export itself must be writable by that user, which `root_squash` exports often aren't.
+
+```diff
+  backstage:
++   podSecurityContext:
++     fsGroup: 1000
+```
+
+```diff
++ serviceAccount:
++   create: true
++ techdocs:
++   kubernetesRunner:
++     enabled: true
++     persistence:
++       storageClass: efs-sc
+```
+
+The chart creates the PersistentVolumeClaim (unless you set `techdocs.kubernetesRunner.persistence.existingClaim`), mounts it at `techdocs.kubernetesRunner.workRoot`, and grants the ServiceAccount a Role that allows it to manage Jobs and read their logs. Kubernetes RBAC can't limit the Role to TechDocs Jobs, so Backstage can create and delete any Job in the release namespace. It also sets `backend.workingDirectory`, `techdocs.generator.runIn` and the namespace, volume and scheduling keys under `techdocs.generator.kubernetes` through `APP_CONFIG_*` environment variables, which take precedence over the same keys in `backstage.appConfig`.
+
+Set the other runner options, such as build resources, timeouts and pull secrets for the build image, in `backstage.appConfig`. They are merged with the keys the chart sets:
+
+```diff
+  backstage:
++   appConfig:
++     techdocs:
++       generator:
++         kubernetes:
++           activeDeadlineSeconds: 1200
++           ttlSecondsAfterFinished: 60
++           imagePullSecrets:
++             - registry-creds
++           resources:
++             requests:
++               cpu: 250m
++               memory: 512Mi
++             limits:
++               memory: 1Gi
+```
+
+> :warning: If `networkPolicy.egressRules` restricts egress from Backstage, allow traffic to the Kubernetes API server.
+
+> :warning: Build pods meet the `restricted` Pod Security Standard only when Backstage doesn't run as `root`. Otherwise, a release namespace that enforces it rejects them.
 
 ### Configuring Chart PostgreSQL
 
