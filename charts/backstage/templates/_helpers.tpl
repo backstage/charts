@@ -24,6 +24,25 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
+Return the name of the PersistentVolumeClaim shared with TechDocs build Jobs
+*/}}
+{{- define "backstage.techdocs.claimName" -}}
+{{- default (printf "%s-techdocs-work" (include "common.names.fullname" .)) .Values.techdocs.kubernetesRunner.persistence.existingClaim -}}
+{{- end -}}
+
+{{/*
+Validate the values required by the TechDocs Kubernetes runner
+*/}}
+{{- define "backstage.techdocs.validate" -}}
+{{- if not (or .Values.serviceAccount.create .Values.serviceAccount.name) -}}
+{{- fail "techdocs.kubernetesRunner.enabled requires serviceAccount.create or serviceAccount.name, so its permissions are not granted to the namespace's default ServiceAccount" -}}
+{{- end -}}
+{{- if and .Values.serviceAccount.create (not .Values.serviceAccount.automountServiceAccountToken) -}}
+{{- fail "techdocs.kubernetesRunner.enabled requires serviceAccount.automountServiceAccountToken, as the runner authenticates with the in-cluster token" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}

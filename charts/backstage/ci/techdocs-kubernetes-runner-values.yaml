@@ -1,0 +1,9 @@
+serviceAccount:
+  create: true
+techdocs:
+  kubernetesRunner:
+    enabled: true
+    persistence:
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi

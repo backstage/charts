@@ -530,6 +530,40 @@ serviceAccount:
   # -- Auto-mount the service account token in the pod
   automountServiceAccountToken: true
 
+# -- TechDocs parameters
+techdocs:
+
+  # -- Run TechDocs builds as Kubernetes Jobs that share a volume with Backstage
+  # <br /> Requires a Backstage image that supports `techdocs.generator.runIn: kubernetes`, and either `serviceAccount.create` or `serviceAccount.name`.
+  kubernetesRunner:
+
+    # -- Enable the Kubernetes Job runner for TechDocs builds
+    enabled: false
+
+    # -- Path where the shared volume is mounted in the Backstage container. Also used as `backend.workingDirectory`
+    workRoot: /var/backstage/work
+
+    # -- How strongly build Jobs are scheduled onto the node Backstage runs on: `preferred`, `required` or `none`
+    # <br /> Use `required` for `ReadWriteOnce` volumes on network block storage. Node-local storage such as local-path always keeps build Jobs on the volume's node.
+    nodeAffinity: preferred
+
+    # -- Shared volume for TechDocs build input and output
+    persistence:
+
+      # -- Name of an existing PersistentVolumeClaim to use instead of creating one
+      existingClaim: ""
+
+      # -- Access modes of the created PersistentVolumeClaim
+      # <br /> `ReadWriteOnce` only works when build Jobs run on the same node as Backstage, such as with node-local storage like local-path.
+      accessModes:
+        - ReadWriteMany
+
+      # -- StorageClass of the created PersistentVolumeClaim. It must support the configured access modes
+      storageClass: ""
+
+      # -- Size of the created PersistentVolumeClaim
+      size: 10Gi
+
 # -- Metrics configuration
 metrics:
 

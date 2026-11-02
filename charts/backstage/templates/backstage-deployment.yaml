@@ -90,6 +90,11 @@ spec:
           configMap:
             name: {{ include "common.names.fullname" . }}-app-config
         {{- end }}
+        {{- if .Values.techdocs.kubernetesRunner.enabled }}
+        - name: techdocs-work
+          persistentVolumeClaim:
+            claimName: {{ include "backstage.techdocs.claimName" . }}
+        {{- end }}
       {{- include "backstage.renderImagePullSecrets" . | nindent 6 }}
       {{- if .Values.backstage.initContainers }}
       initContainers:
@@ -169,6 +174,26 @@ spec:
                   name: {{ include "backstage.postgresql.databaseSecretName" . }}
                   key: {{ include "backstage.postgresql.databaseSecretKey" . }}
             {{- end }}
+            {{- if .Values.techdocs.kubernetesRunner.enabled }}
+            - name: APP_CONFIG_backend_workingDirectory
+              value: {{ .Values.techdocs.kubernetesRunner.workRoot | quote }}
+            - name: APP_CONFIG_techdocs_generator_runIn
+              value: kubernetes
+            - name: APP_CONFIG_techdocs_generator_kubernetes_namespace
+              value: {{ .Release.Namespace | quote }}
+            - name: APP_CONFIG_techdocs_generator_kubernetes_volumeClaimName
+              value: {{ include "backstage.techdocs.claimName" . | quote }}
+            - name: APP_CONFIG_techdocs_generator_kubernetes_workRoot
+              value: {{ .Values.techdocs.kubernetesRunner.workRoot | quote }}
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+              value: {{ .Values.techdocs.kubernetesRunner.nodeAffinity | quote }}
+            {{- if ne .Values.techdocs.kubernetesRunner.nodeAffinity "none" }}
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            {{- end }}
+            {{- end }}
             {{- if .Values.backstage.extraEnvVars }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
@@ -179,7 +204,7 @@ spec:
             {{- if .Values.backstage.extraPorts }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraPorts "context" $) | nindent 12 }}
             {{- end }}
-          {{- if (or .Values.backstage.extraAppConfig .Values.backstage.appConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes)) }}
+          {{- if (or .Values.backstage.extraAppConfig .Values.backstage.appConfig (and .Values.backstage.extraVolumeMounts .Values.backstage.extraVolumes) .Values.techdocs.kubernetesRunner.enabled) }}
           volumeMounts:
             {{- range .Values.backstage.extraAppConfig }}
             - name: {{ .configMapRef }}
@@ -193,6 +218,10 @@ spec:
             {{- end }}
             {{- if .Values.backstage.extraVolumeMounts }}
               {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraVolumeMounts "context" $ ) | nindent 12 }}
+            {{- end }}
+            {{- if .Values.techdocs.kubernetesRunner.enabled }}
+            - name: techdocs-work
+              mountPath: {{ .Values.techdocs.kubernetesRunner.workRoot | quote }}
             {{- end }}
           {{- end }}
         {{- if .Values.backstage.extraContainers }}

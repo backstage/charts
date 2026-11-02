@@ -1,0 +1,218 @@
+suite: backstage techdocs kubernetes runner
+templates:
+  - techdocs-pvc.yaml
+  - techdocs-rbac.yaml
+  - backstage-deployment.yaml
+release:
+  name: backstage
+  namespace: backstage-system
+tests:
+  - it: does not render by default
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: techdocs-pvc.yaml
+      - hasDocuments:
+          count: 0
+        template: techdocs-rbac.yaml
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_runIn
+            value: kubernetes
+        template: backstage-deployment.yaml
+
+  - it: renders the shared volume, permissions and Backstage config when enabled
+    set:
+      serviceAccount.create: true
+      techdocs.kubernetesRunner.enabled: true
+      techdocs.kubernetesRunner.persistence.storageClass: efs-sc
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+        template: techdocs-pvc.yaml
+      - equal:
+          path: metadata.name
+          value: backstage-techdocs-work
+        template: techdocs-pvc.yaml
+      - equal:
+          path: spec.accessModes
+          value: [ReadWriteMany]
+        template: techdocs-pvc.yaml
+      - equal:
+          path: spec.storageClassName
+          value: efs-sc
+        template: techdocs-pvc.yaml
+      - equal:
+          path: spec.resources.requests.storage
+          value: 10Gi
+        template: techdocs-pvc.yaml
+      - hasDocuments:
+          count: 2
+        template: techdocs-rbac.yaml
+      - equal:
+          path: rules
+          value:
+            - apiGroups: [batch]
+              resources: [jobs]
+              verbs: [create, get, delete]
+            - apiGroups: [""]
+              resources: [pods]
+              verbs: [list]
+            - apiGroups: [""]
+              resources: [pods/log]
+              verbs: [get]
+        template: techdocs-rbac.yaml
+        documentIndex: 0
+      - equal:
+          path: subjects
+          value:
+            - kind: ServiceAccount
+              name: backstage
+              namespace: backstage-system
+        template: techdocs-rbac.yaml
+        documentIndex: 1
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: techdocs-work
+            persistentVolumeClaim:
+              claimName: backstage-techdocs-work
+        template: backstage-deployment.yaml
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: techdocs-work
+            mountPath: /var/backstage/work
+        template: backstage-deployment.yaml
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: APP_CONFIG_backend_listen_port
+              value: "7007"
+            - name: APP_CONFIG_backend_workingDirectory
+              value: /var/backstage/work
+            - name: APP_CONFIG_techdocs_generator_runIn
+              value: kubernetes
+            - name: APP_CONFIG_techdocs_generator_kubernetes_namespace
+              value: backstage-system
+            - name: APP_CONFIG_techdocs_generator_kubernetes_volumeClaimName
+              value: backstage-techdocs-work
+            - name: APP_CONFIG_techdocs_generator_kubernetes_workRoot
+              value: /var/backstage/work
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+              value: preferred
+            - name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+        template: backstage-deployment.yaml
+
+  - it: passes required node affinity to the runner
+    set:
+      serviceAccount.create: true
+      techdocs.kubernetesRunner.enabled: true
+      techdocs.kubernetesRunner.nodeAffinity: required
+    template: backstage-deployment.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+            value: required
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+
+  - it: omits the node name when node affinity is disabled
+    set:
+      serviceAccount.create: true
+      techdocs.kubernetesRunner.enabled: true
+      techdocs.kubernetesRunner.nodeAffinity: none
+    template: backstage-deployment.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeAffinity
+            value: none
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_nodeName
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+
+  - it: renders a ReadWriteOnce claim for node-local storage
+    values:
+      - ../ci/techdocs-kubernetes-runner-values.yaml
+    asserts:
+      - equal:
+          path: spec.accessModes
+          value: [ReadWriteOnce]
+        template: techdocs-pvc.yaml
+      - equal:
+          path: spec.resources.requests.storage
+          value: 1Gi
+        template: techdocs-pvc.yaml
+      - notExists:
+          path: spec.storageClassName
+        template: techdocs-pvc.yaml
+
+  - it: uses an existing claim instead of creating one
+    set:
+      serviceAccount.name: my-backstage
+      techdocs.kubernetesRunner.enabled: true
+      techdocs.kubernetesRunner.workRoot: /data/work
+      techdocs.kubernetesRunner.persistence.existingClaim: shared-rwx
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: techdocs-pvc.yaml
+      - equal:
+          path: subjects[0].name
+          value: my-backstage
+        template: techdocs-rbac.yaml
+        documentIndex: 1
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: techdocs-work
+            persistentVolumeClaim:
+              claimName: shared-rwx
+        template: backstage-deployment.yaml
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: APP_CONFIG_techdocs_generator_kubernetes_volumeClaimName
+            value: shared-rwx
+        template: backstage-deployment.yaml
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: techdocs-work
+            mountPath: /data/work
+        template: backstage-deployment.yaml
+
+  - it: refuses to bind the namespace's default ServiceAccount
+    set:
+      techdocs.kubernetesRunner.enabled: true
+    asserts:
+      - failedTemplate:
+          errorPattern: requires serviceAccount.create or serviceAccount.name
+        template: techdocs-rbac.yaml
+
+  - it: refuses to run without the ServiceAccount token
+    set:
+      serviceAccount.create: true
+      serviceAccount.automountServiceAccountToken: false
+      techdocs.kubernetesRunner.enabled: true
+    asserts:
+      - failedTemplate:
+          errorPattern: requires serviceAccount.automountServiceAccountToken
+        template: techdocs-rbac.yaml
