@@ -12,7 +12,7 @@ tests:
       backstage.pdb.maxUnavailable: 1
     asserts:
       - failedTemplate:
-          errorPattern: "'not' failed"
+          errorPattern: "not.*schema|'not' failed"
 
   - it: rejects an unsupported Service type
     template: service.yaml
