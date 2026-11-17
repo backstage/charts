@@ -2,7 +2,7 @@
 # Backstage Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/backstage)](https://artifacthub.io/packages/search?repo=backstage)
-![Version: 2.10.2](https://img.shields.io/badge/Version-2.10.2-informational?style=flat-square)
+![Version: 2.11.0](https://img.shields.io/badge/Version-2.11.0-informational?style=flat-square)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for deploying a Backstage application
@@ -135,7 +135,7 @@ Kubernetes: `>= 1.19.0-0`
 | backstage.image.pullSecrets | Optionally specify an array of imagePullSecrets.  Secrets must be manually created in the namespace. <br /> Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ <br /> E.g: `pullSecrets: [myRegistryKeySecretName]` | list | `[]` |
 | backstage.image.registry | Backstage image registry | string | `"ghcr.io"` |
 | backstage.image.repository | Backstage image repository | string | `"backstage/backstage"` |
-| backstage.image.tag | Backstage image tag (immutable tags are recommended) | string | `"latest"` |
+| backstage.image.tag | Backstage image tag (immutable tags are recommended). Defaults to the chart appVersion when empty, which can be overridden with e.g. `helm package --app-version 1.2.3` | string | `""` |
 | backstage.initContainers | Backstage container init containers | list | `[]` |
 | backstage.installDir | Directory containing the backstage installation | string | `"/app"` |
 | backstage.lifecycleHooks | Lifecycle hooks for the Backstage container <br /> Ref: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/ <!-- E.g. lifecycleHooks:   preStop:     exec:       command: ["/bin/sh", "-c", "sleep 10"] --> | object | `{}` |

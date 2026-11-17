@@ -64,6 +64,24 @@ tests:
           path: spec.template.spec.containers[0].image
           pattern: "^global\\.example\\.com/platform/backstage:"
 
+  - it: defaults the image tag to the chart appVersion
+    chart:
+      appVersion: 1.2.3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/backstage/backstage:1.2.3
+
+  - it: prefers the image tag over the chart appVersion
+    chart:
+      appVersion: 1.2.3
+    set:
+      backstage.image.tag: 4.5.6
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/backstage/backstage:4.5.6
+
   - it: pins the image by digest instead of tag
     values:
       - ../ci/image-digest-values.yaml

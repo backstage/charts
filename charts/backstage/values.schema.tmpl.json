@@ -499,7 +499,7 @@
                             "title": "Backstage image tag",
                             "description": "Immutable tags are recommended.",
                             "type": "string",
-                            "default": "latest"
+                            "default": ""
                         },
                         "pullPolicy": {
                             "title": "Specify a imagePullPolicy.",

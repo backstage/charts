@@ -152,8 +152,9 @@ backstage:
     # -- Backstage image repository
     repository: backstage/backstage
 
-    # -- Backstage image tag (immutable tags are recommended)
-    tag: latest
+    # -- Backstage image tag (immutable tags are recommended).
+    # Defaults to the chart appVersion when empty, which can be overridden with e.g. `helm package --app-version 1.2.3`
+    tag: ""
 
     # -- Backstage image digest (digest takes precedence over image tag)
     digest: ""

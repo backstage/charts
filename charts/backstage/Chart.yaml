@@ -38,4 +38,8 @@ sources:
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2.10.2
+version: 2.11.0
+
+# Default Backstage image tag, used when `backstage.image.tag` is empty.
+# Override at packaging time with `helm package --app-version <tag>`.
+appVersion: latest
