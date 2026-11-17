@@ -6937,6 +6937,14 @@
                     "title": "Hostname to be used to expose the route to access the backstage application.",
                     "type": "string"
                 },
+                "labels": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "default": {},
+                    "title": "Additional labels for the Ingress resource",
+                    "type": "object"
+                },
                 "path": {
                     "default": "/",
                     "examples": [
