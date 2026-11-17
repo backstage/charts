@@ -68,6 +68,16 @@ tests:
               - backstage.dev.example.com
             secretName: backstage-dev-tls
 
+  - it: passes labels through to the Ingress
+    set:
+      ingress.enabled: true
+      ingress.labels:
+        my-label: my-value
+    asserts:
+      - equal:
+          path: metadata.labels["my-label"]
+          value: my-value
+
   - it: passes annotations through to the Ingress
     set:
       ingress.enabled: true

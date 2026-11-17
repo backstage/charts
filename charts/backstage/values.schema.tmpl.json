@@ -359,6 +359,14 @@
                         "nginx"
                     ]
                 },
+                "labels": {
+                    "title": "Additional labels for the Ingress resource",
+                    "type": "object",
+                    "default": {},
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
                 "annotations": {
                     "title": "Additional annotations for the Ingress resource",
                     "type": "object",
