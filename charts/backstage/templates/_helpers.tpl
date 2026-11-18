@@ -2,7 +2,8 @@
 Return the proper image name
 */}}
 {{- define "backstage.image" -}}
-{{ include "common.images.image" (dict "imageRoot" .Values.backstage.image "global" .Values.global) }}
+{{- $imageRoot := merge (dict "tag" (default .Chart.AppVersion .Values.backstage.image.tag)) .Values.backstage.image -}}
+{{ include "common.images.image" (dict "imageRoot" $imageRoot "global" .Values.global) }}
 {{- end -}}
 
 {{/*

@@ -1,5 +1,5 @@
 {{- $imageRepository := .Values.backstage.image.repository | required "The repository name of the image is required (e.g. my-backstage:tag | docker.io/my-backstage:tag) !" -}}
-{{- $imageTag := .Values.backstage.image.tag | required "The image tag is required (e.g my-backstage:tag | docker.io/my-backstage:tag) !" -}}
+{{- $imageTag := default .Chart.AppVersion .Values.backstage.image.tag | required "The image tag is required: set backstage.image.tag or the chart appVersion (e.g. helm package --app-version) !" -}}
 {{- $installDir := .Values.backstage.installDir -}}
 ---
 apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}

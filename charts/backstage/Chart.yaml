@@ -39,3 +39,7 @@ sources:
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 2.11.0
+
+# Default Backstage image tag, used when `backstage.image.tag` is empty.
+# Override at packaging time with `helm package --app-version <tag>`.
+appVersion: latest

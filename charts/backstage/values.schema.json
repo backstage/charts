@@ -4130,7 +4130,7 @@
                             "type": "string"
                         },
                         "tag": {
-                            "default": "latest",
+                            "default": "",
                             "description": "Immutable tags are recommended.",
                             "title": "Backstage image tag",
                             "type": "string"
