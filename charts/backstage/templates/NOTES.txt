@@ -1,0 +1,34 @@
+Backstage has been installed.
+
+{{- if .Values.ingress.enabled }}
+
+Your application is accessible via Ingress:
+  {{- if .Values.ingress.host }}
+  http{{ if .Values.ingress.tls.enabled }}s{{ end }}://{{ include "common.tplvalues.render" (dict "value" .Values.ingress.host "context" $) }}{{ .Values.ingress.path }}
+  {{- else }}
+  Check your ingress configuration for the URL.
+  {{- end }}
+
+{{- else if .Values.httpRoute.enabled }}
+
+Your application is accessible via HTTPRoute.
+  {{- with (first .Values.httpRoute.hostnames) }}
+  Hostname: {{ . }}
+  {{- end }}
+  Check your Gateway configuration for the full URL.
+
+{{- else }}
+
+To access the application, forward the service port:
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ include "common.names.fullname" . }} {{ .Values.service.ports.backend }}:{{ .Values.service.ports.backend }}
+
+Then open http://localhost:{{ .Values.service.ports.backend }} in your browser.
+
+{{- end }}
+
+NOTE: This chart deploys a vanilla Backstage instance for demo purposes.
+      The default container image is probably not suitable for use in production.
+      For further customization (plugin installation, UI changes, etc.),
+      create your own custom instance and container image, or use a derived
+      and/or specialized Helm chart. For details, consult the Backstage documentation:
+      https://backstage.io/docs
